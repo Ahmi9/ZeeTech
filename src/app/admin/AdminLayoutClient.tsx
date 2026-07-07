@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X, LogOut } from 'lucide-react'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 
@@ -212,15 +211,6 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             })}
           </nav>
           <div style={{ flexShrink: 0, borderTop: '1px solid var(--border)' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '14px 16px',
-            }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Theme</span>
-              <ThemeToggle />
-            </div>
             <button
               onClick={handleLogout}
               style={{
@@ -228,9 +218,8 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
                 display: 'flex',
                 alignItems: 'center',
                 gap: '10px',
-                padding: '12px 16px',
+                padding: '14px 16px',
                 border: 'none',
-                borderTop: '1px solid var(--border)',
                 background: 'transparent',
                 cursor: 'pointer',
                 color: 'var(--text-secondary)',

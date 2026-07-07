@@ -1,41 +1,23 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 type Theme = 'light' | 'dark'
 
-const ThemeContext = createContext<{
-  theme: Theme
-  toggleTheme: () => void
-}>({ theme: 'light', toggleTheme: () => {} })
+const ThemeContext = createContext<{ theme: Theme }>({ theme: 'light' })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light')
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
+  const theme: Theme = isAdmin ? 'dark' : 'light'
 
   useEffect(() => {
-    if (!isAdmin) {
-      document.documentElement.setAttribute('data-theme', 'light')
-      return
-    }
-    const saved = localStorage.getItem('admin-theme') as Theme
-    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const initial = saved || preferred
-    setTheme(initial)
-    document.documentElement.setAttribute('data-theme', initial)
-  }, [isAdmin])
-
-  const toggleTheme = () => {
-    const next = theme === 'light' ? 'dark' : 'light'
-    setTheme(next)
-    document.documentElement.setAttribute('data-theme', next)
-    localStorage.setItem('admin-theme', next)
-  }
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme }}>
       {children}
     </ThemeContext.Provider>
   )
