@@ -40,5 +40,12 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: [
+    '/admin/:path*',
+    '/api/admin/:path*',
+    // These trigger real (billable) courier actions and are only ever called
+    // from the admin orders page — they must not be reachable unauthenticated.
+    '/api/postex/cancel-order',
+    '/api/postex/create-order',
+  ],
 }
