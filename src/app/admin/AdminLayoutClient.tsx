@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X, LogOut } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { motion, AnimatePresence } from 'framer-motion'
+import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 
 const navLinks = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -22,7 +23,8 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
 
   async function handleLogout() {
-    await fetch('/api/admin/login', { method: 'DELETE' })
+    const supabase = createBrowserSupabaseClient()
+    await supabase.auth.signOut()
     router.push('/admin-login')
     router.refresh()
   }
