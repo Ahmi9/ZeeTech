@@ -7,9 +7,11 @@ import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 
 export default function AdminLoginPage() {
   const router = useRouter()
+  const [mode, setMode] = useState<'signin' | 'reset'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -30,6 +32,26 @@ export default function AdminLoginPage() {
     }
   }
 
+  async function handleResetRequest(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    setMessage('')
+    try {
+      const supabase = createBrowserSupabaseClient()
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin-reset-password`,
+      })
+      if (resetError) {
+        setError(resetError.message)
+        return
+      }
+      setMessage('If that email has an account, a reset link has been sent.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div
       style={{
@@ -42,7 +64,7 @@ export default function AdminLoginPage() {
       }}
     >
       <form
-        onSubmit={handleSubmit}
+        onSubmit={mode === 'signin' ? handleSubmit : handleResetRequest}
         style={{
           width: '100%',
           maxWidth: '360px',
@@ -72,8 +94,12 @@ export default function AdminLoginPage() {
             <Lock size={22} strokeWidth={1.75} />
           </div>
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '18px', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>Admin Sign In</h1>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>ZeeTech control panel</p>
+            <h1 style={{ fontSize: '18px', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>
+              {mode === 'signin' ? 'Admin Sign In' : 'Reset Password'}
+            </h1>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+              {mode === 'signin' ? 'ZeeTech control panel' : 'We’ll email you a reset link'}
+            </p>
           </div>
         </div>
 
@@ -98,28 +124,33 @@ export default function AdminLoginPage() {
           />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-            style={{
-              padding: '11px 14px',
-              borderRadius: '10px',
-              border: '1px solid var(--border)',
-              background: 'var(--bg)',
-              color: 'var(--text-primary)',
-              fontSize: '14px',
-              outline: 'none',
-            }}
-          />
-        </div>
+        {mode === 'signin' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              style={{
+                padding: '11px 14px',
+                borderRadius: '10px',
+                border: '1px solid var(--border)',
+                background: 'var(--bg)',
+                color: 'var(--text-primary)',
+                fontSize: '14px',
+                outline: 'none',
+              }}
+            />
+          </div>
+        )}
 
         {error && (
           <p style={{ color: '#e5484d', fontSize: '13px', margin: 0, textAlign: 'center' }}>{error}</p>
+        )}
+        {message && (
+          <p style={{ color: 'var(--success)', fontSize: '13px', margin: 0, textAlign: 'center' }}>{message}</p>
         )}
 
         <button
@@ -142,7 +173,29 @@ export default function AdminLoginPage() {
           }}
         >
           {loading && <Loader2 size={16} className="spin" />}
-          {loading ? 'Signing in...' : 'Sign in'}
+          {loading
+            ? (mode === 'signin' ? 'Signing in...' : 'Sending...')
+            : (mode === 'signin' ? 'Sign in' : 'Send reset link')}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setMode(mode === 'signin' ? 'reset' : 'signin')
+            setError('')
+            setMessage('')
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-secondary)',
+            fontSize: '12px',
+            cursor: 'pointer',
+            textAlign: 'center',
+            padding: 0,
+          }}
+        >
+          {mode === 'signin' ? 'Forgot password?' : 'Back to sign in'}
         </button>
       </form>
 
