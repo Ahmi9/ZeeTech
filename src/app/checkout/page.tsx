@@ -143,7 +143,7 @@ export default function CheckoutPage() {
       }
 
       clearCart()
-      window.location.href = '/order-confirmation?id=' + orderData.id
+      window.location.href = '/order-confirmation?id=' + orderData.id + '&phone=' + encodeURIComponent(formData.phone)
     } catch (error: any) {
       console.error('Order error:', error)
       setPlaceOrderError(error?.message || 'Failed to place order. Please try again.')

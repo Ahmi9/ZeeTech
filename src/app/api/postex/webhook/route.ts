@@ -9,11 +9,14 @@ const HEADER_KEY = process.env.POSTEX_WEBHOOK_HEADER_KEY
 const HEADER_VALUE = process.env.POSTEX_WEBHOOK_HEADER_VALUE
 
 export async function POST(request: NextRequest) {
-  if (HEADER_KEY && HEADER_VALUE) {
-    const incoming = request.headers.get(HEADER_KEY)
-    if (incoming !== HEADER_VALUE) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  if (!HEADER_KEY || !HEADER_VALUE) {
+    console.error('PostEx webhook: POSTEX_WEBHOOK_HEADER_KEY/VALUE not configured, rejecting request')
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 })
+  }
+
+  const incoming = request.headers.get(HEADER_KEY)
+  if (incoming !== HEADER_VALUE) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const body = await request.json().catch(() => null)

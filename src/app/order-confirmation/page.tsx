@@ -11,6 +11,7 @@ import { CheckCircle } from 'lucide-react'
 function OrderConfirmationContent() {
   const searchParams = useSearchParams()
   const orderId = searchParams.get('id')
+  const phone = searchParams.get('phone')
   const [order, setOrder] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [whatsappNumber, setWhatsappNumber] = useState('')
@@ -18,17 +19,17 @@ function OrderConfirmationContent() {
   const [bankAccounts, setBankAccounts] = useState<any[]>([])
 
   useEffect(() => {
-    if (orderId) {
+    if (orderId && phone) {
       fetchOrderDetails()
     } else {
       setLoading(false)
     }
     fetchSiteSettings()
     fetchBankAccounts()
-  }, [orderId])
+  }, [orderId, phone])
 
   const fetchOrderDetails = async () => {
-    const res = await fetch(`/api/orders/confirmation?id=${orderId}`)
+    const res = await fetch(`/api/orders/confirmation?id=${orderId}&phone=${encodeURIComponent(phone || '')}`)
     const json = await res.json()
     if (res.ok && json.order) setOrder(json.order)
     setLoading(false)

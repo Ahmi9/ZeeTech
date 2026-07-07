@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X, LogOut } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -18,7 +18,14 @@ const navLinks = [
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
+
+  async function handleLogout() {
+    await fetch('/api/admin/login', { method: 'DELETE' })
+    router.push('/admin-login')
+    router.refresh()
+  }
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0)
   useEffect(() => {
     setMobileDrawerOpen(false)
@@ -211,7 +218,25 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             borderTop: '1px solid var(--border)',
           }}>
             <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Theme</span>
-            <ThemeToggle />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <ThemeToggle />
+              <button
+                onClick={handleLogout}
+                aria-label="Log out"
+                title="Log out"
+                style={{
+                  width: '32px', height: '32px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                <LogOut size={15} />
+              </button>
+            </div>
           </div>
         </aside>
 
