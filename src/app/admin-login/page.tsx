@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Lock, Loader2 } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
+import ErrorToast from '@/components/ui/ErrorToast'
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -13,6 +14,12 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => setError(''), 5000)
+    return () => clearTimeout(timer)
+  }, [error])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -63,6 +70,7 @@ export default function AdminLoginPage() {
         padding: '24px',
       }}
     >
+      <ErrorToast message={error} />
       <form
         onSubmit={mode === 'signin' ? handleSubmit : handleResetRequest}
         style={{
@@ -146,9 +154,6 @@ export default function AdminLoginPage() {
           </div>
         )}
 
-        {error && (
-          <p style={{ color: '#e5484d', fontSize: '13px', margin: 0, textAlign: 'center' }}>{error}</p>
-        )}
         {message && (
           <p style={{ color: 'var(--success)', fontSize: '13px', margin: 0, textAlign: 'center' }}>{message}</p>
         )}

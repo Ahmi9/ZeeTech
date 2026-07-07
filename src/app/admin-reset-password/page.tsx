@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { KeyRound, Loader2 } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
+import ErrorToast from '@/components/ui/ErrorToast'
 
 export default function AdminResetPasswordPage() {
   const router = useRouter()
@@ -13,6 +14,12 @@ export default function AdminResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => setError(''), 5000)
+    return () => clearTimeout(timer)
+  }, [error])
 
   useEffect(() => {
     const supabase = createBrowserSupabaseClient()
@@ -67,6 +74,7 @@ export default function AdminResetPasswordPage() {
         padding: '24px',
       }}
     >
+      <ErrorToast message={error} />
       <div
         style={{
           width: '100%',
@@ -155,10 +163,6 @@ export default function AdminResetPasswordPage() {
                 }}
               />
             </div>
-
-            {error && (
-              <p style={{ color: '#e5484d', fontSize: '13px', margin: 0, textAlign: 'center' }}>{error}</p>
-            )}
 
             <button
               type="submit"
