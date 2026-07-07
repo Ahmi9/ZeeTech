@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { KeyRound, Loader2 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 import ErrorToast from '@/components/ui/ErrorToast'
 
@@ -75,7 +76,10 @@ export default function AdminResetPasswordPage() {
       }}
     >
       <ErrorToast message={error} />
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
         style={{
           width: '100%',
           maxWidth: '360px',
@@ -122,7 +126,14 @@ export default function AdminResetPasswordPage() {
         )}
 
         {ready && !success && (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <motion.form
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.35, ease: 'easeOut' }}
+            onSubmit={handleSubmit}
+            noValidate
+            style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
+          >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>New password</label>
               <input
@@ -131,7 +142,7 @@ export default function AdminResetPasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 autoFocus
-                required
+                className="admin-input"
                 style={{
                   padding: '11px 14px',
                   borderRadius: '10px',
@@ -151,7 +162,7 @@ export default function AdminResetPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                required
+                className="admin-input"
                 style={{
                   padding: '11px 14px',
                   borderRadius: '10px',
@@ -164,7 +175,9 @@ export default function AdminResetPasswordPage() {
               />
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: loading ? 1 : 1.015 }}
+              whileTap={{ scale: loading ? 1 : 0.985 }}
               type="submit"
               disabled={loading}
               style={{
@@ -185,14 +198,16 @@ export default function AdminResetPasswordPage() {
             >
               {loading && <Loader2 size={16} className="spin" />}
               {loading ? 'Updating...' : 'Update password'}
-            </button>
-          </form>
+            </motion.button>
+          </motion.form>
         )}
-      </div>
+      </motion.div>
 
       <style>{`
         .spin { animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .admin-input { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+        .admin-input:focus { border-color: var(--brand) !important; box-shadow: 0 0 0 3px var(--brand-light); }
       `}</style>
     </div>
   )

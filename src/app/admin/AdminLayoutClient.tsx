@@ -211,34 +211,36 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               )
             })}
           </nav>
-          <div style={{
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '14px 16px',
-            borderTop: '1px solid var(--border)',
-          }}>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Theme</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ flexShrink: 0, borderTop: '1px solid var(--border)' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '14px 16px',
+            }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Theme</span>
               <ThemeToggle />
-              <button
-                onClick={handleLogout}
-                aria-label="Log out"
-                title="Log out"
-                style={{
-                  width: '32px', height: '32px',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-secondary)',
-                }}
-              >
-                <LogOut size={15} />
-              </button>
             </div>
+            <button
+              onClick={handleLogout}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '12px 16px',
+                border: 'none',
+                borderTop: '1px solid var(--border)',
+                background: 'transparent',
+                cursor: 'pointer',
+                color: 'var(--text-secondary)',
+                fontSize: '13px',
+                textAlign: 'left',
+              }}
+            >
+              <LogOut size={15} />
+              Log out
+            </button>
           </div>
         </aside>
 

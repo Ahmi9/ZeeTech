@@ -3,8 +3,18 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Lock, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 import ErrorToast from '@/components/ui/ErrorToast'
+
+const fieldVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.15 + i * 0.06, duration: 0.35, ease: 'easeOut' as const },
+  }),
+}
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -23,6 +33,10 @@ export default function AdminLoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter your email and password')
+      return
+    }
     setLoading(true)
     setError('')
     try {
@@ -41,6 +55,10 @@ export default function AdminLoginPage() {
 
   async function handleResetRequest(e: React.FormEvent) {
     e.preventDefault()
+    if (!email.trim()) {
+      setError('Please enter your email')
+      return
+    }
     setLoading(true)
     setError('')
     setMessage('')
@@ -71,8 +89,13 @@ export default function AdminLoginPage() {
       }}
     >
       <ErrorToast message={error} />
-      <form
+      <motion.form
+        key={mode}
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
         onSubmit={mode === 'signin' ? handleSubmit : handleResetRequest}
+        noValidate
         style={{
           width: '100%',
           maxWidth: '360px',
@@ -86,8 +109,17 @@ export default function AdminLoginPage() {
           boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-          <div
+        <motion.div
+          custom={0}
+          variants={fieldVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '4px' }}
+        >
+          <motion.div
+            initial={{ scale: 0, rotate: -30 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.05, type: 'spring', stiffness: 300, damping: 16 }}
             style={{
               width: '48px',
               height: '48px',
@@ -100,7 +132,7 @@ export default function AdminLoginPage() {
             }}
           >
             <Lock size={22} strokeWidth={1.75} />
-          </div>
+          </motion.div>
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontSize: '18px', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>
               {mode === 'signin' ? 'Admin Sign In' : 'Reset Password'}
@@ -109,9 +141,9 @@ export default function AdminLoginPage() {
               {mode === 'signin' ? 'ZeeTech control panel' : 'We’ll email you a reset link'}
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <motion.div custom={1} variants={fieldVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>Email</label>
           <input
             type="email"
@@ -119,7 +151,7 @@ export default function AdminLoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
             autoFocus
-            required
+            className="admin-input"
             style={{
               padding: '11px 14px',
               borderRadius: '10px',
@@ -130,35 +162,59 @@ export default function AdminLoginPage() {
               outline: 'none',
             }}
           />
-        </div>
+        </motion.div>
 
-        {mode === 'signin' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              style={{
-                padding: '11px 14px',
-                borderRadius: '10px',
-                border: '1px solid var(--border)',
-                background: 'var(--bg)',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                outline: 'none',
-              }}
-            />
-          </div>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {mode === 'signin' && (
+            <motion.div
+              key="password-field"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px', overflow: 'hidden' }}
+            >
+              <label style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="admin-input"
+                style={{
+                  padding: '11px 14px',
+                  borderRadius: '10px',
+                  border: '1px solid var(--border)',
+                  background: 'var(--bg)',
+                  color: 'var(--text-primary)',
+                  fontSize: '14px',
+                  outline: 'none',
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {message && (
-          <p style={{ color: 'var(--success)', fontSize: '13px', margin: 0, textAlign: 'center' }}>{message}</p>
-        )}
+        <AnimatePresence>
+          {message && (
+            <motion.p
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              style={{ color: 'var(--success)', fontSize: '13px', margin: 0, textAlign: 'center', overflow: 'hidden' }}
+            >
+              {message}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
-        <button
+        <motion.button
+          custom={2}
+          variants={fieldVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover={{ scale: loading ? 1 : 1.015 }}
+          whileTap={{ scale: loading ? 1 : 0.985 }}
           type="submit"
           disabled={loading}
           style={{
@@ -181,9 +237,13 @@ export default function AdminLoginPage() {
           {loading
             ? (mode === 'signin' ? 'Signing in...' : 'Sending...')
             : (mode === 'signin' ? 'Sign in' : 'Send reset link')}
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
+          custom={3}
+          variants={fieldVariants}
+          initial="hidden"
+          animate="visible"
           type="button"
           onClick={() => {
             setMode(mode === 'signin' ? 'reset' : 'signin')
@@ -201,12 +261,15 @@ export default function AdminLoginPage() {
           }}
         >
           {mode === 'signin' ? 'Forgot password?' : 'Back to sign in'}
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
 
       <style>{`
         .spin { animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .admin-input { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+        .admin-input:focus { border-color: var(--brand) !important; box-shadow: 0 0 0 3px var(--brand-light); }
+        .admin-input:invalid { box-shadow: none; }
       `}</style>
     </div>
   )
