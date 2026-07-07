@@ -25,7 +25,9 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (user) {
+  // app_metadata is set via the service-role admin API and cannot be edited by the
+  // user themselves (unlike user_metadata) — safe to use as an authorization claim.
+  if (user && user.app_metadata?.role === 'admin') {
     return response
   }
 
