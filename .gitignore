@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local claude code settings
+.claude/settings.local.json
+
+# raw/staging assets not used by the app (app uses public/Pics)
+/Pics/
+
+# vendor reference docs
+PostEx-COD_API_Integration_Guide_V4.1.9.pdf
