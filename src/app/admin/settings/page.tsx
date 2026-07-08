@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { SiteSettings } from '@/lib/types'
-import { ImagePlus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
 
@@ -24,7 +23,6 @@ export default function SettingsPage() {
 
   const [heroTitle, setHeroTitle] = useState('')
   const [heroSubtitle, setHeroSubtitle] = useState('')
-  const [heroImageUrl, setHeroImageUrl] = useState('')
 
   const [announcementText, setAnnouncementText] = useState('')
   const [announcementActive, setAnnouncementActive] = useState(false)
@@ -38,7 +36,6 @@ export default function SettingsPage() {
   const [bankFormErrors, setBankFormErrors] = useState<Record<string, string>>({})
   const [savingBank, setSavingBank] = useState(false)
 
-  const heroFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetchSettings()
@@ -59,38 +56,12 @@ export default function SettingsPage() {
       setInstagramHandle(data.instagram_handle || '')
       setHeroTitle(data.hero_title || '')
       setHeroSubtitle(data.hero_subtitle || '')
-      setHeroImageUrl(data.hero_image_url || '')
       setAnnouncementText(data.announcement_bar_text || '')
       setAnnouncementActive(data.announcement_bar_active || false)
       setFreeShippingThreshold(data.free_shipping_threshold?.toString() || '')
       setShippingFee(data.shipping_fee?.toString() || '')
     }
     setLoading(false)
-  }
-
-  async function uploadImage(file: File, fieldName: 'hero') {
-    const filename = `${fieldName}-${Date.now()}.${file.name.split('.').pop()}`
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('site-images')
-      .upload(filename, file)
-
-    if (uploadError) {
-      setErrorMessage('Failed to upload image')
-      return null
-    }
-
-    const { data: urlData } = supabase.storage.from('site-images').getPublicUrl(filename)
-    return urlData.publicUrl
-  }
-
-  async function handleHeroImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    const url = await uploadImage(file, 'hero')
-    if (url) {
-      setHeroImageUrl(url)
-    }
   }
 
   async function handleSave() {
@@ -108,7 +79,6 @@ export default function SettingsPage() {
       instagram_handle: instagramHandle,
       hero_title: heroTitle,
       hero_subtitle: heroSubtitle,
-      hero_image_url: heroImageUrl,
       announcement_bar_text: announcementText,
       announcement_bar_active: announcementActive,
       free_shipping_threshold: parseFloat(freeShippingThreshold) || 0,
@@ -321,55 +291,6 @@ export default function SettingsPage() {
               onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
               onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
             />
-            <label style={labelStyle}>Hero Image URL</label>
-            <input
-              type="text"
-              value={heroImageUrl}
-              onChange={(e) => setHeroImageUrl(e.target.value)}
-              placeholder="https://..."
-              style={inputStyle}
-              onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
-            />
-            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '12px' }}>
-              Paste image URL or upload below
-            </p>
-            <input
-              ref={heroFileRef}
-              type="file"
-              accept="image/*"
-              onChange={handleHeroImageUpload}
-              style={{ display: 'none' }}
-            />
-            <div
-              onClick={() => heroFileRef.current?.click()}
-              style={{
-                border: '2px dashed var(--border-strong)',
-                borderRadius: '10px',
-                padding: '24px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                background: 'var(--bg)',
-              }}
-            >
-              <ImagePlus size={24} style={{ color: 'var(--text-muted)', margin: '0 auto' }} />
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px' }}>
-                Click to upload hero image
-              </p>
-            </div>
-            {heroImageUrl && (
-              <img
-                src={heroImageUrl}
-                alt="Hero preview"
-                style={{
-                  width: '100%',
-                  maxHeight: '200px',
-                  objectFit: 'cover',
-                  borderRadius: '8px',
-                  marginTop: '12px',
-                }}
-              />
-            )}
           </div>
 
           <div style={cardStyle}>
