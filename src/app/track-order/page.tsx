@@ -217,7 +217,7 @@ export default function TrackOrderPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. TJ-00123"
+                    placeholder="e.g. ORD-12345"
                     value={orderNumber}
                     onChange={(e) => setOrderNumber(e.target.value)}
                     style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--border-strong)', borderRadius: '10px', background: 'var(--surface)', fontSize: '14px', color: 'var(--text-primary)', outline: 'none' }}
