@@ -617,13 +617,13 @@ export default function Navbar() {
           .mobile-nav { display: flex !important; }
           .desktop-nav { display: none !important; }
           .navbar-header { padding: 0 16px !important; }
-          .navbar-header.has-announcement { top: 32px !important; }
+          .navbar-header.has-announcement { top: 38px !important; }
         }
 
         @media (max-width: 768px) {
           .announcement-bar {
-            height: 34px !important;
-            font-size: 12px !important;
+            height: 38px !important;
+            font-size: 14px !important;
           }
         }
 
