@@ -115,6 +115,7 @@ export default function NewProductPage() {
 
   const deleteAttribute = (id: string) => {
     setAttributes(prev => prev.filter(a => a.id !== id))
+    setVariants([])
   }
 
   const addAttributeValue = (id: string, value: string) => {
@@ -124,10 +125,15 @@ export default function NewProductPage() {
 
   const removeAttributeValue = (attrId: string, valueIndex: number) => {
     setAttributes(prev => prev.map(a => a.id === attrId ? { ...a, values: a.values.filter((_, i) => i !== valueIndex) } : a))
+    setVariants([])
   }
 
   const updateVariant = (index: number, field: 'price' | 'stock' | 'sku', value: string) => {
     setVariants(prev => prev.map((v, i) => i === index ? { ...v, [field]: value } : v))
+  }
+
+  const deleteVariant = (index: number) => {
+    setVariants(prev => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -823,6 +829,16 @@ export default function NewProductPage() {
                         }}>
                           SKU
                         </th>
+                        <th style={{
+                          fontSize: '11px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.08em',
+                          color: 'var(--text-muted)',
+                          padding: '8px 12px',
+                          textAlign: 'left',
+                          borderBottom: '1px solid var(--border)',
+                        }}>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -896,6 +912,25 @@ export default function NewProductPage() {
                               onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
                               onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
                             />
+                          </td>
+                          <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)' }}>
+                            <button
+                              type="button"
+                              onClick={() => deleteVariant(index)}
+                              aria-label="Delete variant"
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: 'var(--danger)',
+                                padding: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Trash2 size={14} />
+                            </button>
                           </td>
                         </tr>
                       ))}
