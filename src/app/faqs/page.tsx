@@ -85,7 +85,7 @@ export default function FAQsPage() {
                   +
                 </motion.div>
               </div>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {openIndex === index && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
