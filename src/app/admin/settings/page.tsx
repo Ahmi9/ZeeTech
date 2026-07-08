@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { SiteSettings } from '@/lib/types'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
 
 export default function SettingsPage() {
@@ -111,8 +111,10 @@ export default function SettingsPage() {
 
     if (!res.ok) {
       setErrorMessage('Failed to save settings')
+      setTimeout(() => setErrorMessage(''), 3000)
     } else {
       setSuccessMessage('Settings saved successfully')
+      setTimeout(() => setSuccessMessage(''), 3000)
     }
     setSaving(false)
   }
@@ -551,16 +553,33 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {successMessage && (
-        <p style={{ fontSize: '13px', color: 'var(--success)', marginTop: '16px' }}>
-          {successMessage}
-        </p>
-      )}
-      {errorMessage && (
-        <p style={{ fontSize: '13px', color: 'var(--danger)', marginTop: '16px' }}>
-          {errorMessage}
-        </p>
-      )}
+      <AnimatePresence>
+        {(successMessage || errorMessage) && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+            style={{
+              position: 'fixed',
+              bottom: '32px',
+              left: '50%',
+              translateX: '-50%',
+              background: 'var(--bg)',
+              border: '1px solid var(--border)',
+              borderRadius: '14px',
+              padding: '14px 24px',
+              boxShadow: '0 12px 40px rgba(0,0,0,0.18)',
+              zIndex: 500,
+              fontSize: '13px',
+              fontWeight: 500,
+              color: successMessage ? 'var(--success)' : 'var(--danger)',
+            }}
+          >
+            {successMessage || errorMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <button
         onClick={handleSave}
