@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import PageSpacer from '@/components/layout/PageSpacer'
 import Footer from '@/components/sections/Footer'
+import AdminLoader from '@/components/ui/AdminLoader'
 import { formatPrice } from '@/lib/format'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { Search, Loader2, Package, CheckCircle2, Truck, Check, AlertCircle, ShoppingBag, ArrowRight, ExternalLink, Navigation } from 'lucide-react'
@@ -19,9 +21,10 @@ interface PostexHistoryEntry {
   transactionStatusMessageCode: string
 }
 
-export default function TrackOrderPage() {
-  const [orderNumber, setOrderNumber] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
+function TrackOrderContent() {
+  const searchParams = useSearchParams()
+  const [orderNumber, setOrderNumber] = useState(searchParams.get('orderNumber') || '')
+  const [phoneNumber, setPhoneNumber] = useState(searchParams.get('phone') || '')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [order, setOrder] = useState<any | null>(null)
@@ -32,13 +35,12 @@ export default function TrackOrderPage() {
     return digits.slice(-10)
   }
 
-  const handleTrack = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!orderNumber.trim()) {
+  const runTrack = async (orderNumberArg: string, phoneNumberArg: string) => {
+    if (!orderNumberArg.trim()) {
       setError('Please enter your order number')
       return
     }
-    if (!phoneNumber.trim()) {
+    if (!phoneNumberArg.trim()) {
       setError('Please enter your phone number')
       return
     }
@@ -46,14 +48,17 @@ export default function TrackOrderPage() {
     setLoading(true)
     setError(null)
 
-    const isSameOrder = order && order.order_number === orderNumber.trim().toUpperCase() && sanitizePhone(order.customer_phone) === sanitizePhone(phoneNumber)
+    const orderNumberVal = orderNumberArg
+    const phoneNumberVal = phoneNumberArg
+
+    const isSameOrder = order && order.order_number === orderNumberVal.trim().toUpperCase() && sanitizePhone(order.customer_phone) === sanitizePhone(phoneNumberVal)
     if (!isSameOrder) {
       setOrder(null)
       setPostexHistory([])
     }
 
     try {
-      const res = await fetch(`/api/orders/track?orderNumber=${encodeURIComponent(orderNumber.trim().toUpperCase())}&phone=${encodeURIComponent(phoneNumber)}`)
+      const res = await fetch(`/api/orders/track?orderNumber=${encodeURIComponent(orderNumberVal.trim().toUpperCase())}&phone=${encodeURIComponent(phoneNumberVal)}`)
       const json = await res.json()
 
       if (!res.ok) {
@@ -82,6 +87,20 @@ export default function TrackOrderPage() {
       setLoading(false)
     }
   }
+
+  const handleTrack = (e: React.FormEvent) => {
+    e.preventDefault()
+    runTrack(orderNumber, phoneNumber)
+  }
+
+  useEffect(() => {
+    const prefilledOrderNumber = searchParams.get('orderNumber')
+    const prefilledPhone = searchParams.get('phone')
+    if (prefilledOrderNumber && prefilledPhone) {
+      runTrack(prefilledOrderNumber, prefilledPhone)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const seenCodes = new Set(postexHistory.map(h => h.transactionStatusMessageCode))
   const latestCode = postexHistory[postexHistory.length - 1]?.transactionStatusMessageCode
@@ -602,5 +621,17 @@ export default function TrackOrderPage() {
         }
       `}</style>
     </div>
+  )
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ width: '100%', background: 'var(--bg)' }}>
+        <AdminLoader />
+      </div>
+    }>
+      <TrackOrderContent />
+    </Suspense>
   )
 }

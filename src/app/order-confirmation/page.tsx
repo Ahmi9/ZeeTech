@@ -253,7 +253,7 @@ function OrderConfirmationContent() {
             Continue Shopping
           </Link>
           <Link
-            href="/track-order"
+            href={`/track-order?orderNumber=${encodeURIComponent(order?.order_number || '')}&phone=${encodeURIComponent(phone || '')}`}
             className="confirm-btn"
             style={{
               background: 'var(--brand)',
