@@ -162,15 +162,21 @@ export async function POST(request: NextRequest) {
       })
 
       if (item.variantId) {
-        await supabaseAdmin.rpc('decrease_variant_stock', {
+        const { error: stockError } = await supabaseAdmin.rpc('decrease_variant_stock', {
           variant_id: item.variantId,
           quantity: item.quantity,
         })
+        if (stockError) {
+          console.error('decrease_variant_stock failed', { orderId: orderData.id, variantId: item.variantId, quantity: item.quantity, stockError })
+        }
       } else {
-        await supabaseAdmin.rpc('decrease_stock', {
+        const { error: stockError } = await supabaseAdmin.rpc('decrease_stock', {
           product_id: item.productId,
           quantity: item.quantity,
         })
+        if (stockError) {
+          console.error('decrease_stock failed', { orderId: orderData.id, productId: item.productId, quantity: item.quantity, stockError })
+        }
       }
     }
 
