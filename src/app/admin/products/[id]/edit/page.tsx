@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { Category } from '@/lib/types'
 import { motion } from 'framer-motion'
 import RichTextEditor from '@/components/ui/RichTextEditor'
+import AdminLoader from '@/components/ui/AdminLoader'
 
 export default function EditProductPage() {
   const router = useRouter()
@@ -264,11 +265,7 @@ export default function EditProductPage() {
   }
 
   if (fetchingProduct) {
-    return (
-      <div style={{ width: '100%', maxWidth: '1200px' }}>
-        <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Loading product...</p>
-      </div>
-    )
+    return <AdminLoader />
   }
 
   return (
