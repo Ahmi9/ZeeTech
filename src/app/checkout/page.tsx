@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
 import AdminLoader from '@/components/ui/AdminLoader'
+import CitySelect from '@/components/ui/CitySelect'
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart, appliedCoupon, getFinalPrice, removeCoupon } = useCartStore()
@@ -258,17 +259,15 @@ export default function CheckoutPage() {
                     style={{ ...inputStyle, borderColor: errors.city ? 'var(--danger)' : 'var(--border-strong)' }}
                   />
                 ) : (
-                  <select
-                    name="city"
+                  <CitySelect
+                    cities={cities}
                     value={formData.city}
-                    onChange={handleInputChange}
-                    style={{ ...inputStyle, borderColor: errors.city ? 'var(--danger)' : 'var(--border-strong)', cursor: 'pointer' }}
-                  >
-                    <option value="">Select your city</option>
-                    {cities.map(city => (
-                      <option key={city} value={city}>{city}</option>
-                    ))}
-                  </select>
+                    hasError={!!errors.city}
+                    onChange={(city) => {
+                      setFormData(prev => ({ ...prev, city }))
+                      if (errors.city) setErrors(prev => ({ ...prev, city: '' }))
+                    }}
+                  />
                 )}
                 {errors.city && <p style={{ fontSize: '12px', color: 'var(--danger)', marginTop: '4px' }}>{errors.city}</p>}
               </div>
