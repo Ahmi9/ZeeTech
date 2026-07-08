@@ -406,26 +406,6 @@ export default function CategoriesSection() {
                 ))}
               </div>
             </div>
-
-            {categories[0] && (
-              <div style={{ textAlign: 'center', marginTop: '8px' }}>
-                <Link
-                  href={`/categories/${categories[0].slug}`}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    fontSize: '13px',
-                    color: 'var(--brand)',
-                    fontWeight: 500,
-                    textDecoration: 'none',
-                    padding: '8px 12px',
-                  }}
-                >
-                  View All Categories <span>→</span>
-                </Link>
-              </div>
-            )}
           </>
         )}
       </div>
