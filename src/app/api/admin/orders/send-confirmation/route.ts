@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Only pending orders can be sent a confirmation link' }, { status: 400 })
   }
 
-  const token = randomBytes(24).toString('hex')
+  const token = randomBytes(9).toString('base64url')
 
   const { error: updateError } = await supabaseAdmin
     .from('orders')

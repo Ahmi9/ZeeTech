@@ -144,7 +144,7 @@ function ConfirmOrderContent() {
           Confirm Your Order
         </p>
         <h1 style={{ fontSize: '28px', fontWeight: 300, color: 'var(--text-primary)', marginBottom: '24px' }}>
-          Order {order?.order_number}
+          {order?.order_number}
         </h1>
 
         <div style={{
@@ -160,10 +160,34 @@ function ConfirmOrderContent() {
           </p>
           {order?.order_items?.map((item: any, index: number) => (
             <div key={index} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '13px' }}>
-              <span style={{ color: 'var(--text-primary)' }}>{item.product_name} × {item.quantity}</span>
+              <div>
+                <span style={{ color: 'var(--text-primary)' }}>{item.product_name} × {item.quantity}</span>
+                {item.selected_variant && (
+                  <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '2px 0 0' }}>
+                    {Object.entries(item.selected_variant).map(([k, v]: [string, any]) => `${k}: ${v}`).join(' | ')}
+                  </p>
+                )}
+              </div>
               <span style={{ color: 'var(--text-secondary)' }}>Rs {Math.round(item.total).toLocaleString()}</span>
             </div>
           ))}
+          <div style={{ borderTop: '1px solid var(--border)', margin: '12px 0' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: '13px' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>Subtotal</span>
+            <span style={{ color: 'var(--text-secondary)' }}>Rs {Math.round(order?.subtotal || 0).toLocaleString()}</span>
+          </div>
+          {order?.coupon_code && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: '13px' }}>
+              <span style={{ color: 'var(--success)' }}>Coupon ({order.coupon_code})</span>
+              <span style={{ color: 'var(--success)' }}>- Rs {Math.round(order.coupon_discount || 0).toLocaleString()}</span>
+            </div>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: '13px' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
+            <span style={{ color: 'var(--text-secondary)' }}>
+              {(order?.subtotal || 0) >= 2000 ? 'Free' : `Rs ${Math.round((order?.total || 0) - (order?.subtotal || 0) + (order?.discount || 0)).toLocaleString()}`}
+            </span>
+          </div>
           <div style={{ borderTop: '1px solid var(--border)', margin: '12px 0' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: 600 }}>
             <span style={{ color: 'var(--text-primary)' }}>Total</span>

@@ -180,7 +180,7 @@ export default function OrdersPage() {
       if (!res.ok) throw new Error(json.error || 'Failed to send confirmation')
 
       const link = `${window.location.origin}/confirm-order?token=${json.token}`
-      const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}, thank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}). Please confirm your order here: ${link}`
+      const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}\n\nThank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}).\n\nPlease confirm your order here: ${link}`
       const waUrl = `https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`
       if (waWindow) waWindow.location.href = waUrl
       else window.open(waUrl, '_blank')
