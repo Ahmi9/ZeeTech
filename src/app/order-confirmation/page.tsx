@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
 import AdminLoader from '@/components/ui/AdminLoader'
 import AnimatedCheckmark from '@/components/ui/AnimatedCheckmark'
+import { formatPhoneWhatsApp } from '@/lib/phone'
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams()
@@ -191,7 +192,7 @@ function OrderConfirmationContent() {
 
             {whatsappNumber && (
               <a
-                href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi! I just placed Order #${order?.order_number} on ${storeName} for Rs ${Math.round(order?.total || 0).toLocaleString()}. Here is my payment screenshot.`)}`}
+                href={`https://wa.me/${formatPhoneWhatsApp(whatsappNumber)}?text=${encodeURIComponent(`Hi! I just placed Order #${order?.order_number} on ${storeName} for Rs ${Math.round(order?.total || 0).toLocaleString()}. Here is my payment screenshot.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -287,7 +288,7 @@ function OrderConfirmationContent() {
           <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Questions about your order?</p>
           {whatsappNumber && (
             <a
-              href={`https://wa.me/${whatsappNumber?.replace(/\D/g, '')}`}
+              href={`https://wa.me/${formatPhoneWhatsApp(whatsappNumber)}`}
               style={{ fontSize: '13px', color: 'var(--brand)', textDecoration: 'none', marginTop: '8px', display: 'block' }}
             >
               Chat with us on WhatsApp

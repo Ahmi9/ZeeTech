@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
 import AdminLoader from '@/components/ui/AdminLoader'
 import CitySelect from '@/components/ui/CitySelect'
+import { normalizePhonePK } from '@/lib/phone'
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart, appliedCoupon, getFinalPrice, removeCoupon } = useCartStore()
@@ -148,7 +149,7 @@ export default function CheckoutPage() {
 
       setOrderPlaced(true)
       clearCart()
-      router.push('/order-confirmation?id=' + orderData.id + '&phone=' + encodeURIComponent(formData.phone))
+      router.push('/order-confirmation?id=' + orderData.id + '&phone=' + encodeURIComponent(normalizePhonePK(formData.phone)))
     } catch (error: any) {
       console.error('Order error:', error)
       setPlaceOrderError(error?.message || 'Failed to place order. Please try again.')

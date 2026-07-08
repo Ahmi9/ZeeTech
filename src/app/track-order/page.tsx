@@ -6,6 +6,7 @@ import PageSpacer from '@/components/layout/PageSpacer'
 import Footer from '@/components/sections/Footer'
 import AdminLoader from '@/components/ui/AdminLoader'
 import { formatPrice } from '@/lib/format'
+import { normalizePhonePK, normalizeOrderNumber } from '@/lib/phone'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { Search, Loader2, Package, CheckCircle2, Truck, Check, AlertCircle, ShoppingBag, ArrowRight, ExternalLink, Navigation } from 'lucide-react'
 
@@ -30,11 +31,6 @@ function TrackOrderContent() {
   const [order, setOrder] = useState<any | null>(null)
   const [postexHistory, setPostexHistory] = useState<PostexHistoryEntry[]>([])
 
-  const sanitizePhone = (phone: string) => {
-    const digits = phone.replace(/\D/g, '')
-    return digits.slice(-10)
-  }
-
   const runTrack = async (orderNumberArg: string, phoneNumberArg: string) => {
     if (!orderNumberArg.trim()) {
       setError('Please enter your order number')
@@ -51,7 +47,7 @@ function TrackOrderContent() {
     const orderNumberVal = orderNumberArg
     const phoneNumberVal = phoneNumberArg
 
-    const isSameOrder = order && order.order_number === orderNumberVal.trim().toUpperCase() && sanitizePhone(order.customer_phone) === sanitizePhone(phoneNumberVal)
+    const isSameOrder = order && order.order_number === normalizeOrderNumber(orderNumberVal) && normalizePhonePK(order.customer_phone) === normalizePhonePK(phoneNumberVal)
     if (!isSameOrder) {
       setOrder(null)
       setPostexHistory([])

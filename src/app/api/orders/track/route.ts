@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
-
-function sanitizePhone(phone: string) {
-  return phone.replace(/\D/g, '').slice(-10)
-}
+import { normalizePhonePK, normalizeOrderNumber } from '@/lib/phone'
 
 export async function GET(request: NextRequest) {
   const orderNumber = request.nextUrl.searchParams.get('orderNumber')
@@ -16,7 +13,7 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabaseAdmin
     .from('orders')
     .select('*, order_items(*)')
-    .eq('order_number', orderNumber.trim().toUpperCase())
+    .eq('order_number', normalizeOrderNumber(orderNumber))
     .maybeSingle()
 
   if (error) {
@@ -26,10 +23,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Order not found. Please double-check the order number.' }, { status: 404 })
   }
 
-  const dbPhone = sanitizePhone(data.customer_phone || '')
-  const inputPhone = sanitizePhone(phone)
+  const dbPhone = normalizePhonePK(data.customer_phone)
+  const inputPhone = normalizePhonePK(phone)
 
-  if (dbPhone !== inputPhone || dbPhone.length < 9) {
+  if (dbPhone !== inputPhone || dbPhone.length !== 11) {
     return NextResponse.json({ error: 'The phone number entered does not match our records for this order.' }, { status: 403 })
   }
 

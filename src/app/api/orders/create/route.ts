@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
+import { normalizePhonePK } from '@/lib/phone'
 
 function getBaseProductId(itemId: string) {
   return String(itemId).split('-').slice(0, 5).join('-')
@@ -26,6 +27,11 @@ export async function POST(request: NextRequest) {
 
   if (!customer_name || !customer_phone || !customer_address || !customer_city || !Array.isArray(items) || items.length === 0) {
     return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 })
+  }
+
+  const normalizedPhone = normalizePhonePK(customer_phone)
+  if (normalizedPhone.length !== 11) {
+    return NextResponse.json({ error: 'Please enter a valid phone number' }, { status: 400 })
   }
 
   try {
@@ -130,7 +136,7 @@ export async function POST(request: NextRequest) {
       .from('orders')
       .insert({
         customer_name,
-        customer_phone,
+        customer_phone: normalizedPhone,
         customer_email: customer_email || null,
         customer_address,
         customer_city,

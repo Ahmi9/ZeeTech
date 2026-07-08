@@ -5,6 +5,7 @@ import PageSpacer from '@/components/layout/PageSpacer'
 import Footer from '@/components/sections/Footer'
 import { supabase } from '@/lib/supabase'
 import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react'
+import { formatPhonePKDisplay, formatPhoneWhatsApp } from '@/lib/phone'
 
 export default function ContactPage() {
   const [settings, setSettings] = useState<any>(null)
@@ -22,8 +23,8 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Phone',
-      value: settings?.store_phone || 'Not available',
-      href: settings?.store_phone ? `tel:${settings.store_phone.replace(/\s+/g, '')}` : undefined,
+      value: settings?.store_phone ? formatPhonePKDisplay(settings.store_phone) : 'Not available',
+      href: settings?.store_phone ? `tel:+${formatPhoneWhatsApp(settings.store_phone)}` : undefined,
     },
     {
       icon: Mail,
@@ -34,8 +35,8 @@ export default function ContactPage() {
     {
       icon: MessageCircle,
       title: 'WhatsApp',
-      value: settings?.whatsapp_number || 'Not available',
-      href: settings?.whatsapp_number ? `https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}` : undefined,
+      value: settings?.whatsapp_number ? formatPhonePKDisplay(settings.whatsapp_number) : 'Not available',
+      href: settings?.whatsapp_number ? `https://wa.me/${formatPhoneWhatsApp(settings.whatsapp_number)}` : undefined,
     },
     {
       icon: MapPin,

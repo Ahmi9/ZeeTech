@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppData } from '@/components/providers/AppDataProvider'
+import { formatPhonePKDisplay, formatPhoneWhatsApp } from '@/lib/phone'
 import {
   ChevronRight, ChevronDown, HelpCircle, Truck, RotateCcw, MapPin, Phone,
   Shield, Headphones, BadgeCheck, Zap, Watch, Plug, Speaker, Package,
@@ -239,7 +240,7 @@ export default function Footer() {
               Contact
             </h4>
             <a
-              href={`https://wa.me/${settings?.whatsapp_number?.replace(/\s+/g, '').replace('+', '')}`}
+              href={`https://wa.me/${formatPhoneWhatsApp(settings?.whatsapp_number)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -252,7 +253,7 @@ export default function Footer() {
               onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
               onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
             >
-              {settings?.whatsapp_number || '+92 300 0000000'}
+              {settings?.whatsapp_number ? formatPhonePKDisplay(settings.whatsapp_number) : '+92 300 0000000'}
             </a>
             <a
               href={`mailto:${settings?.store_email}`}
@@ -434,7 +435,7 @@ export default function Footer() {
 
           {settings?.whatsapp_number && (
             <a
-              href={`https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}`}
+              href={`https://wa.me/${formatPhoneWhatsApp(settings.whatsapp_number)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

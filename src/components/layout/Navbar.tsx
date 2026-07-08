@@ -10,6 +10,7 @@ import { ShoppingBag, Menu, X, ChevronDown, Home, MapPin, Package } from 'lucide
 import { useTheme } from '@/components/providers/ThemeProvider'
 import { useAppData } from '@/components/providers/AppDataProvider'
 import { useCartStore } from '@/store/cartStore'
+import { formatPhoneWhatsApp } from '@/lib/phone'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -524,7 +525,7 @@ export default function Navbar() {
                     }}>Follow Us</div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {settings?.whatsapp_number && (
-                        <a href={`https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
+                        <a href={`https://wa.me/${formatPhoneWhatsApp(settings.whatsapp_number)}`} target="_blank" rel="noopener noreferrer"
                           className="drawer-social-link" style={{
                             display: 'flex', alignItems: 'center', gap: '12px',
                             padding: '12px 14px', borderRadius: '10px',

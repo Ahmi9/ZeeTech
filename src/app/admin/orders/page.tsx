@@ -5,6 +5,7 @@ import { Order, OrderItem } from '@/lib/types'
 import { Search, X, SlidersHorizontal } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { normalizePhonePK } from '@/lib/phone'
 
 type OrderStatus = 'all' | 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'cancelled' | 'returned'
 
@@ -324,7 +325,7 @@ export default function OrdersPage() {
                     <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{order.customer_name}</span>
                   </td>
                   <td style={{ padding: '12px 16px', fontSize: '13px', color: 'var(--text-secondary)', verticalAlign: 'middle' }}>
-                    {order.customer_phone}
+                    {normalizePhonePK(order.customer_phone)}
                   </td>
                   <td style={{ padding: '12px 16px', fontSize: '13px', color: 'var(--text-secondary)', verticalAlign: 'middle' }}>
                     {order.order_items?.length || 0}
@@ -487,7 +488,7 @@ export default function OrdersPage() {
                   </div>
                   <div>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block' }}>Phone</span>
-                    <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{selectedOrder.customer_phone}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{normalizePhonePK(selectedOrder.customer_phone)}</span>
                   </div>
                   {selectedOrder.customer_email && (
                     <div>

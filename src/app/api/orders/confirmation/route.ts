@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
-
-function sanitizePhone(phone: string) {
-  return phone.replace(/\D/g, '').slice(-10)
-}
+import { normalizePhonePK } from '@/lib/phone'
 
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get('id')
@@ -22,10 +19,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }
 
-  const dbPhone = sanitizePhone(data.customer_phone || '')
-  const inputPhone = sanitizePhone(phone)
+  const dbPhone = normalizePhonePK(data.customer_phone)
+  const inputPhone = normalizePhonePK(phone)
 
-  if (dbPhone !== inputPhone || dbPhone.length < 9) {
+  if (dbPhone !== inputPhone || dbPhone.length !== 11) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }
 

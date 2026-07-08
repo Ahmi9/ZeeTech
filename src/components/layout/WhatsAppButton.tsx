@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAppData } from '@/components/providers/AppDataProvider'
+import { formatPhoneWhatsApp } from '@/lib/phone'
 
 export default function WhatsAppButton() {
   const pathname = usePathname()
@@ -17,7 +18,7 @@ export default function WhatsAppButton() {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2 }}
-      href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
+      href={`https://wa.me/${formatPhoneWhatsApp(whatsapp)}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
