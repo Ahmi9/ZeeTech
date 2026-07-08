@@ -276,7 +276,11 @@ export default function ProductDetailPage() {
   const hasDiscount = product.original_price && product.original_price > product.price
   const discountPercent = hasDiscount ? calculateDiscount(product.original_price!, product.price) : 0
   const displayPrice = selectedVariant ? selectedVariant.price : product.price
-  const displayStock = selectedVariant ? selectedVariant.stock : product.stock
+  const displayStock = selectedVariant
+    ? selectedVariant.stock
+    : variants.length > 0
+      ? variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0)
+      : product.stock
 
   return (
     <>

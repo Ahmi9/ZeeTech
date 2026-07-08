@@ -673,59 +673,61 @@ export default function EditProductPage() {
               )}
             </motion.div>
 
-            <motion.div
-              className="product-form-card"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 3 * 0.08 }}
-              style={{
-                background: 'var(--bg-subtle)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '24px',
-                marginBottom: '16px',
-              }}
-            >
-              <h2 style={{
-                fontSize: '14px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                marginBottom: '16px',
-              }}>
-                Stock
-              </h2>
-
-              <label style={{
-                fontSize: '11px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: 'var(--text-muted)',
-                marginBottom: '6px',
-                display: 'block',
-              }}>
-                Stock Quantity
-              </label>
-              <input
-                type="number"
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-                placeholder="0"
-                className="product-form-stock"
+            {variants.length === 0 && (
+              <motion.div
+                className="product-form-card"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 3 * 0.08 }}
                 style={{
-                  width: '50%',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  border: '1px solid var(--border-strong)',
-                  borderRadius: '8px',
-                  background: 'var(--bg)',
-                  color: 'var(--text-primary)',
-                  outline: 'none',
-                  boxSizing: 'border-box',
+                  background: 'var(--bg-subtle)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  marginBottom: '16px',
                 }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
-                onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
-              />
-            </motion.div>
+              >
+                <h2 style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginBottom: '16px',
+                }}>
+                  Stock
+                </h2>
+
+                <label style={{
+                  fontSize: '11px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'var(--text-muted)',
+                  marginBottom: '6px',
+                  display: 'block',
+                }}>
+                  Stock Quantity
+                </label>
+                <input
+                  type="number"
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                  placeholder="0"
+                  className="product-form-stock"
+                  style={{
+                    width: '50%',
+                    padding: '10px 14px',
+                    fontSize: '14px',
+                    border: '1px solid var(--border-strong)',
+                    borderRadius: '8px',
+                    background: 'var(--bg)',
+                    color: 'var(--text-primary)',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
+                  onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
+                />
+              </motion.div>
+            )}
 
             <motion.div
               className="product-form-card"

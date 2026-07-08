@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     // Re-derive each item's price and product id from the database — never trust
     // client-submitted prices, they can be tampered with to defraud COD orders.
-    const resolvedItems: { productId: string; name: string; image: string; price: number; quantity: number; variant: any }[] = []
+    const resolvedItems: { productId: string; name: string; image: string; price: number; quantity: number; variant: any; variantId: string | null }[] = []
 
     for (const item of items) {
       const quantity = Number(item.quantity) || 0
@@ -55,12 +55,13 @@ export async function POST(request: NextRequest) {
       // never trust the client's claim of whether a variant was selected.
       const { data: activeVariants } = await supabaseAdmin
         .from('product_variants')
-        .select('price, variant_combination')
+        .select('id, price, variant_combination')
         .eq('product_id', productId)
         .eq('is_active', true)
 
       let price = product.price
       let selectedVariant: any = null
+      let variantId: string | null = null
 
       if (activeVariants && activeVariants.length > 0) {
         const wanted = normalizeCombination(item.variantCombination)
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
         }
         price = matched.price
         selectedVariant = item.variantCombination
+        variantId = matched.id
       }
 
       resolvedItems.push({
@@ -82,6 +84,7 @@ export async function POST(request: NextRequest) {
         price,
         quantity,
         variant: selectedVariant,
+        variantId,
       })
     }
 
@@ -158,10 +161,17 @@ export async function POST(request: NextRequest) {
         selected_variant: item.variant,
       })
 
-      await supabaseAdmin.rpc('decrease_stock', {
-        product_id: item.productId,
-        quantity: item.quantity,
-      })
+      if (item.variantId) {
+        await supabaseAdmin.rpc('decrease_variant_stock', {
+          variant_id: item.variantId,
+          quantity: item.quantity,
+        })
+      } else {
+        await supabaseAdmin.rpc('decrease_stock', {
+          product_id: item.productId,
+          quantity: item.quantity,
+        })
+      }
     }
 
     if (appliedCouponCode) {
