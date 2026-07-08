@@ -168,7 +168,6 @@ export default function CategoriesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
-                whileHover={{ scale: 1.03, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 style={{
                   aspectRatio: '1/1',
                   position: 'relative',
@@ -186,14 +185,21 @@ export default function CategoriesSection() {
                   style={{ textDecoration: 'none', display: 'block', width: '100%', height: '100%' }}
                 >
                   {category.image_url ? (
-                    <Image
-                      src={category.image_url}
-                      alt={category.name}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      quality={65}
-                      style={{ objectFit: 'cover' }}
-                    />
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      style={{ width: '100%', height: '100%', position: 'relative' }}
+                    >
+                      <Image
+                        src={category.image_url}
+                        alt={category.name}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        quality={65}
+                        loading="eager"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </motion.div>
                   ) : (
                     <div style={{ width: '100%', height: '100%', background: bgColors[index % bgColors.length] }} />
                   )}
@@ -312,7 +318,6 @@ export default function CategoriesSection() {
                     }}
                   >
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.2 }}
                       style={{
@@ -323,14 +328,21 @@ export default function CategoriesSection() {
                       }}
                     >
                       {category.image_url ? (
-                        <Image
-                          src={category.image_url}
-                          alt={category.name}
-                          fill
-                          sizes="60vw"
-                          quality={65}
-                          style={{ objectFit: 'cover' }}
-                        />
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          transition={{ duration: 0.2 }}
+                          style={{ width: '100%', height: '100%', position: 'relative' }}
+                        >
+                          <Image
+                            src={category.image_url}
+                            alt={category.name}
+                            fill
+                            sizes="60vw"
+                            quality={65}
+                            loading="eager"
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </motion.div>
                       ) : (
                         <div style={{
                           width: '100%',
