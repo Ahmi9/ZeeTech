@@ -447,11 +447,6 @@ export default function Navbar() {
                                     onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
                                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                                   >
-                                    <span style={{
-                                      width: '5px', height: '5px', borderRadius: '50%',
-                                      background: childActive ? 'var(--brand)' : 'var(--text-muted)',
-                                      flexShrink: 0,
-                                    }} />
                                     <span>{child.name}</span>
                                   </Link>
                                 )
