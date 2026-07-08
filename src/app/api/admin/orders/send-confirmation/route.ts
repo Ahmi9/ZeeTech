@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
   const { data: order, error: fetchError } = await supabaseAdmin
     .from('orders')
-    .select('id, status')
+    .select('id, status, confirmation_token')
     .eq('id', body.orderId)
     .single()
 
@@ -19,11 +19,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Only pending orders can be sent a confirmation link' }, { status: 400 })
   }
 
-  const token = randomBytes(9).toString('base64url')
+  // Reuse an already-minted token (e.g. from an earlier "prepare" call when the
+  // admin opened this order) instead of invalidating it on every call.
+  const token = order.confirmation_token || randomBytes(9).toString('base64url')
+
+  const updates: Record<string, string> = { confirmation_token: token }
+  if (body.markSent) updates.confirmation_sent_at = new Date().toISOString()
 
   const { error: updateError } = await supabaseAdmin
     .from('orders')
-    .update({ confirmation_token: token, confirmation_sent_at: new Date().toISOString() })
+    .update(updates)
     .eq('id', body.orderId)
 
   if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 })

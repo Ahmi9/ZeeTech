@@ -7,6 +7,8 @@ import Footer from '@/components/sections/Footer'
 import AdminLoader from '@/components/ui/AdminLoader'
 import AnimatedCheckmark from '@/components/ui/AnimatedCheckmark'
 import { XCircle } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import { formatPhoneWhatsApp } from '@/lib/phone'
 
 type ConfirmationState = 'ready' | 'expired' | 'already_confirmed' | 'already_cancelled' | 'not_found'
 
@@ -18,6 +20,9 @@ function ConfirmOrderContent() {
   const [submitting, setSubmitting] = useState(false)
   const [state, setState] = useState<ConfirmationState | null>(null)
   const [order, setOrder] = useState<any>(null)
+  const [bankAccounts, setBankAccounts] = useState<any[]>([])
+  const [whatsappNumber, setWhatsappNumber] = useState('')
+  const [storeName, setStoreName] = useState('')
 
   useEffect(() => {
     if (!token) {
@@ -33,6 +38,23 @@ function ConfirmOrderContent() {
       })
       .catch(() => setState('not_found'))
       .finally(() => setLoading(false))
+
+    supabase
+      .from('payment_methods')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order')
+      .then(({ data }) => { if (data) setBankAccounts(data) })
+
+    supabase
+      .from('site_settings')
+      .select('whatsapp_number, store_name')
+      .eq('id', 1)
+      .single()
+      .then(({ data }) => {
+        if (data?.whatsapp_number) setWhatsappNumber(data.whatsapp_number)
+        if (data?.store_name) setStoreName(data.store_name)
+      })
   }, [token])
 
   async function respond(action: 'confirm' | 'cancel') {
@@ -49,6 +71,66 @@ function ConfirmOrderContent() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  function renderBankDetails() {
+    if (order?.payment_type !== 'Advance Payment' || bankAccounts.length === 0) return null
+    return (
+      <div style={{
+        background: 'var(--brand-light)',
+        border: '1px solid var(--brand)',
+        borderRadius: '12px',
+        padding: '20px 24px',
+        marginBottom: '24px',
+        textAlign: 'left',
+      }}>
+        <p style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--brand)', marginBottom: '12px', fontWeight: 600 }}>
+          PAYMENT REQUIRED
+        </p>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>
+          Please transfer <strong style={{ color: 'var(--text-primary)' }}>Rs {Math.round(order?.total || 0).toLocaleString()}</strong> to one of the accounts below and send the payment screenshot on WhatsApp to confirm your order.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          {bankAccounts.map((bank) => (
+            <div key={bank.id} style={{ background: 'var(--bg)', borderRadius: '8px', padding: '12px 14px', border: '1px solid var(--border)' }}>
+              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{bank.method_name}</p>
+              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>Account Name: {bank.account_title}</p>
+              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>Account No: {bank.account_number}</p>
+              {bank.iban && <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '2px 0 0' }}>IBAN: {bank.iban}</p>}
+            </div>
+          ))}
+        </div>
+
+        {whatsappNumber && (
+          <a
+            href={`https://wa.me/${formatPhoneWhatsApp(whatsappNumber)}?text=${encodeURIComponent(`Hi! I'm confirming Order #${order?.order_number} on ${storeName} for Rs ${Math.round(order?.total || 0).toLocaleString()}. Here is my payment screenshot.`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              width: '100%',
+              padding: '12px',
+              background: '#25D366',
+              color: 'white',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontWeight: 500,
+              textDecoration: 'none',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L0 24l6.335-1.512A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.16-1.426L3 21.5l.95-3.762A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+            </svg>
+            Send Payment Screenshot on WhatsApp
+          </a>
+        )}
+      </div>
+    )
   }
 
   if (loading) {
@@ -123,12 +205,13 @@ function ConfirmOrderContent() {
           <h1 style={{ fontSize: '24px', fontWeight: 300, color: 'var(--text-primary)', marginBottom: '12px' }}>
             {confirmed ? 'Order Confirmed' : 'Order Cancelled'}
           </h1>
-          <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.7 }}>
+          <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: confirmed ? '24px' : 0 }}>
             {order?.order_number && <>Order {order.order_number} — </>}
             {confirmed
               ? "Thank you! We're preparing your order for dispatch."
               : 'This order has been cancelled. If this was a mistake, please contact us on WhatsApp.'}
           </p>
+          {confirmed && renderBankDetails()}
         </div>
         <Footer />
       </div>
@@ -194,6 +277,8 @@ function ConfirmOrderContent() {
             <span style={{ color: 'var(--text-primary)' }}>Rs {Math.round(order?.total || 0).toLocaleString()}</span>
           </div>
         </div>
+
+        {renderBankDetails()}
 
         <div style={{ display: 'flex', gap: '12px' }}>
           <button

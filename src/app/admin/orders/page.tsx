@@ -79,7 +79,6 @@ export default function OrdersPage() {
   const [updatingPaymentStatus, setUpdatingPaymentStatus] = useState(false)
   const [bookingPostex, setBookingPostex] = useState(false)
   const [postexError, setPostexError] = useState('')
-  const [sendingConfirmation, setSendingConfirmation] = useState(false)
   const [confirmationError, setConfirmationError] = useState('')
 
   useEffect(() => {
@@ -161,37 +160,52 @@ export default function OrdersPage() {
     }
   }
 
-  async function sendWhatsAppConfirmation() {
-    if (!selectedOrder) return
-    setSendingConfirmation(true)
-    setConfirmationError('')
-    try {
-      const res = await fetch('/api/admin/orders/send-confirmation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: selectedOrder.id }),
+  // Silently mint a confirmation token as soon as a pending order is opened,
+  // so the actual "Send" button click can open WhatsApp fully synchronously
+  // (no `await` in between) — opening a new tab after an awaited fetch gets
+  // silently popup-blocked on many mobile browsers (iOS Safari in particular).
+  useEffect(() => {
+    if (!selectedOrder || selectedOrder.status !== 'pending' || selectedOrder.confirmation_token) return
+    fetch('/api/admin/orders/send-confirmation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: selectedOrder.id, markSent: false }),
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.token) {
+          setSelectedOrder(prev => (prev && prev.id === selectedOrder.id ? { ...prev, confirmation_token: json.token } : prev))
+        }
       })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Failed to send confirmation')
+      .catch(() => {})
+  }, [selectedOrder?.id, selectedOrder?.status])
 
-      const link = `${window.location.origin}/confirm-order?token=${json.token}`
-      const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}\n\nThank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}).\n\nPlease confirm your order here: ${link}`
-      const waUrl = `https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`
+  function sendWhatsAppConfirmation() {
+    if (!selectedOrder?.confirmation_token) return
+    setConfirmationError('')
 
-      const sentAt = new Date().toISOString()
-      setSelectedOrder({ ...selectedOrder, confirmation_sent_at: sentAt })
-      fetchOrders()
+    const link = `${window.location.origin}/confirm-order?token=${selectedOrder.confirmation_token}`
+    const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}\n\nThank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}).\n\nPlease confirm your order here: ${link}`
+    const waUrl = `https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`
 
-      // Navigate the current tab instead of window.open — opening a NEW tab
-      // after an awaited fetch gets silently popup-blocked on many mobile
-      // browsers (iOS Safari in particular). Same-tab navigation isn't
-      // subject to popup blocking regardless of timing.
-      window.location.href = waUrl
-    } catch (err: any) {
-      setConfirmationError(err.message || 'Failed to send confirmation')
-    } finally {
-      setSendingConfirmation(false)
-    }
+    // Fully synchronous — no await before this — so it opens a real new tab
+    // reliably on every browser, including mobile Safari.
+    window.open(waUrl, '_blank')
+
+    const sentAt = new Date().toISOString()
+    setSelectedOrder({ ...selectedOrder, confirmation_sent_at: sentAt })
+
+    fetch('/api/admin/orders/send-confirmation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: selectedOrder.id, markSent: true }),
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) setConfirmationError(json.error)
+        fetchOrders()
+      })
+      .catch(() => setConfirmationError('Failed to record confirmation as sent'))
   }
 
   const filteredOrders = orders.filter((order) => {
@@ -567,7 +581,7 @@ export default function OrdersPage() {
                   <div style={{ marginTop: '16px' }}>
                     <button
                       onClick={sendWhatsAppConfirmation}
-                      disabled={sendingConfirmation}
+                      disabled={!selectedOrder.confirmation_token}
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -579,11 +593,11 @@ export default function OrdersPage() {
                         color: 'var(--text-primary)',
                         fontSize: '13px',
                         fontWeight: 500,
-                        cursor: sendingConfirmation ? 'not-allowed' : 'pointer',
-                        opacity: sendingConfirmation ? 0.6 : 1,
+                        cursor: !selectedOrder.confirmation_token ? 'not-allowed' : 'pointer',
+                        opacity: !selectedOrder.confirmation_token ? 0.6 : 1,
                       }}
                     >
-                      {sendingConfirmation ? 'Preparing...' : '📱 Send WhatsApp Confirmation'}
+                      {!selectedOrder.confirmation_token ? 'Preparing...' : '📱 Send WhatsApp Confirmation'}
                     </button>
                     {selectedOrder.confirmation_sent_at && (
                       <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px' }}>

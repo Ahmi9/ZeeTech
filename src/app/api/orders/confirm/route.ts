@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   const { data: order, error } = await supabaseAdmin
     .from('orders')
-    .select('id, order_number, status, subtotal, discount, total, coupon_code, coupon_discount, customer_name, confirmation_sent_at, order_items(*)')
+    .select('id, order_number, status, subtotal, discount, total, coupon_code, coupon_discount, customer_name, payment_type, confirmation_sent_at, order_items(*)')
     .eq('confirmation_token', token)
     .maybeSingle()
 
