@@ -27,6 +27,12 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+// Without this, categories/site_settings fetched here get baked into the
+// static build and only change on the next deploy — admin panel edits
+// (announcement bar, hero text, contact info, etc.) wouldn't show up on
+// the live site until a redeploy happened to coincidentally refresh them.
+export const revalidate = 60
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [{ data: categories }, { data: settings }] = await Promise.all([
     supabase
