@@ -415,19 +415,19 @@ export default function Footer() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <Shield size={22} color="var(--brand)" style={{ margin: '0 auto 6px' }} />
-              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>100% Genuine</p>
+              <p style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, whiteSpace: 'nowrap' }}>100% Genuine</p>
               <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '2px 0 0' }}>Products</p>
             </div>
             <div style={{ textAlign: 'center' }}>
               <Truck size={22} color="var(--brand)" style={{ margin: '0 auto 6px' }} />
-              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>Free Delivery</p>
+              <p style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, whiteSpace: 'nowrap' }}>Free Delivery</p>
               <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '2px 0 0' }}>
                 Above Rs {Math.round(settings?.free_shipping_threshold || 2000).toLocaleString()}
               </p>
             </div>
             <div style={{ textAlign: 'center' }}>
               <Headphones size={22} color="var(--brand)" style={{ margin: '0 auto 6px' }} />
-              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>Customer Support</p>
+              <p style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, whiteSpace: 'nowrap' }}>Customer Support</p>
               <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '2px 0 0' }}>7 Days a Week</p>
             </div>
           </div>
