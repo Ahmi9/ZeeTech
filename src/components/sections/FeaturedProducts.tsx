@@ -70,7 +70,7 @@ export default function FeaturedProducts() {
   useEffect(() => {
     supabase
       .from('products')
-      .select('*, categories(name), product_reviews(rating, is_approved), product_attributes(id)')
+      .select('*, categories(name), product_reviews(rating, is_approved), product_attributes(id), product_variants(stock, is_active)')
       .eq('is_featured', true)
       .eq('is_active', true)
       .order('created_at', { ascending: false })
@@ -83,6 +83,14 @@ export default function FeaturedProducts() {
 
   function formatPrice(price: number): string {
     return `Rs ${Math.round(price).toLocaleString()}`
+  }
+
+  function isOutOfStock(product: any): boolean {
+    const activeVariants = (product.product_variants || []).filter((v: any) => v.is_active !== false)
+    if (activeVariants.length > 0) {
+      return activeVariants.every((v: any) => (Number(v.stock) || 0) <= 0)
+    }
+    return (Number(product.stock) || 0) <= 0
   }
 
   return (
@@ -197,6 +205,7 @@ export default function FeaturedProducts() {
             const discountPct = onSale
               ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
               : 0
+            const outOfStock = isOutOfStock(product)
 
             return (
               <motion.div
@@ -269,6 +278,23 @@ export default function FeaturedProducts() {
                         -{discountPct}%
                       </div>
                     )}
+                    {outOfStock && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        background: 'var(--danger)',
+                        color: '#ffffff',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        padding: '4px 10px',
+                        borderRadius: '0 0 0 8px',
+                      }}>
+                        Out of Stock
+                      </div>
+                    )}
                   </div>
 
                   <div style={{ padding: '14px 16px' }}>
@@ -332,10 +358,11 @@ export default function FeaturedProducts() {
 
                 <div style={{ padding: '0 16px 16px' }}>
                   <button
-                    onClick={() => handleAddToCartClick(product)}
+                    onClick={() => !outOfStock && handleAddToCartClick(product)}
+                    disabled={outOfStock}
                     style={{
                       width: '100%',
-                      background: 'var(--brand)',
+                      background: outOfStock ? 'var(--border-strong)' : 'var(--brand)',
                       color: '#ffffff',
                       padding: '10px',
                       fontSize: '12px',
@@ -348,14 +375,14 @@ export default function FeaturedProducts() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '6px',
-                      cursor: 'pointer',
+                      cursor: outOfStock ? 'not-allowed' : 'pointer',
                       transition: 'opacity 0.15s ease',
                     }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
+                    onMouseEnter={e => { if (!outOfStock) e.currentTarget.style.opacity = '0.88' }}
                     onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                   >
-                    <ShoppingBag size={14} strokeWidth={2} />
-                    Add to Cart
+                    {!outOfStock && <ShoppingBag size={14} strokeWidth={2} />}
+                    {outOfStock ? 'Out of Stock' : 'Add to Cart'}
                   </button>
                 </div>
               </motion.div>
@@ -437,6 +464,7 @@ export default function FeaturedProducts() {
               const discountPct = onSale
                 ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
                 : 0
+              const outOfStock = isOutOfStock(product)
 
               return (
                 <div
@@ -511,6 +539,23 @@ export default function FeaturedProducts() {
                           -{discountPct}%
                         </div>
                       )}
+                      {outOfStock && (
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
+                          background: 'var(--danger)',
+                          color: '#ffffff',
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          padding: '4px 10px',
+                          borderRadius: '0 0 0 8px',
+                        }}>
+                          Out of Stock
+                        </div>
+                      )}
                     </div>
                   </Link>
 
@@ -563,10 +608,11 @@ export default function FeaturedProducts() {
                     </div>
 
                     <button
-                      onClick={() => handleAddToCartClick(product)}
+                      onClick={() => !outOfStock && handleAddToCartClick(product)}
+                      disabled={outOfStock}
                       style={{
                         marginTop: '12px',
-                        background: 'var(--brand)',
+                        background: outOfStock ? 'var(--border-strong)' : 'var(--brand)',
                         color: '#ffffff',
                         padding: '10px',
                         fontSize: '12px',
@@ -579,15 +625,15 @@ export default function FeaturedProducts() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '6px',
-                        cursor: 'pointer',
+                        cursor: outOfStock ? 'not-allowed' : 'pointer',
                         width: '100%',
                         transition: 'opacity 0.15s ease',
                       }}
-                      onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
+                      onMouseEnter={e => { if (!outOfStock) e.currentTarget.style.opacity = '0.88' }}
                       onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                     >
-                      <ShoppingBag size={14} strokeWidth={2} />
-                      Add to Cart
+                      {!outOfStock && <ShoppingBag size={14} strokeWidth={2} />}
+                      {outOfStock ? 'Out of Stock' : 'Add to Cart'}
                     </button>
                   </div>
                 </div>
