@@ -83,6 +83,8 @@ export interface Order {
   postex_tracking_number: string | null
   postex_order_id: string | null
   postex_status: string | null
+  confirmation_token: string | null
+  confirmation_sent_at: string | null
   created_at: string
 }
 

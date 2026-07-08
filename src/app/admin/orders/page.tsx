@@ -79,6 +79,8 @@ export default function OrdersPage() {
   const [updatingPaymentStatus, setUpdatingPaymentStatus] = useState(false)
   const [bookingPostex, setBookingPostex] = useState(false)
   const [postexError, setPostexError] = useState('')
+  const [sendingConfirmation, setSendingConfirmation] = useState(false)
+  const [confirmationError, setConfirmationError] = useState('')
 
   useEffect(() => {
     fetchOrders()
@@ -156,6 +158,33 @@ export default function OrdersPage() {
       setPostexError(err.message || 'Booking failed')
     } finally {
       setBookingPostex(false)
+    }
+  }
+
+  async function sendWhatsAppConfirmation() {
+    if (!selectedOrder) return
+    setSendingConfirmation(true)
+    setConfirmationError('')
+    try {
+      const res = await fetch('/api/admin/orders/send-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: selectedOrder.id }),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Failed to send confirmation')
+
+      const link = `${window.location.origin}/confirm-order?token=${json.token}`
+      const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}, thank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}). Please confirm your order here: ${link}`
+      window.open(`https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`, '_blank')
+
+      const sentAt = new Date().toISOString()
+      setSelectedOrder({ ...selectedOrder, confirmation_sent_at: sentAt })
+      fetchOrders()
+    } catch (err: any) {
+      setConfirmationError(err.message || 'Failed to send confirmation')
+    } finally {
+      setSendingConfirmation(false)
     }
   }
 
@@ -527,6 +556,39 @@ export default function OrdersPage() {
                     <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{selectedOrder.customer_city}</span>
                   </div>
                 </div>
+
+                {selectedOrder.status === 'pending' && (
+                  <div style={{ marginTop: '16px' }}>
+                    <button
+                      onClick={sendWhatsAppConfirmation}
+                      disabled={sendingConfirmation}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '9px 16px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-strong)',
+                        background: 'var(--bg)',
+                        color: 'var(--text-primary)',
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        cursor: sendingConfirmation ? 'not-allowed' : 'pointer',
+                        opacity: sendingConfirmation ? 0.6 : 1,
+                      }}
+                    >
+                      {sendingConfirmation ? 'Preparing...' : '📱 Send WhatsApp Confirmation'}
+                    </button>
+                    {selectedOrder.confirmation_sent_at && (
+                      <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px' }}>
+                        Confirmation link sent {formatDate(selectedOrder.confirmation_sent_at)}
+                      </p>
+                    )}
+                    {confirmationError && (
+                      <p style={{ fontSize: '12px', color: 'var(--danger)', marginTop: '6px' }}>{confirmationError}</p>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div style={{ height: '1px', background: 'var(--border)', marginBottom: '24px' }} />
