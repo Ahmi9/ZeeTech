@@ -662,6 +662,12 @@ export default function CouponsPage() {
           .coupon-form-grid select {
             width: 100% !important;
             max-width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+          }
+          .coupon-form-grid input[type="date"] {
+            font-size: 13px !important;
+            padding: 10px 8px !important;
           }
           .coupon-form-grid-3 {
             gap: 16px !important;
