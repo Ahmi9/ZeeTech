@@ -165,8 +165,7 @@ export default function CategoriesSection() {
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
                 style={{
                   aspectRatio: '1/1',
@@ -206,6 +205,7 @@ export default function CategoriesSection() {
                   <div style={{
                     position: 'absolute',
                     inset: 0,
+                    pointerEvents: 'none',
                     background: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.72) 100%)',
                   }} />
                   <div style={{
@@ -215,6 +215,7 @@ export default function CategoriesSection() {
                     right: 0,
                     paddingBottom: '20px',
                     textAlign: 'center',
+                    pointerEvents: 'none',
                   }}>
                     <p style={{
                       fontSize: '14px',
@@ -375,6 +376,7 @@ export default function CategoriesSection() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: '8px',
+                        pointerEvents: 'none',
                       }}>
                         <p style={{
                           fontSize: '13px',
