@@ -2,7 +2,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -46,14 +46,15 @@ export default function Navbar() {
     ? settings.announcement_bar_lines
     : ['Free delivery on orders above Rs 2,000']
   const [announcementIndex, setAnnouncementIndex] = useState(0)
+  const announcementLinesRef = useRef(announcementLines)
+  announcementLinesRef.current = announcementLines
 
   useEffect(() => {
-    if (announcementLines.length <= 1) return
     const id = setInterval(() => {
-      setAnnouncementIndex(i => (i + 1) % announcementLines.length)
+      setAnnouncementIndex(i => (i + 1) % announcementLinesRef.current.length)
     }, 5000)
     return () => clearInterval(id)
-  }, [announcementLines.length, announcementLines.join('|')])
+  }, [])
 
   const logoContent = settings?.logo_url
     ? <img src={settings.logo_url} alt={settings.store_name} style={{ height: '32px', objectFit: 'contain', display: 'block' }} />
