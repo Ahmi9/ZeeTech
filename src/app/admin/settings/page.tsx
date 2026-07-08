@@ -556,15 +556,14 @@ export default function SettingsPage() {
       <AnimatePresence>
         {(successMessage || errorMessage) && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            exit={{ opacity: 0, y: -12, scale: 0.95 }}
             transition={{ type: 'spring', damping: 22, stiffness: 300 }}
             style={{
               position: 'fixed',
-              bottom: '32px',
-              left: '50%',
-              translateX: '-50%',
+              top: '24px',
+              right: '24px',
               background: 'var(--bg)',
               border: '1px solid var(--border)',
               borderRadius: '14px',
