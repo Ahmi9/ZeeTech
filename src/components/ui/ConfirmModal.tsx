@@ -45,8 +45,10 @@ export default function ConfirmModal({
         background: 'var(--bg)',
         border: '1px solid var(--border)',
         borderRadius: '16px',
-        padding: '32px',
-        width: '400px',
+        padding: '24px',
+        width: 'calc(100vw - 32px)',
+        maxWidth: '400px',
+        boxSizing: 'border-box',
         zIndex: 1000,
         boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
       }}>

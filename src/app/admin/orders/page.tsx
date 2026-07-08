@@ -782,7 +782,8 @@ export default function OrdersPage() {
               position: 'fixed', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
               background: 'var(--bg)', border: '1px solid var(--border)',
-              borderRadius: '16px', padding: '32px', width: '400px',
+              borderRadius: '16px', padding: '24px',
+              width: 'calc(100vw - 32px)', maxWidth: '400px', boxSizing: 'border-box',
               zIndex: 301, boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
             }}>
               <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.02em' }}>
