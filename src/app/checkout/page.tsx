@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import PageSpacer from '@/components/layout/PageSpacer'
 import { useCartStore } from '@/store/cartStore'
 import { supabase } from '@/lib/supabase'
@@ -339,29 +340,34 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Bank details shown when Advance Payment is selected */}
-                  <div style={{
-                    maxHeight: selectedPayment === 'Advance Payment' ? '2000px' : '0px',
-                    overflow: 'hidden',
-                    opacity: selectedPayment === 'Advance Payment' ? 1 : 0,
-                    transition: 'max-height 0.35s ease, opacity 0.25s ease',
-                  }}>
-                    <div style={{ padding: '16px', background: 'var(--bg-muted)', borderRadius: '0 0 8px 8px', border: '1px solid var(--border)', borderTop: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                      <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', margin: 0 }}>
-                        BANK ACCOUNT DETAILS
-                      </p>
-                      {bankAccounts.map((bank) => (
-                        <div key={bank.id} style={{ padding: '12px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                          <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{bank.method_name}</p>
-                          <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>Account Name: {bank.account_title}</p>
-                          <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>Account No: {bank.account_number}</p>
-                          {bank.iban && <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '2px 0 0' }}>IBAN: {bank.iban}</p>}
+                  <AnimatePresence initial={false}>
+                    {selectedPayment === 'Advance Payment' && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div style={{ padding: '16px', background: 'var(--bg-muted)', borderRadius: '0 0 8px 8px', border: '1px solid var(--border)', borderTop: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', margin: 0 }}>
+                            BANK ACCOUNT DETAILS
+                          </p>
+                          {bankAccounts.map((bank) => (
+                            <div key={bank.id} style={{ padding: '12px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{bank.method_name}</p>
+                              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>Account Name: {bank.account_title}</p>
+                              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>Account No: {bank.account_number}</p>
+                              {bank.iban && <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '2px 0 0' }}>IBAN: {bank.iban}</p>}
+                            </div>
+                          ))}
+                          <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                            Please transfer the total amount and place your order. We will confirm after payment verification.
+                          </p>
                         </div>
-                      ))}
-                      <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
-                        Please transfer the total amount and place your order. We will confirm after payment verification.
-                      </p>
-                    </div>
-                  </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
             </div>
