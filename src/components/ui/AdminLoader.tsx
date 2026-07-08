@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function AdminLoader() {
+export default function AdminLoader({ height = 'calc(100vh - 60px)' }: { height?: string }) {
   return (
       <div style={{
         width: '100%',
-        height: 'calc(100vh - 60px)',
+        height,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

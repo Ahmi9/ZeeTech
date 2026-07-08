@@ -9,6 +9,7 @@ import Footer from '@/components/sections/Footer'
 import PageSpacer from '@/components/layout/PageSpacer'
 import { supabase } from '@/lib/supabase'
 import RatingBadge from '@/components/ui/RatingBadge'
+import AdminLoader from '@/components/ui/AdminLoader'
 
 const priceFilters = ['Under Rs 2,000', 'Rs 2,000 - Rs 3,000', 'Above Rs 3,000']
 const sortOptions = ['Newest', 'Price: Low to High', 'Price: High to Low']
@@ -208,9 +209,7 @@ export default function CategoryPage() {
           </div>
 
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Loading products...</p>
-            </div>
+            <AdminLoader height="300px" />
           ) : products.length === 0 ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>No products found in this category</p>
