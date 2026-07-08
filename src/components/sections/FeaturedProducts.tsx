@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -18,6 +18,34 @@ export default function FeaturedProducts() {
   const [showToast, setShowToast] = useState(false)
   const [toastProductName, setToastProductName] = useState('')
   const [variantModalProduct, setVariantModalProduct] = useState<any>(null)
+  const [maxNameLines, setMaxNameLines] = useState(2)
+  const nameRef = useRef<HTMLParagraphElement | null>(null)
+  const measureRef = useRef<HTMLDivElement | null>(null)
+  const anyHasReviews = products.some(p => (p.product_reviews || []).some((r: any) => r.is_approved))
+
+  function recomputeNameLines() {
+    const widthEl = nameRef.current
+    const measurer = measureRef.current
+    if (!widthEl || !measurer || products.length === 0) return
+    measurer.style.width = `${widthEl.clientWidth}px`
+    const lineHeightPx = 14 * 1.3
+    let max = 1
+    for (const product of products) {
+      measurer.textContent = product.name
+      const lines = Math.round(measurer.scrollHeight / lineHeightPx)
+      if (lines > max) max = lines
+    }
+    setMaxNameLines(max)
+  }
+
+  useLayoutEffect(() => {
+    recomputeNameLines()
+  }, [products])
+
+  useEffect(() => {
+    window.addEventListener('resize', recomputeNameLines)
+    return () => window.removeEventListener('resize', recomputeNameLines)
+  }, [products])
 
   function handleAddToCartClick(product: any) {
     if (product.product_attributes && product.product_attributes.length > 0) {
@@ -117,6 +145,22 @@ export default function FeaturedProducts() {
           </h2>
         </motion.div>
       </div>
+
+      <div
+        ref={measureRef}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-9999px',
+          left: '-9999px',
+          visibility: 'hidden',
+          fontSize: '14px',
+          fontWeight: 500,
+          lineHeight: 1.3,
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+        }}
+      />
 
       <div
         className="products-desktop products-grid"
@@ -236,21 +280,23 @@ export default function FeaturedProducts() {
                     }}>
                       {product.categories?.name}
                     </p>
-                    <p style={{
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      color: 'var(--text-primary)',
-                      marginTop: '4px',
-                      lineHeight: 1.3,
-                      height: '2.6em',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}>
+                    <p
+                      ref={index === 0 ? nameRef : undefined}
+                      style={{
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        marginTop: '4px',
+                        lineHeight: 1.3,
+                        height: `${maxNameLines * 1.3}em`,
+                        display: '-webkit-box',
+                        WebkitLineClamp: maxNameLines,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}>
                       {product.name}
                     </p>
-                    <RatingBadge reviews={product.product_reviews} />
+                    {anyHasReviews && <RatingBadge reviews={product.product_reviews} />}
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '6px', flexWrap: 'wrap' }}>
                       <span style={{
                         fontSize: '14px',
@@ -492,7 +538,7 @@ export default function FeaturedProducts() {
                     }}>
                       {product.name}
                     </p>
-                    <RatingBadge reviews={product.product_reviews} />
+                    {anyHasReviews && <RatingBadge reviews={product.product_reviews} />}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
                         Rs {Number(product.price).toLocaleString()}
