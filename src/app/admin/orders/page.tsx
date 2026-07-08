@@ -165,6 +165,11 @@ export default function OrdersPage() {
     if (!selectedOrder) return
     setSendingConfirmation(true)
     setConfirmationError('')
+    // Open the tab synchronously, in the same tick as the click, so the browser
+    // doesn't treat it as an unrequested popup — we fill in its URL once the
+    // fetch below resolves. Opening it only after an `await` gets silently
+    // popup-blocked with no error in most browsers.
+    const waWindow = window.open('', '_blank')
     try {
       const res = await fetch('/api/admin/orders/send-confirmation', {
         method: 'POST',
@@ -176,12 +181,15 @@ export default function OrdersPage() {
 
       const link = `${window.location.origin}/confirm-order?token=${json.token}`
       const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}, thank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}). Please confirm your order here: ${link}`
-      window.open(`https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`, '_blank')
+      const waUrl = `https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`
+      if (waWindow) waWindow.location.href = waUrl
+      else window.open(waUrl, '_blank')
 
       const sentAt = new Date().toISOString()
       setSelectedOrder({ ...selectedOrder, confirmation_sent_at: sentAt })
       fetchOrders()
     } catch (err: any) {
+      waWindow?.close()
       setConfirmationError(err.message || 'Failed to send confirmation')
     } finally {
       setSendingConfirmation(false)
