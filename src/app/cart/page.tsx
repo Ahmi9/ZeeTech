@@ -202,8 +202,8 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="cart-summary" style={{ flex: 1 }}>
-              <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '12px', padding: '32px' }}>
+            <div style={{ flex: 1 }}>
+              <div className="cart-summary" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '12px', padding: '32px' }}>
                 <p style={{ fontSize: '11px', letterSpacing: '0.15em', color: 'var(--text-primary)', textTransform: 'uppercase', marginBottom: '24px' }}>
                   Order Summary
                 </p>
@@ -339,7 +339,7 @@ export default function CartPage() {
             gap: 24px !important;
           }
           .cart-summary {
-            padding: 16px !important;
+            padding: 20px !important;
           }
           .cart-item-row {
             gap: 12px !important;
