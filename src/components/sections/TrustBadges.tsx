@@ -116,14 +116,13 @@ export default function TrustBadges() {
           </AnimatePresence>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px' }}>
           {badges.map((_, i) => (
             <button
               key={i}
               aria-label={`Show ${badges[i].title}`}
               onClick={() => setIndex(i)}
               style={{
-                width: '24px',
                 height: '24px',
                 border: 'none',
                 background: 'transparent',
@@ -137,13 +136,11 @@ export default function TrustBadges() {
               <span
                 style={{
                   display: 'block',
-                  width: '18px',
+                  width: i === index ? '18px' : '6px',
                   height: '6px',
                   borderRadius: '999px',
                   background: i === index ? 'var(--brand)' : 'var(--border-strong)',
-                  transform: i === index ? 'scaleX(1)' : 'scaleX(0.333)',
-                  transformOrigin: 'left center',
-                  transition: 'transform 0.3s ease, background 0.3s ease',
+                  transition: 'width 0.3s ease, background 0.3s ease',
                 }}
               />
             </button>
