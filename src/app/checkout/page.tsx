@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
+import AdminLoader from '@/components/ui/AdminLoader'
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart, appliedCoupon, getFinalPrice, removeCoupon } = useCartStore()
@@ -22,6 +23,7 @@ export default function CheckoutPage() {
   const [shippingFee, setShippingFee] = useState(150)
   const [freeShippingThreshold, setFreeShippingThreshold] = useState(2000)
   const [placeOrderError, setPlaceOrderError] = useState('')
+  const [orderPlaced, setOrderPlaced] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -36,10 +38,10 @@ export default function CheckoutPage() {
   }, [])
 
   useEffect(() => {
-    if (mounted && items.length === 0) {
+    if (mounted && items.length === 0 && !orderPlaced) {
       router.push('/cart')
     }
-  }, [mounted, items.length])
+  }, [mounted, items.length, orderPlaced])
 
   useEffect(() => {
     fetchPaymentMethods()
@@ -142,8 +144,9 @@ export default function CheckoutPage() {
         removeCoupon()
       }
 
+      setOrderPlaced(true)
       clearCart()
-      window.location.href = '/order-confirmation?id=' + orderData.id + '&phone=' + encodeURIComponent(formData.phone)
+      router.push('/order-confirmation?id=' + orderData.id + '&phone=' + encodeURIComponent(formData.phone))
     } catch (error: any) {
       console.error('Order error:', error)
       setPlaceOrderError(error?.message || 'Failed to place order. Please try again.')
@@ -173,6 +176,14 @@ export default function CheckoutPage() {
   }
 
   if (!mounted) return null
+
+  if (orderPlaced) {
+    return (
+      <div style={{ width: '100%', background: 'var(--bg)' }}>
+        <AdminLoader />
+      </div>
+    )
+  }
 
   return (
     <div style={{ width: '100%', background: 'var(--bg)' }}>

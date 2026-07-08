@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
 import { CheckCircle } from 'lucide-react'
+import AdminLoader from '@/components/ui/AdminLoader'
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams()
@@ -65,8 +66,8 @@ function OrderConfirmationContent() {
 
   if (loading) {
     return (
-      <div style={{ width: '100%', background: 'var(--bg)', paddingTop: '100px', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Loading order details...</p>
+      <div style={{ width: '100%', background: 'var(--bg)' }}>
+        <AdminLoader />
       </div>
     )
   }
@@ -325,8 +326,8 @@ function OrderConfirmationContent() {
 export default function OrderConfirmationPage() {
   return (
     <Suspense fallback={
-      <div style={{ paddingTop: '100px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        Loading order details...
+      <div style={{ width: '100%', background: 'var(--bg)' }}>
+        <AdminLoader />
       </div>
     }>
       <OrderConfirmationContent />
