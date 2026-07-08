@@ -96,7 +96,6 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           top: '60px',
           left: 0,
           width: '220px',
-          height: 'calc(100vh - 60px)',
           display: 'flex',
           flexDirection: 'column',
           background: 'var(--bg-subtle)',
@@ -210,7 +209,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               )
             })}
           </nav>
-          <div style={{ flexShrink: 0, borderTop: '1px solid var(--border)' }}>
+          <div className="admin-sidebar-logout" style={{ flexShrink: 0, borderTop: '1px solid var(--border)' }}>
             <button
               onClick={handleLogout}
               style={{
@@ -277,6 +276,14 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
         .admin-header-spacer { display: none !important; }
         .admin-sidebar-close { display: none !important; }
         .admin-sidebar-mobile-header { display: none !important; }
+
+        .admin-sidebar {
+          height: calc(100vh - 60px);
+          height: calc(100dvh - 60px);
+        }
+        .admin-sidebar-logout {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
 
         @media (max-width: 768px) {
           .admin-hamburger {
