@@ -655,6 +655,14 @@ export default function CouponsPage() {
           .coupon-form-grid {
             grid-template-columns: 1fr !important;
           }
+          .coupon-form-grid > div {
+            min-width: 0;
+          }
+          .coupon-form-grid input,
+          .coupon-form-grid select {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
           .coupon-form-grid-3 {
             gap: 16px !important;
           }
