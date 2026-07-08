@@ -180,17 +180,16 @@ export default function OrdersPage() {
       .catch(() => {})
   }, [selectedOrder?.id, selectedOrder?.status])
 
-  function sendWhatsAppConfirmation() {
-    if (!selectedOrder?.confirmation_token) return
+  function getWhatsAppConfirmationUrl(order: OrderWithItems): string | null {
+    if (!order.confirmation_token) return null
+    const link = `${window.location.origin}/confirm-order?token=${order.confirmation_token}`
+    const message = `Assalam-o-Alaikum ${order.customer_name}\n\nThank you for your order ${order.order_number} (Rs ${Math.round(order.total).toLocaleString()}).\n\nPlease confirm your order here: ${link}`
+    return `https://wa.me/${formatPhoneWhatsApp(order.customer_phone)}?text=${encodeURIComponent(message)}`
+  }
+
+  function markConfirmationSent() {
+    if (!selectedOrder) return
     setConfirmationError('')
-
-    const link = `${window.location.origin}/confirm-order?token=${selectedOrder.confirmation_token}`
-    const message = `Assalam-o-Alaikum ${selectedOrder.customer_name}\n\nThank you for your order ${selectedOrder.order_number} (Rs ${Math.round(selectedOrder.total).toLocaleString()}).\n\nPlease confirm your order here: ${link}`
-    const waUrl = `https://wa.me/${formatPhoneWhatsApp(selectedOrder.customer_phone)}?text=${encodeURIComponent(message)}`
-
-    // Fully synchronous — no await before this — so it opens a real new tab
-    // reliably on every browser, including mobile Safari.
-    window.open(waUrl, '_blank')
 
     const sentAt = new Date().toISOString()
     setSelectedOrder({ ...selectedOrder, confirmation_sent_at: sentAt })
@@ -579,26 +578,52 @@ export default function OrdersPage() {
 
                 {selectedOrder.status === 'pending' && (
                   <div style={{ marginTop: '16px' }}>
-                    <button
-                      onClick={sendWhatsAppConfirmation}
-                      disabled={!selectedOrder.confirmation_token}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '9px 16px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-strong)',
-                        background: 'var(--bg)',
-                        color: 'var(--text-primary)',
-                        fontSize: '13px',
-                        fontWeight: 500,
-                        cursor: !selectedOrder.confirmation_token ? 'not-allowed' : 'pointer',
-                        opacity: !selectedOrder.confirmation_token ? 0.6 : 1,
-                      }}
-                    >
-                      {!selectedOrder.confirmation_token ? 'Preparing...' : '📱 Send WhatsApp Confirmation'}
-                    </button>
+                    {(() => {
+                      const waUrl = getWhatsAppConfirmationUrl(selectedOrder)
+                      if (!waUrl) {
+                        return (
+                          <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '9px 16px',
+                            borderRadius: '8px',
+                            border: '1px solid var(--border-strong)',
+                            background: 'var(--bg)',
+                            color: 'var(--text-muted)',
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            opacity: 0.6,
+                          }}>
+                            Preparing...
+                          </span>
+                        )
+                      }
+                      return (
+                        <a
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={markConfirmationSent}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '9px 16px',
+                            borderRadius: '8px',
+                            border: '1px solid var(--border-strong)',
+                            background: 'var(--bg)',
+                            color: 'var(--text-primary)',
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          📱 Send WhatsApp Confirmation
+                        </a>
+                      )
+                    })()}
                     {selectedOrder.confirmation_sent_at && (
                       <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px' }}>
                         Confirmation link sent {formatDate(selectedOrder.confirmation_sent_at)}
