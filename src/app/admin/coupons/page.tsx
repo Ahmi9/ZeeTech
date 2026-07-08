@@ -181,7 +181,7 @@ export default function CouponsPage() {
           transition={{ duration: 0.35, ease: 'easeOut' }}
         >
           <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+            <div className="coupons-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
               <div>
                 <h1 style={{ fontSize: '24px', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '4px' }}>
                   Coupons
@@ -234,13 +234,14 @@ export default function CouponsPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -16, scale: 0.98 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="coupon-form-card"
             style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}
           >
           <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '20px' }}>
             {editingId ? 'Edit Coupon' : 'New Coupon'}
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div className="coupon-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div>
               <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>
                 Coupon Code
@@ -293,7 +294,7 @@ export default function CouponsPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginTop: '16px' }}>
+          <div className="coupon-form-grid coupon-form-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginTop: '16px' }}>
             <div>
               <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>
                 Discount Value
@@ -380,7 +381,7 @@ export default function CouponsPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
+          <div className="coupon-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
             <div>
               <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>
                 Expiry Date
@@ -405,7 +406,7 @@ export default function CouponsPage() {
                 onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
               />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '24px' }}>
+            <div className="coupon-form-active-toggle" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '24px' }}>
               <div
                 onClick={() => setIsActive(!isActive)}
                 style={{
@@ -629,6 +630,39 @@ export default function CouponsPage() {
           setDeleteCouponId(null)
         }}
       />
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .coupons-page-header {
+            margin-bottom: 24px !important;
+            gap: 12px !important;
+          }
+          .coupons-page-header > div {
+            min-width: 0;
+            flex: 1;
+          }
+          .coupons-page-header h1 {
+            font-size: 19px !important;
+          }
+          .coupons-page-header button {
+            flex-shrink: 0;
+            padding: 8px 14px !important;
+            font-size: 12px !important;
+            white-space: nowrap;
+          }
+          .coupon-form-card {
+            padding: 16px !important;
+          }
+          .coupon-form-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .coupon-form-grid-3 {
+            gap: 16px !important;
+          }
+          .coupon-form-active-toggle {
+            margin-top: 0 !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
