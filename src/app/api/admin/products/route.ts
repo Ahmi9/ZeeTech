@@ -29,7 +29,24 @@ export async function GET(request: NextRequest) {
     .order('created_at', { ascending: false })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ products: data })
+
+  const { data: allVariants } = await supabaseAdmin
+    .from('product_variants')
+    .select('product_id, stock')
+    .eq('is_active', true)
+
+  const variantStockByProduct = new Map<string, number>()
+  for (const v of allVariants || []) {
+    variantStockByProduct.set(v.product_id, (variantStockByProduct.get(v.product_id) || 0) + (Number(v.stock) || 0))
+  }
+
+  const products = (data || []).map(product =>
+    variantStockByProduct.has(product.id)
+      ? { ...product, stock: variantStockByProduct.get(product.id) }
+      : product
+  )
+
+  return NextResponse.json({ products })
 }
 
 async function saveAttributesAndVariants(productId: string, attributes: any[], variants: any[]) {
