@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { X } from 'lucide-react'
+import { X, Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 
@@ -37,6 +37,7 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
   const [variants, setVariants] = useState<any[]>([])
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const [selectedVariant, setSelectedVariant] = useState<any>(null)
+  const [quantity, setQuantity] = useState(1)
 
   useEffect(() => {
     async function fetchData() {
@@ -69,6 +70,7 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
       Object.entries(selectedOptions).every(([key, val]) => v.variant_combination[key] === val)
     )
     setSelectedVariant(matched || null)
+    setQuantity(1)
   }, [selectedOptions, variants, attributes])
 
   function formatPrice(price: number) {
@@ -76,7 +78,8 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
   }
 
   const displayPrice = selectedVariant ? selectedVariant.price : product.price
-  const canAdd = attributes.length === 0 || !!selectedVariant
+  const canAdd = (attributes.length === 0 || !!selectedVariant) && (!selectedVariant || selectedVariant.stock > 0)
+  const maxQuantity = selectedVariant ? selectedVariant.stock : Infinity
 
   function handleAdd() {
     onAdd({
@@ -86,7 +89,7 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
       price: selectedVariant ? selectedVariant.price : product.price,
       original_price: product.original_price,
       image: product.images?.[0] || null,
-      quantity: 1,
+      quantity,
       category: product.category || null,
       variantId: selectedVariant?.id || null,
       variantCombination: selectedVariant?.variant_combination || null,
@@ -188,6 +191,46 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
               </div>
             ))}
 
+            {canAdd && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>
+                  Quantity
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-strong)', borderRadius: '8px', overflow: 'hidden' }}>
+                  <button
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                    style={{
+                      width: '36px', height: '36px', border: 'none', background: 'var(--bg)',
+                      color: 'var(--text-primary)', fontSize: '16px', cursor: quantity <= 1 ? 'not-allowed' : 'pointer',
+                      opacity: quantity <= 1 ? 0.4 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <span style={{ width: '44px', textAlign: 'center', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(q => Math.min(maxQuantity, q + 1))}
+                    disabled={quantity >= maxQuantity}
+                    style={{
+                      width: '36px', height: '36px', border: 'none', background: 'var(--bg)',
+                      color: 'var(--text-primary)', fontSize: '16px', cursor: quantity >= maxQuantity ? 'not-allowed' : 'pointer',
+                      opacity: quantity >= maxQuantity ? 0.4 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+                {selectedVariant && (
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                    {selectedVariant.stock > 0 ? `${selectedVariant.stock} available` : 'Out of stock'}
+                  </span>
+                )}
+              </div>
+            )}
+
             <button
               onClick={handleAdd}
               disabled={!canAdd}
@@ -204,7 +247,11 @@ export default function VariantPickerModal({ product, onClose, onAdd }: VariantP
                 cursor: canAdd ? 'pointer' : 'not-allowed',
               }}
             >
-              {attributes.length > 0 && !selectedVariant ? 'Select options above' : 'Add to Cart'}
+              {attributes.length > 0 && !selectedVariant
+                ? 'Select options above'
+                : selectedVariant && selectedVariant.stock <= 0
+                  ? 'Out of Stock'
+                  : 'Add to Cart'}
             </button>
           </>
         )}
