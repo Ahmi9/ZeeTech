@@ -6,8 +6,8 @@ import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Footer from '@/components/sections/Footer'
-import { CheckCircle } from 'lucide-react'
 import AdminLoader from '@/components/ui/AdminLoader'
+import AnimatedCheckmark from '@/components/ui/AnimatedCheckmark'
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams()
@@ -76,7 +76,9 @@ function OrderConfirmationContent() {
     <div style={{ width: '100%', background: 'var(--bg)' }}>
         <PageSpacer />
       <div className="confirm-page" style={{ maxWidth: '640px', margin: '0 auto', padding: '0 40px', textAlign: 'center' }}>
-        <CheckCircle size={64} color="var(--brand)" style={{ marginBottom: '24px' }} />
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+          <AnimatedCheckmark size={64} />
+        </div>
         <h1 className="confirm-title" style={{ fontSize: '32px', fontWeight: 300, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '12px' }}>
           Order Placed Successfully!
         </h1>
