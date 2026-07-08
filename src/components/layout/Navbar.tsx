@@ -42,6 +42,19 @@ export default function Navbar() {
 
   const isAdmin = pathname?.startsWith('/admin')
 
+  const announcementLines = settings?.announcement_bar_lines && settings.announcement_bar_lines.length > 0
+    ? settings.announcement_bar_lines
+    : ['Free delivery on orders above Rs 2,000']
+  const [announcementIndex, setAnnouncementIndex] = useState(0)
+
+  useEffect(() => {
+    if (announcementLines.length <= 1) return
+    const id = setInterval(() => {
+      setAnnouncementIndex(i => (i + 1) % announcementLines.length)
+    }, 5000)
+    return () => clearInterval(id)
+  }, [announcementLines.length, announcementLines.join('|')])
+
   const logoContent = settings?.logo_url
     ? <img src={settings.logo_url} alt={settings.store_name} style={{ height: '32px', objectFit: 'contain', display: 'block' }} />
     : <span style={{ fontSize: '22px', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-primary)', lineHeight: 1 }}>{settings?.store_name || 'Store'}</span>
@@ -53,10 +66,20 @@ export default function Navbar() {
           width: '100%', height: '36px', background: 'var(--brand)', color: 'white',
           textAlign: 'center', fontSize: '13px', fontWeight: 500, display: 'flex', alignItems: 'center',
           justifyContent: 'center', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 101,
-          padding: '0 16px', boxSizing: 'border-box',
-          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          padding: '0 16px', boxSizing: 'border-box', overflow: 'hidden',
         }}>
-          {settings?.announcement_bar_text || 'Free delivery on orders above Rs 2,000'}
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={announcementIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}
+            >
+              {announcementLines[announcementIndex % announcementLines.length]}
+            </motion.span>
+          </AnimatePresence>
         </div>
       )}
 

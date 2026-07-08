@@ -132,6 +132,7 @@ export interface SiteSettings {
   hero_title: string | null
   hero_subtitle: string | null
   announcement_bar_text: string | null
+  announcement_bar_lines: string[] | null
   announcement_bar_active: boolean
   whatsapp_number: string | null
   instagram_handle: string | null

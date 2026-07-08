@@ -24,8 +24,10 @@ export default function SettingsPage() {
   const [heroTitle, setHeroTitle] = useState('')
   const [heroSubtitle, setHeroSubtitle] = useState('')
 
-  const [announcementText, setAnnouncementText] = useState('')
+  const [announcementLines, setAnnouncementLines] = useState<string[]>([])
   const [announcementActive, setAnnouncementActive] = useState(false)
+  const [showAddAnnouncementLine, setShowAddAnnouncementLine] = useState(false)
+  const [newAnnouncementLine, setNewAnnouncementLine] = useState('')
 
   const [freeShippingThreshold, setFreeShippingThreshold] = useState('')
   const [shippingFee, setShippingFee] = useState('')
@@ -56,12 +58,28 @@ export default function SettingsPage() {
       setInstagramHandle(data.instagram_handle || '')
       setHeroTitle(data.hero_title || '')
       setHeroSubtitle(data.hero_subtitle || '')
-      setAnnouncementText(data.announcement_bar_text || '')
+      setAnnouncementLines(data.announcement_bar_lines || [])
       setAnnouncementActive(data.announcement_bar_active || false)
       setFreeShippingThreshold(data.free_shipping_threshold?.toString() || '')
       setShippingFee(data.shipping_fee?.toString() || '')
     }
     setLoading(false)
+  }
+
+  function addAnnouncementLine() {
+    if (!newAnnouncementLine.trim() || announcementLines.length >= 5) return
+    setAnnouncementLines(prev => [...prev, newAnnouncementLine.trim()])
+    setNewAnnouncementLine('')
+    setShowAddAnnouncementLine(false)
+  }
+
+  function cancelAddAnnouncementLine() {
+    setNewAnnouncementLine('')
+    setShowAddAnnouncementLine(false)
+  }
+
+  function deleteAnnouncementLine(index: number) {
+    setAnnouncementLines(prev => prev.filter((_, i) => i !== index))
   }
 
   async function handleSave() {
@@ -79,7 +97,7 @@ export default function SettingsPage() {
       instagram_handle: instagramHandle,
       hero_title: heroTitle,
       hero_subtitle: heroSubtitle,
-      announcement_bar_text: announcementText,
+      announcement_bar_lines: announcementLines,
       announcement_bar_active: announcementActive,
       free_shipping_threshold: parseFloat(freeShippingThreshold) || 0,
       shipping_fee: parseFloat(shippingFee) || 0,
@@ -297,15 +315,107 @@ export default function SettingsPage() {
             <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '20px' }}>
               Announcement Bar
             </h2>
-            <label style={labelStyle}>Announcement Text</label>
-            <input
-              type="text"
-              value={announcementText}
-              onChange={(e) => setAnnouncementText(e.target.value)}
-              style={inputStyle}
-              onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
-            />
+            <label style={labelStyle}>Announcement Lines (up to 5)</label>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
+              {announcementLines.map((line, index) => (
+                <div key={index} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '10px',
+                  padding: '10px 14px',
+                  border: '1px solid var(--border-strong)',
+                  borderRadius: '8px',
+                  background: 'var(--bg)',
+                }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{line}</span>
+                  <button
+                    type="button"
+                    onClick={() => deleteAnnouncementLine(index)}
+                    aria-label="Delete line"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--danger)',
+                      fontSize: '16px',
+                      lineHeight: 1,
+                      padding: '4px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {showAddAnnouncementLine ? (
+              <div style={{ marginBottom: '16px' }}>
+                <input
+                  type="text"
+                  value={newAnnouncementLine}
+                  onChange={(e) => setNewAnnouncementLine(e.target.value)}
+                  placeholder="e.g. Free delivery on orders above Rs 2,000"
+                  autoFocus
+                  style={{ ...inputStyle, marginBottom: '10px' }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--brand)'}
+                  onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
+                  onKeyDown={(e) => { if (e.key === 'Enter') addAnnouncementLine() }}
+                />
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={addAnnouncementLine}
+                    style={{
+                      background: 'var(--brand)',
+                      color: 'white',
+                      padding: '9px 20px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    onClick={cancelAddAnnouncementLine}
+                    style={{
+                      background: 'var(--bg-muted)',
+                      color: 'var(--text-secondary)',
+                      padding: '9px 20px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : announcementLines.length < 5 && (
+              <button
+                type="button"
+                onClick={() => setShowAddAnnouncementLine(true)}
+                style={{
+                  background: 'var(--bg-muted)',
+                  color: 'var(--text-primary)',
+                  padding: '9px 20px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  border: '1px solid var(--border-strong)',
+                  cursor: 'pointer',
+                  marginBottom: '16px',
+                }}
+              >
+                + Add Line
+              </button>
+            )}
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div
                 onClick={() => setAnnouncementActive(!announcementActive)}
