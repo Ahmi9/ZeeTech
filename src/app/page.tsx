@@ -101,36 +101,38 @@ export default function ShowcasePage() {
       </header>
 
       {/* Hero */}
-      <section className="page-container pt-20 pb-16 md:pt-28 md:pb-24 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
-          Built for Pakistani sellers
-        </div>
-        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.08] max-w-3xl mx-auto mb-6">
-          Your Own Online Store.
-          <br />
-          Without Shopify&apos;s Monthly Bill.
-        </h1>
-        <p className="text-lg text-[var(--sc-ink-soft)] max-w-xl mx-auto mb-10 leading-relaxed">
-          We build you a complete online store — with WhatsApp order confirmation, COD, and courier booking built in.
-          One-time build. No recurring platform fee, ever.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
-          >
-            Get Your Store Built
-          </a>
-          <Link
-            href="/demo"
-            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
-          >
-            See Live Demo
-          </Link>
-        </div>
-        <div className="mt-16">
+      <section className="page-container pt-16 pb-16 md:pt-20 md:pb-24">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <div className="text-center md:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
+              Built for Pakistani sellers
+            </div>
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] mb-6">
+              Your Own Online Store.
+              <br />
+              Without Shopify&apos;s Monthly Bill.
+            </h1>
+            <p className="text-lg text-[var(--sc-ink-soft)] max-w-lg mx-auto md:mx-0 mb-10 leading-relaxed">
+              We build you a complete online store — with WhatsApp order confirmation, COD, and courier booking built in.
+              One-time build. No recurring platform fee, ever.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
+              >
+                Get Your Store Built
+              </a>
+              <Link
+                href="/demo"
+                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
+              >
+                See Live Demo
+              </Link>
+            </div>
+          </div>
           <Placeholder label="Storefront homepage (hero + products)" />
         </div>
       </section>
