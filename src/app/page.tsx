@@ -37,6 +37,20 @@ function Placeholder({ label }: { label: string }) {
   )
 }
 
+function Screenshot({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] overflow-hidden shadow-sm">
+      <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={alt} className="w-full h-auto block" />
+    </div>
+  )
+}
+
 function Feature({
   icon,
   title,
@@ -133,7 +147,7 @@ export default function ShowcasePage() {
               </Link>
             </div>
           </div>
-          <Placeholder label="Storefront homepage (hero + products)" />
+          <Screenshot src="/showcase/hero.png" alt="ZeeTech storefront homepage" />
         </div>
       </section>
 
