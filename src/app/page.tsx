@@ -147,7 +147,7 @@ export default function ShowcasePage() {
               </Link>
             </div>
           </div>
-          <Screenshot src="/showcase/hero.png" alt="ZeeTech storefront homepage" />
+          <Screenshot src="/showcase/hero.png" alt="Demo Store storefront homepage" />
         </div>
       </section>
 

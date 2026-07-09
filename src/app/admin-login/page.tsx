@@ -138,7 +138,7 @@ export default function AdminLoginPage() {
               {mode === 'signin' ? 'Admin Sign In' : 'Reset Password'}
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
-              {mode === 'signin' ? 'ZeeTech control panel' : 'We’ll email you a reset link'}
+              {mode === 'signin' ? 'Demo Store control panel' : 'We’ll email you a reset link'}
             </p>
           </div>
         </motion.div>

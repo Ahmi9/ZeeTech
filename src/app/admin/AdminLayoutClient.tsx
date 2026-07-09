@@ -85,7 +85,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           color: 'var(--text-primary)',
           paddingLeft: '24px',
         }}>
-          ZeeTech Admin
+          Demo Store Admin
         </span>
         <div style={{ width: '44px' }} className="admin-header-spacer" />
       </header>
