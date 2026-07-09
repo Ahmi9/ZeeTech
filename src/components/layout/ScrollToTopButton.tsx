@@ -13,6 +13,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 export default function ScrollToTopButton() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
+  const isShowcase = pathname.startsWith('/showcase')
   const [progress, setProgress] = useState(0)
   const [visible, setVisible] = useState(false)
 
@@ -32,7 +33,7 @@ export default function ScrollToTopButton() {
     return () => cancelAnimationFrame(frame)
   }, [])
 
-  if (isAdmin) return null
+  if (isAdmin || isShowcase) return null
 
   return (
     <AnimatePresence>

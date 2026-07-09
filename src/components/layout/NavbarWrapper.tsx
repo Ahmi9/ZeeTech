@@ -6,6 +6,7 @@ import Navbar from './Navbar'
 export default function NavbarWrapper() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
+  const isShowcase = pathname.startsWith('/showcase')
 
   useEffect(() => {
     if (!isAdmin) {
@@ -18,6 +19,6 @@ export default function NavbarWrapper() {
     document.body.scrollTop = 0
   }, [pathname])
 
-  if (isAdmin) return null
+  if (isAdmin || isShowcase) return null
   return <Navbar />
 }
