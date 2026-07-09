@@ -24,11 +24,11 @@ const THEME = {
 
 function Placeholder({ label }: { label: string }) {
   return (
-    <div className="w-full rounded-xl border border-[var(--sc-border)] bg-[var(--sc-surface-subtle)] overflow-hidden shadow-sm">
+    <div className="w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface-subtle)] overflow-hidden shadow-sm">
       <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
+        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
       </div>
       <div className="aspect-[16/10] flex items-center justify-center px-6">
         <p className="text-sm text-[var(--sc-muted)] text-center">Screenshot: {label}</p>
@@ -55,7 +55,7 @@ function Feature({
   return (
     <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
       <div>
-        <div className="w-12 h-12 rounded-xl bg-[var(--sc-accent-light)] flex items-center justify-center mb-5">
+        <div className="w-12 h-12 rounded-[var(--radius-xl)] bg-[var(--sc-accent-light)] flex items-center justify-center mb-5">
           {icon}
         </div>
         <h3 className="text-2xl md:text-3xl font-semibold mb-3 text-[var(--sc-ink)]">{title}</h3>
@@ -93,7 +93,7 @@ export default function ShowcasePage() {
             href={WHATSAPP_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
           >
             Get Started
           </a>
@@ -102,7 +102,7 @@ export default function ShowcasePage() {
 
       {/* Hero */}
       <section className="page-container pt-20 pb-16 md:pt-28 md:pb-24 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
           Built for Pakistani sellers
         </div>
         <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.08] max-w-3xl mx-auto mb-6">
@@ -119,13 +119,13 @@ export default function ShowcasePage() {
             href={WHATSAPP_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-md font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
+            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
           >
             Get Your Store Built
           </a>
           <Link
             href="/demo"
-            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-md font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
+            className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
           >
             See Live Demo
           </Link>
@@ -144,7 +144,7 @@ export default function ShowcasePage() {
           </p>
         </div>
         <div className="scroll-x">
-          <table className="w-full border-collapse rounded-xl overflow-hidden border border-[var(--sc-border)] bg-[var(--sc-surface)]">
+          <table className="w-full border-collapse rounded-[var(--radius-xl)] overflow-hidden border border-[var(--sc-border)] bg-[var(--sc-surface)]">
             <thead>
               <tr className="border-b border-[var(--sc-border)]">
                 <th className="text-left px-6 py-4 text-sm font-medium text-[var(--sc-muted)]">&nbsp;</th>
@@ -269,8 +269,8 @@ export default function ShowcasePage() {
             ['2', 'We build your store', 'A fully working storefront and admin panel, built around your business — not a generic template.'],
             ['3', 'You start selling', 'No monthly fee. Take orders, manage stock, and confirm orders over WhatsApp — all from day one.'],
           ].map(([num, title, desc]) => (
-            <div key={num} className="rounded-xl border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
-              <div className="w-10 h-10 rounded-full bg-[var(--sc-ink)] text-[var(--sc-bg)] flex items-center justify-center font-semibold mb-5">
+            <div key={num} className="rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
+              <div className="w-10 h-10 rounded-[9999px] bg-[var(--sc-ink)] text-[var(--sc-bg)] flex items-center justify-center font-semibold mb-5">
                 {num}
               </div>
               <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -282,7 +282,7 @@ export default function ShowcasePage() {
 
       {/* Final CTA */}
       <section className="page-container pb-20 md:pb-28">
-        <div className="rounded-2xl bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
+        <div className="rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
             Stop paying Shopify every month.
           </h2>
@@ -294,13 +294,13 @@ export default function ShowcasePage() {
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-md bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
             >
               Get Your Store Built
             </a>
             <Link
               href="/demo"
-              className="inline-flex items-center justify-center px-7 py-3 text-base rounded-md font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
+              className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
             >
               See Live Demo
             </Link>
