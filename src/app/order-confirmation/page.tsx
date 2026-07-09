@@ -225,7 +225,7 @@ function OrderConfirmationContent() {
 
         <div className="confirm-buttons" style={{ marginTop: '32px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
           <Link
-            href="/"
+            href="/demo"
             className="confirm-btn"
             style={{
               border: '1px solid var(--border-strong)',

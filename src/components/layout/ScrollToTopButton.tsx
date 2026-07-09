@@ -13,7 +13,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 export default function ScrollToTopButton() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
-  const isShowcase = pathname.startsWith('/showcase')
+  const isShowcase = pathname === '/'
   const [progress, setProgress] = useState(0)
   const [visible, setVisible] = useState(false)
 

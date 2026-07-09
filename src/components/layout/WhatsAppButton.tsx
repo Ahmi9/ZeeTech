@@ -8,7 +8,7 @@ import { formatPhoneWhatsApp } from '@/lib/phone'
 export default function WhatsAppButton() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
-  const isShowcase = pathname.startsWith('/showcase')
+  const isShowcase = pathname === '/'
   const { settings } = useAppData()
   const whatsapp = settings?.whatsapp_number
 

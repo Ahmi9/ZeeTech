@@ -120,7 +120,7 @@ export default function Navbar() {
           </button>
 
           {/* Logo - center */}
-          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <Link href="/demo" style={{ textDecoration: 'none', flexShrink: 0, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             {logoContent}
           </Link>
 
@@ -153,7 +153,7 @@ export default function Navbar() {
           display: 'flex', width: '100%', alignItems: 'center', position: 'relative',
         }}>
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, marginRight: '32px' }}>
+          <Link href="/demo" style={{ textDecoration: 'none', flexShrink: 0, marginRight: '32px' }}>
             {logoContent}
           </Link>
 
@@ -162,7 +162,7 @@ export default function Navbar() {
             position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
             display: 'flex', alignItems: 'center', gap: '6px',
           }}>
-            <Link href="/" style={{
+            <Link href="/demo" style={{
               fontSize: '13px', fontWeight: pathname === '/' ? 600 : 400,
               color: pathname === '/' ? 'var(--text-primary)' : 'var(--text-muted)',
               textDecoration: 'none', padding: '8px 16px', borderRadius: '8px',
@@ -318,7 +318,7 @@ export default function Navbar() {
                   : 'linear-gradient(180deg, rgba(184,139,103,0.08) 0%, transparent 100%)',
                 borderBottom: '1px solid var(--border)',
               }}>
-                <Link href="/" onClick={() => setDrawerOpen(false)} style={{
+                <Link href="/demo" onClick={() => setDrawerOpen(false)} style={{
                   textDecoration: 'none', display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'flex-start',
                 }}>
                   {settings?.logo_url
@@ -346,7 +346,7 @@ export default function Navbar() {
 
                 {/* Home */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '8px' }}>
-                  <Link href="/" onClick={() => setDrawerOpen(false)} className="drawer-quick-link" style={{
+                  <Link href="/demo" onClick={() => setDrawerOpen(false)} className="drawer-quick-link" style={{
                     display: 'flex', alignItems: 'center', gap: '12px',
                     minHeight: '48px', padding: '12px 16px', borderRadius: '12px',
                     color: pathname === '/' ? 'var(--brand)' : 'var(--text-primary)',

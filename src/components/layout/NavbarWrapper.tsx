@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 export default function NavbarWrapper() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin')
-  const isShowcase = pathname.startsWith('/showcase')
+  const isShowcase = pathname === '/'
 
   useEffect(() => {
     if (!isAdmin) {

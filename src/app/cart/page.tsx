@@ -109,7 +109,7 @@ export default function CartPage() {
               Your cart is empty
             </p>
             <Link
-              href="/"
+              href="/demo"
               style={{
                 display: 'inline-block',
                 marginTop: '24px',
