@@ -23,6 +23,7 @@ const FEATURES: {
   screenshot: string
   image?: string
   video?: string
+  orientation?: 'portrait'
 }[] = [
   {
     icon: DollarSign,
@@ -87,6 +88,8 @@ const FEATURES: {
       'Optimized for ad traffic landing directly on product pages',
     ],
     screenshot: 'Mobile storefront view',
+    video: showcaseVideos.mobileStorefront,
+    orientation: 'portrait',
   },
   {
     icon: Megaphone,
@@ -116,8 +119,10 @@ function FeatureBlock({
   screenshot,
   image,
   video,
+  orientation,
   reverse,
 }: (typeof FEATURES)[number] & { index: number; reverse: boolean }) {
+  const isPortrait = orientation === 'portrait'
   return (
     <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
       {/* Text side — staggered reveal */}
@@ -182,41 +187,62 @@ function FeatureBlock({
               opacity: 0.9,
             }}
           />
-          <div className="relative w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] overflow-hidden shadow-lg">
-            <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
-              <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
-              <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
-              <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
-            </div>
-            {video ? (
-              <LazyVideo src={video} label={screenshot} />
-            ) : image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={image} alt={screenshot} className="w-full h-auto block" />
-            ) : (
-              <div
-                className="relative aspect-[16/10] flex flex-col items-center justify-center gap-3 overflow-hidden"
-                style={{
-                  background:
-                    'linear-gradient(145deg, var(--sc-accent-light) 0%, var(--sc-surface) 55%, var(--sc-surface-subtle) 100%)',
-                }}
-              >
-                <Icon
-                  aria-hidden
-                  className="absolute -bottom-8 -right-8 text-[var(--sc-accent)] opacity-[0.08]"
-                  size={180}
-                  strokeWidth={1.2}
-                />
-                <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-white shadow-md">
-                  <Icon size={26} className="text-[var(--sc-accent)]" />
+          {isPortrait ? (
+            /* Phone-frame mockup for 9:16 portrait media */
+            <div className="mx-auto w-full max-w-[240px] sm:max-w-[270px]">
+              <div className="relative rounded-[36px] border-[6px] border-[var(--sc-ink)] bg-[var(--sc-ink)] shadow-xl overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 h-4 w-20 rounded-b-2xl bg-[var(--sc-ink)]" />
+                <div className="rounded-[30px] overflow-hidden">
+                  {video ? (
+                    <LazyVideo src={video} label={screenshot} />
+                  ) : image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
+                  ) : (
+                    <div className="aspect-[9/16] flex items-center justify-center bg-[var(--sc-surface-subtle)]">
+                      <Icon size={40} className="text-[var(--sc-accent)] opacity-40" />
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm font-medium text-[var(--sc-ink-soft)] px-6 text-center">{screenshot}</p>
-                <span className="rounded-full border border-[var(--sc-border)] bg-white/70 px-3 py-1 text-xs text-[var(--sc-muted)]">
-                  screenshot coming soon
-                </span>
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="relative w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] overflow-hidden shadow-lg">
+              <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
+                <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
+                <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
+                <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
+              </div>
+              {video ? (
+                <LazyVideo src={video} label={screenshot} />
+              ) : image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
+              ) : (
+                <div
+                  className="relative aspect-[16/10] flex flex-col items-center justify-center gap-3 overflow-hidden"
+                  style={{
+                    background:
+                      'linear-gradient(145deg, var(--sc-accent-light) 0%, var(--sc-surface) 55%, var(--sc-surface-subtle) 100%)',
+                  }}
+                >
+                  <Icon
+                    aria-hidden
+                    className="absolute -bottom-8 -right-8 text-[var(--sc-accent)] opacity-[0.08]"
+                    size={180}
+                    strokeWidth={1.2}
+                  />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-white shadow-md">
+                    <Icon size={26} className="text-[var(--sc-accent)]" />
+                  </div>
+                  <p className="text-sm font-medium text-[var(--sc-ink-soft)] px-6 text-center">{screenshot}</p>
+                  <span className="rounded-full border border-[var(--sc-border)] bg-white/70 px-3 py-1 text-xs text-[var(--sc-muted)]">
+                    screenshot coming soon
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
       </FeatureParallax>
     </div>

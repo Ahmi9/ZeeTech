@@ -49,7 +49,14 @@ export default function HeroShot({ src }: { src: string }) {
           <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt="Demo Store storefront homepage" className="w-full h-auto block" />
+        <img
+          src={src}
+          alt="Demo Store storefront homepage"
+          className="w-full h-auto block"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
       </div>
 
       <FloatingChip className="-top-4 -left-2 md:-left-6" delay={0.9} drift={-8} duration={4.6}>

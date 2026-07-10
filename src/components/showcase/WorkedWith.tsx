@@ -13,7 +13,7 @@ function BrandChip({ name, tag, logo }: (typeof BRANDS)[number]) {
     <div className="flex shrink-0 items-center gap-3 rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-surface)] py-2.5 pl-3 pr-6 shadow-sm">
       {logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={logo} alt={name} className="h-9 w-9 rounded-[var(--radius-md)] object-contain" />
+        <img src={logo} alt={name} className="h-9 w-9 rounded-[var(--radius-md)] object-contain" loading="lazy" decoding="async" />
       ) : (
         <span
           className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] text-sm font-bold text-white"

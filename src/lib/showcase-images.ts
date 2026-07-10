@@ -9,4 +9,5 @@ export const showcaseImages = {
 export const showcaseVideos = {
   whatsappConfirmation: `${BASE}/second-feature.mp4`,
   codCourierBooking: `${BASE}/third-feature.mp4`,
+  mobileStorefront: `${BASE}/fifth-feature.mp4`,
 } as const
