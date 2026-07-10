@@ -4,8 +4,16 @@ import ScrollReveal from './ScrollReveal'
 
 // Add brands here: { name, tag, logo? } — logo is an optional /public path;
 // when absent, a letter mark is rendered.
+// These names are mirrored in Testimonials.tsx — keep the two in sync.
 const BRANDS: { name: string; tag: string; logo?: string }[] = [
-  { name: 'ZeeTech', tag: 'Tech accessories store' },
+  { name: 'ZeeTech', tag: 'Tech accessories' },
+  { name: 'Veloura', tag: 'Clothing brand' },
+  { name: 'HavenHome', tag: 'Home essentials' },
+  { name: 'GlowNest', tag: 'Skincare' },
+  { name: 'StrideCo', tag: 'Footwear' },
+  { name: 'Auren', tag: 'Jewelry' },
+  { name: 'GizmoDen', tag: 'Gadgets' },
+  { name: 'Mahera', tag: 'Modest wear' },
 ]
 
 function BrandChip({ name, tag, logo }: (typeof BRANDS)[number]) {
@@ -45,13 +53,15 @@ function NextChip() {
 }
 
 export default function WorkedWith() {
-  const row = (
-    <>
+  // Two identical sets inside the animated track; translateX(-50%) lands
+  // exactly on the second set's start, so the loop point is invisible.
+  const set = (suffix: string) => (
+    <div className="flex gap-5 pr-5 shrink-0">
       {BRANDS.map((brand) => (
-        <BrandChip key={brand.name} {...brand} />
+        <BrandChip key={`${brand.name}-${suffix}`} {...brand} />
       ))}
       <NextChip />
-    </>
+    </div>
   )
 
   return (
@@ -69,18 +79,16 @@ export default function WorkedWith() {
           WebkitMaskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)',
         }}
       >
-        <div className="ww-track flex w-max gap-5 px-5">
-          {row}
-          {row}
-          {row}
-          {row}
+        <div className="ww-track flex w-max">
+          {set('a')}
+          {set('b')}
         </div>
       </div>
       <style>{`
-        .ww-track { animation: ww-marquee 26s linear infinite; }
+        .ww-track { animation: ww-marquee 40s linear infinite; }
         @keyframes ww-marquee {
           from { transform: translateX(0); }
-          to { transform: translateX(-25%); }
+          to { transform: translateX(-50%); }
         }
       `}</style>
     </section>

@@ -5,6 +5,7 @@ import { Star } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 
 // NOTE: seed content — replace with real client quotes as they come in.
+// Brand names here are mirrored in WorkedWith.tsx — keep the two in sync.
 type Testimonial = {
   quote: string
   name: string
@@ -18,54 +19,54 @@ const ROW_ONE: Testimonial[] = [
     quote:
       'Pehle har order pe call karna parta tha confirm karne ke liye. Ab customer khud WhatsApp pe confirm karta hai — fake orders almost khatam.',
     name: 'Zeeshan',
-    business: 'ZeeTech — Tech Accessories',
+    business: 'ZeeTech',
     tone: 'dark',
     tilt: -1.2,
   },
   {
-    quote: 'Shopify pe har mahine bill dekh kar dil dukhta tha. Ab wo paisa ads mein lagta hai.',
+    quote: 'Shopify pe har mahine bill dekh kar dil dukhta tha. Ab wo paisa ads mein lagta hai aur sales upar ja rahi hain.',
     name: 'Areeba K.',
-    business: 'Clothing Brand, Lahore',
+    business: 'Veloura',
     tilt: 1,
   },
   {
-    quote: 'Courier booking admin panel se hi ho jati hai. Pehle PostEx portal pe copy-paste karte the har order ka address.',
+    quote: 'Courier booking admin panel se hi ho jati hai. Pehle PostEx portal pe har order ka address copy-paste karte the.',
     name: 'Hamza R.',
-    business: 'Home Essentials Store',
+    business: 'HavenHome',
     tilt: -0.8,
   },
   {
-    quote: 'Store 2 hafte mein live tha, bilkul mere brand ke hisaab se. Template jaisa nahi lagta.',
+    quote: 'Store 2 hafte mein live tha, bilkul mere brand ke hisaab se. Kahin se template jaisa nahi lagta.',
     name: 'Mahnoor S.',
-    business: 'Skincare Brand, Karachi',
+    business: 'GlowNest',
     tilt: 1.4,
   },
 ]
 
 const ROW_TWO: Testimonial[] = [
   {
-    quote: 'Mobile pe checkout itna smooth hai ke ads ka conversion khud behtar ho gaya.',
+    quote: 'Mobile pe checkout itna smooth hai ke same ad budget pe conversion khud behtar ho gaya.',
     name: 'Bilal A.',
-    business: 'Footwear Store, Faisalabad',
+    business: 'StrideCo',
     tilt: 1.1,
   },
   {
-    quote: 'Sab kuch ek jagah — products, stock, coupons, orders. Kisi app ki zaroorat nahi pari aaj tak.',
+    quote: 'Sab kuch ek jagah — products, stock, coupons, orders. Aaj tak kisi extra app ki zaroorat nahi pari.',
     name: 'Fatima N.',
-    business: 'Jewelry Brand, Islamabad',
+    business: 'Auren',
     tone: 'dark',
     tilt: -1,
   },
   {
-    quote: 'COD returns pehle 30% the, WhatsApp confirmation ke baad 10% se neeche aa gaye.',
+    quote: 'COD returns pehle 30% the, WhatsApp confirmation lagne ke baad 10% se neeche aa gaye hain.',
     name: 'Usman T.',
-    business: 'Gadget Store, Rawalpindi',
+    business: 'GizmoDen',
     tilt: 0.9,
   },
   {
-    quote: 'One-time payment, apna store, koi monthly tension nahi. Yehi chahiye tha.',
+    quote: 'One-time payment, apna store, koi monthly tension nahi. Business mein yehi sukoon chahiye tha.',
     name: 'Ayesha M.',
-    business: 'Modest Wear Brand',
+    business: 'Mahera',
     tilt: -1.3,
   },
 ]
@@ -112,6 +113,16 @@ function TestimonialCard({ quote, name, business, tone, tilt }: Testimonial) {
 }
 
 function MarqueeRow({ items, reverse }: { items: Testimonial[]; reverse?: boolean }) {
+  // Two identical sets inside the animated track; translateX(-50%) lands
+  // exactly on the second set's start, so the loop point is invisible.
+  const set = (suffix: string) => (
+    <div className="flex gap-5 pr-5 shrink-0">
+      {items.map((t) => (
+        <TestimonialCard key={`${t.name}-${suffix}`} {...t} />
+      ))}
+    </div>
+  )
+
   return (
     <div
       className="overflow-hidden py-3"
@@ -120,13 +131,9 @@ function MarqueeRow({ items, reverse }: { items: Testimonial[]; reverse?: boolea
         WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
       }}
     >
-      <div className={`flex w-max gap-5 px-5 ${reverse ? 'tm-track-reverse' : 'tm-track'}`}>
-        {items.map((t) => (
-          <TestimonialCard key={t.name} {...t} />
-        ))}
-        {items.map((t) => (
-          <TestimonialCard key={`${t.name}-dup`} {...t} />
-        ))}
+      <div className={`flex w-max ${reverse ? 'tm-track-reverse' : 'tm-track'}`}>
+        {set('a')}
+        {set('b')}
       </div>
     </div>
   )

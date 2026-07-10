@@ -21,7 +21,7 @@ export const metadata = {
   description: 'A custom-built online store for your business — semi-automatic WhatsApp confirmation, COD + courier booking, full admin panel. No monthly subscription.',
 }
 
-const WHATSAPP_LINK = 'https://wa.me/923000000000'
+const WHATSAPP_LINK = 'https://wa.me/923446666133'
 
 const THEME = {
   '--sc-bg': '#FDFCF9',
@@ -45,21 +45,48 @@ export default function ShowcasePage() {
     >
       <SmoothScroll />
       <ScrollProgressBar />
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-[var(--sc-bg)]/90 backdrop-blur border-b border-[var(--sc-border)]">
-        <div className="page-container flex items-center justify-between h-16">
-          <span className="text-lg font-semibold tracking-tight">[Your Brand]</span>
-          <nav className="hidden md:flex items-center gap-8 text-sm text-[var(--sc-ink-soft)]">
-            <a href="#features" className="hover:text-[var(--sc-ink)] transition-colors">Features</a>
-            <a href="#comparison" className="hover:text-[var(--sc-ink)] transition-colors">Shopify vs Us</a>
-            <a href="#how-it-works" className="hover:text-[var(--sc-ink)] transition-colors">How It Works</a>
+      {/* Header — floating glass pill */}
+      <header className="sticky top-3 md:top-4 z-50 px-3 md:px-4">
+        <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)]/80 backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
+          <a href="#" className="flex items-center gap-2.5">
+            <span
+              className="flex h-9 w-9 items-center justify-center rounded-[12px] text-sm font-bold text-white"
+              style={{
+                background: 'linear-gradient(135deg, var(--sc-accent) 0%, var(--sc-accent-dark) 100%)',
+                boxShadow: '0 6px 16px -6px color-mix(in srgb, var(--sc-accent) 70%, transparent)',
+              }}
+            >
+              A
+            </span>
+            <span className="text-[17px] font-semibold tracking-tight">Ahmi Makes</span>
+          </a>
+          <nav className="hidden md:flex items-center gap-7 text-sm text-[var(--sc-ink-soft)]">
+            {[
+              ['#features', 'Features'],
+              ['#comparison', 'Shopify vs Us'],
+              ['#testimonials', 'Testimonials'],
+              ['#how-it-works', 'How It Works'],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="group relative py-1 hover:text-[var(--sc-ink)] transition-colors"
+              >
+                {label}
+                <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[var(--sc-accent)] transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              </a>
+            ))}
           </nav>
           <a
             href={WHATSAPP_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
+            className="inline-flex items-center gap-2 rounded-[9999px] bg-[var(--sc-accent)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
           >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+            </span>
             Get Started
           </a>
         </div>
@@ -205,7 +232,7 @@ export default function ShowcasePage() {
       {/* Footer */}
       <footer className="border-t border-[var(--sc-border)] py-10">
         <div className="page-container flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--sc-muted)]">
-          <span>© {new Date().getFullYear()} [Your Brand]</span>
+          <span>© {new Date().getFullYear()} Ahmi Makes</span>
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
             Contact on WhatsApp
           </a>

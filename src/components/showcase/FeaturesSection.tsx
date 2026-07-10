@@ -126,6 +126,7 @@ const FEATURES: {
       'Automatic out-of-stock badges',
     ],
     screenshot: 'Announcement bar & coupons',
+    video: showcaseVideos.marketingTools,
     chips: [
       { text: 'SALE10 applied', dot: 'var(--sc-accent)', position: '-top-4 -left-2 md:-left-5', drift: -7 },
     ],

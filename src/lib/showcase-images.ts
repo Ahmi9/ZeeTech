@@ -10,4 +10,5 @@ export const showcaseVideos = {
   whatsappConfirmation: `${BASE}/second-feature.mp4`,
   codCourierBooking: `${BASE}/third-feature.mp4`,
   mobileStorefront: `${BASE}/fifth-feature.mp4`,
+  marketingTools: `${BASE}/sixth-feature.mp4`,
 } as const
