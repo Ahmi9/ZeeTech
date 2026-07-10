@@ -12,6 +12,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import FeatureParallax from './FeatureParallax'
+import { showcaseImages } from '@/lib/showcase-images'
 
 const FEATURES: {
   icon: LucideIcon
@@ -19,6 +20,7 @@ const FEATURES: {
   description: string
   points: string[]
   screenshot: string
+  image?: string
 }[] = [
   {
     icon: DollarSign,
@@ -31,6 +33,7 @@ const FEATURES: {
       'Built around your products, not a generic theme',
     ],
     screenshot: 'Pricing comparison',
+    image: showcaseImages.zeroMonthlyFees,
   },
   {
     icon: MessageCircle,
@@ -106,6 +109,7 @@ function FeatureBlock({
   description,
   points,
   screenshot,
+  image,
   reverse,
 }: (typeof FEATURES)[number] & { index: number; reverse: boolean }) {
   return (
@@ -178,27 +182,32 @@ function FeatureBlock({
               <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
               <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
             </div>
-            <div
-              className="relative aspect-[16/10] flex flex-col items-center justify-center gap-3 overflow-hidden"
-              style={{
-                background:
-                  'linear-gradient(145deg, var(--sc-accent-light) 0%, var(--sc-surface) 55%, var(--sc-surface-subtle) 100%)',
-              }}
-            >
-              <Icon
-                aria-hidden
-                className="absolute -bottom-8 -right-8 text-[var(--sc-accent)] opacity-[0.08]"
-                size={180}
-                strokeWidth={1.2}
-              />
-              <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-white shadow-md">
-                <Icon size={26} className="text-[var(--sc-accent)]" />
+            {image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={image} alt={screenshot} className="w-full h-auto block" />
+            ) : (
+              <div
+                className="relative aspect-[16/10] flex flex-col items-center justify-center gap-3 overflow-hidden"
+                style={{
+                  background:
+                    'linear-gradient(145deg, var(--sc-accent-light) 0%, var(--sc-surface) 55%, var(--sc-surface-subtle) 100%)',
+                }}
+              >
+                <Icon
+                  aria-hidden
+                  className="absolute -bottom-8 -right-8 text-[var(--sc-accent)] opacity-[0.08]"
+                  size={180}
+                  strokeWidth={1.2}
+                />
+                <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-white shadow-md">
+                  <Icon size={26} className="text-[var(--sc-accent)]" />
+                </div>
+                <p className="text-sm font-medium text-[var(--sc-ink-soft)] px-6 text-center">{screenshot}</p>
+                <span className="rounded-full border border-[var(--sc-border)] bg-white/70 px-3 py-1 text-xs text-[var(--sc-muted)]">
+                  screenshot coming soon
+                </span>
               </div>
-              <p className="text-sm font-medium text-[var(--sc-ink-soft)] px-6 text-center">{screenshot}</p>
-              <span className="rounded-full border border-[var(--sc-border)] bg-white/70 px-3 py-1 text-xs text-[var(--sc-muted)]">
-                screenshot coming soon
-              </span>
-            </div>
+            )}
           </div>
         </motion.div>
       </FeatureParallax>

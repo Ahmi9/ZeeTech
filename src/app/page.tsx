@@ -13,6 +13,7 @@ import WorkedWith from '@/components/showcase/WorkedWith'
 import StepsConnector from '@/components/showcase/StepsConnector'
 import CtaGlow from '@/components/showcase/CtaGlow'
 import ShinyCta from '@/components/showcase/ShinyCta'
+import { showcaseImages } from '@/lib/showcase-images'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -106,7 +107,7 @@ export default function ShowcasePage() {
               </Link>
             </div>
           </ScrollReveal>
-          <HeroShot src="/showcase/hero.png" />
+          <HeroShot src={showcaseImages.hero} />
         </div>
       </section>
 
