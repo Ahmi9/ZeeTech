@@ -5,6 +5,13 @@ import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
 import VelocityMarquee from '@/components/showcase/VelocityMarquee'
 import CostCounter from '@/components/showcase/CostCounter'
 import FeatureParallax from '@/components/showcase/FeatureParallax'
+import WordReveal from '@/components/showcase/WordReveal'
+import HeroShot from '@/components/showcase/HeroShot'
+import TrustBadges from '@/components/showcase/TrustBadges'
+import WorkedWith from '@/components/showcase/WorkedWith'
+import StepsConnector from '@/components/showcase/StepsConnector'
+import CtaGlow from '@/components/showcase/CtaGlow'
+import ShinyCta from '@/components/showcase/ShinyCta'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -38,20 +45,6 @@ function Placeholder({ label }: { label: string }) {
       <div className="aspect-[16/10] flex items-center justify-center px-6">
         <p className="text-sm text-[var(--sc-muted)] text-center">Screenshot: {label}</p>
       </div>
-    </div>
-  )
-}
-
-function Screenshot({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] overflow-hidden shadow-sm">
-      <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
-      </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className="w-full h-auto block" />
     </div>
   )
 }
@@ -125,30 +118,40 @@ export default function ShowcasePage() {
       </header>
 
       {/* Hero */}
-      <section className="page-container pt-16 pb-16 md:pt-20 md:pb-24">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+      <section className="relative page-container pt-16 pb-16 md:pt-20 md:pb-24">
+        {/* dot-grid texture, faded at the edges */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(var(--sc-border) 1.2px, transparent 1.2px)',
+            backgroundSize: '22px 22px',
+            maskImage: 'radial-gradient(ellipse 75% 75% at 50% 35%, black 25%, transparent 72%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 75% 75% at 50% 35%, black 25%, transparent 72%)',
+            opacity: 0.8,
+          }}
+        />
+        <div className="relative grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <ScrollReveal className="text-center md:text-left">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
               Built for Pakistani sellers
             </div>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] mb-6">
-              Your Own Online Store.
+              <WordReveal text="Your Own Online Store." delay={0.1} />
               <br />
-              Without Shopify&apos;s Monthly Bill.
+              <WordReveal text="Without Shopify’s Monthly Bill." delay={0.4} />
             </h1>
             <p className="text-lg text-[var(--sc-ink-soft)] max-w-lg mx-auto md:mx-0 mb-10 leading-relaxed">
               We build you a complete online store — with WhatsApp order confirmation, COD, and courier booking built in.
               One-time build. No recurring platform fee, ever.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-              <a
+              <ShinyCta
                 href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
               >
                 Get Your Store Built
-              </a>
+              </ShinyCta>
               <Link
                 href="/demo"
                 className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
@@ -157,14 +160,15 @@ export default function ShowcasePage() {
               </Link>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.15} y={40}>
-            <Screenshot src="/showcase/hero.png" alt="Demo Store storefront homepage" />
-          </ScrollReveal>
+          <HeroShot src="/showcase/hero.png" />
         </div>
       </section>
 
       {/* Feature ticker — speed reacts to your scroll */}
       <VelocityMarquee />
+
+      {/* Trust badges */}
+      <TrustBadges />
 
       {/* Shopify vs Us */}
       <section id="comparison" className="page-container py-16 md:py-24 section-padding">
@@ -289,6 +293,9 @@ export default function ShowcasePage() {
         />
       </section>
 
+      {/* Worked with */}
+      <WorkedWith />
+
       {/* How it works */}
       <section id="how-it-works" className="page-container py-16 md:py-24 section-padding">
         <ScrollReveal className="text-center mb-14">
@@ -297,6 +304,8 @@ export default function ShowcasePage() {
             This isn&apos;t a self-serve app you install. We build it for you, end to end.
           </p>
         </ScrollReveal>
+        <div className="relative">
+        <StepsConnector />
         <div className="grid md:grid-cols-3 gap-8">
           {[
             ['1', 'Tell us about your business', 'Share your products, branding, and how you currently take orders.'],
@@ -314,33 +323,35 @@ export default function ShowcasePage() {
             </ScrollReveal>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Final CTA */}
       <section className="page-container pb-20 md:pb-28">
         <ScrollReveal>
-          <div className="rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Stop paying Shopify every month.
-            </h2>
-            <p className="text-base md:text-lg opacity-70 max-w-xl mx-auto mb-9">
-              Get a store built specifically for your business — with WhatsApp confirmation and COD handling built in.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
-              >
-                Get Your Store Built
-              </a>
-              <Link
-                href="/demo"
-                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
-              >
-                See Live Demo
-              </Link>
+          <div className="relative overflow-hidden rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
+            <CtaGlow />
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+                Stop paying Shopify every month.
+              </h2>
+              <p className="text-base md:text-lg opacity-70 max-w-xl mx-auto mb-9">
+                Get a store built specifically for your business — with WhatsApp confirmation and COD handling built in.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <ShinyCta
+                  href={WHATSAPP_LINK}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
+                >
+                  Get Your Store Built
+                </ShinyCta>
+                <Link
+                  href="/demo"
+                  className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
+                >
+                  See Live Demo
+                </Link>
+              </div>
             </div>
           </div>
         </ScrollReveal>

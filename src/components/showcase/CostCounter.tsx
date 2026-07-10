@@ -1,29 +1,34 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion'
 
-// Rs 8,000/month × 36 months
-const TOTAL = 288000
+// Rs 8,000+/month × 12 months
+const TOTAL = 100000
 
 export default function CostCounter() {
   const ref = useRef<HTMLDivElement>(null)
-  // number climbs from 0 to TOTAL as the block scrolls into the middle of the viewport
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 0.95', 'center 0.45'],
-  })
-  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 24, restDelta: 0.001 })
-  const display = useTransform(progress, (v) =>
-    'Rs ' + Math.round(v * TOTAL).toLocaleString('en-IN')
-  )
+  const inView = useInView(ref, { once: true, margin: '-25% 0px -25% 0px' })
+  const count = useMotionValue(0)
+  const display = useTransform(count, (v) => 'Rs ' + Math.round(v).toLocaleString('en-IN'))
+
+  useEffect(() => {
+    if (!inView) return
+    const controls = animate(count, TOTAL, { duration: 2, ease: [0.22, 1, 0.36, 1] })
+    return () => controls.stop()
+  }, [inView, count])
 
   return (
     <div ref={ref} className="text-center">
       <p className="text-sm md:text-base font-medium uppercase tracking-[0.18em] text-[var(--sc-muted)] mb-4">
-        Three years on Shopify costs you
+        One year on Shopify costs you
       </p>
-      <motion.p className="text-5xl md:text-8xl font-bold tracking-tight text-[var(--sc-danger)] tabular-nums mb-5">
+      <motion.p
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="text-5xl md:text-8xl font-bold tracking-tight text-[var(--sc-danger)] tabular-nums mb-5"
+      >
         {display}
       </motion.p>
       <p className="text-base md:text-lg text-[var(--sc-ink-soft)] max-w-md mx-auto leading-relaxed">
