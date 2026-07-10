@@ -61,6 +61,7 @@ const FEATURES: {
       'No extra courier app subscription',
     ],
     screenshot: 'Order detail with courier booking',
+    video: showcaseVideos.codCourierBooking,
   },
   {
     icon: LayoutDashboard,
