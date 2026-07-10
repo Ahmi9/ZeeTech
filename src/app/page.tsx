@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { Check, X, MessageCircle, Truck, LayoutDashboard, Smartphone, Megaphone, DollarSign } from 'lucide-react'
+import ScrollReveal from '@/components/showcase/ScrollReveal'
+import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -68,7 +70,7 @@ function Feature({
 }) {
   return (
     <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
-      <div>
+      <ScrollReveal>
         <div className="w-12 h-12 rounded-[var(--radius-xl)] bg-[var(--sc-accent-light)] flex items-center justify-center mb-5">
           {icon}
         </div>
@@ -82,8 +84,10 @@ function Feature({
             </li>
           ))}
         </ul>
-      </div>
-      <Placeholder label={screenshot} />
+      </ScrollReveal>
+      <ScrollReveal delay={0.12}>
+        <Placeholder label={screenshot} />
+      </ScrollReveal>
     </div>
   )
 }
@@ -94,6 +98,7 @@ export default function ShowcasePage() {
       className="min-h-screen bg-[var(--sc-bg)] text-[var(--sc-ink)]"
       style={THEME}
     >
+      <ScrollProgressBar />
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--sc-bg)]/90 backdrop-blur border-b border-[var(--sc-border)]">
         <div className="page-container flex items-center justify-between h-16">
@@ -117,7 +122,7 @@ export default function ShowcasePage() {
       {/* Hero */}
       <section className="page-container pt-16 pb-16 md:pt-20 md:pb-24">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <div className="text-center md:text-left">
+          <ScrollReveal className="text-center md:text-left">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
               Built for Pakistani sellers
             </div>
@@ -146,20 +151,22 @@ export default function ShowcasePage() {
                 See Live Demo
               </Link>
             </div>
-          </div>
-          <Screenshot src="/showcase/hero.png" alt="Demo Store storefront homepage" />
+          </ScrollReveal>
+          <ScrollReveal delay={0.15} y={40}>
+            <Screenshot src="/showcase/hero.png" alt="Demo Store storefront homepage" />
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Shopify vs Us */}
       <section id="comparison" className="page-container py-16 md:py-24 section-padding">
-        <div className="text-center mb-12">
+        <ScrollReveal className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Shopify vs Us</h2>
           <p className="text-[var(--sc-ink-soft)] max-w-lg mx-auto">
             Same result — your own store, taking orders — for a fraction of the yearly cost.
           </p>
-        </div>
-        <div className="scroll-x">
+        </ScrollReveal>
+        <ScrollReveal delay={0.1} className="scroll-x">
           <table className="w-full border-collapse rounded-[var(--radius-xl)] overflow-hidden border border-[var(--sc-border)] bg-[var(--sc-surface)]">
             <thead>
               <tr className="border-b border-[var(--sc-border)]">
@@ -195,7 +202,7 @@ export default function ShowcasePage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Features */}
@@ -273,55 +280,59 @@ export default function ShowcasePage() {
 
       {/* How it works */}
       <section id="how-it-works" className="page-container py-16 md:py-24 section-padding">
-        <div className="text-center mb-14">
+        <ScrollReveal className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">How It Works</h2>
           <p className="text-[var(--sc-ink-soft)] max-w-lg mx-auto">
             This isn&apos;t a self-serve app you install. We build it for you, end to end.
           </p>
-        </div>
+        </ScrollReveal>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             ['1', 'Tell us about your business', 'Share your products, branding, and how you currently take orders.'],
             ['2', 'We build your store', 'A fully working storefront and admin panel, built around your business — not a generic template.'],
             ['3', 'You start selling', 'No monthly fee. Take orders, manage stock, and confirm orders over WhatsApp — all from day one.'],
-          ].map(([num, title, desc]) => (
-            <div key={num} className="rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
-              <div className="w-10 h-10 rounded-[9999px] bg-[var(--sc-ink)] text-[var(--sc-bg)] flex items-center justify-center font-semibold mb-5">
-                {num}
+          ].map(([num, title, desc], i) => (
+            <ScrollReveal key={num} delay={i * 0.12}>
+              <div className="rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
+                <div className="w-10 h-10 rounded-[9999px] bg-[var(--sc-ink)] text-[var(--sc-bg)] flex items-center justify-center font-semibold mb-5">
+                  {num}
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{title}</h3>
+                <p className="text-sm text-[var(--sc-ink-soft)] leading-relaxed">{desc}</p>
               </div>
-              <h3 className="text-lg font-semibold mb-2">{title}</h3>
-              <p className="text-sm text-[var(--sc-ink-soft)] leading-relaxed">{desc}</p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="page-container pb-20 md:pb-28">
-        <div className="rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Stop paying Shopify every month.
-          </h2>
-          <p className="text-base md:text-lg opacity-70 max-w-xl mx-auto mb-9">
-            Get a store built specifically for your business — with WhatsApp confirmation and COD handling built in.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
-            >
-              Get Your Store Built
-            </a>
-            <Link
-              href="/demo"
-              className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
-            >
-              See Live Demo
-            </Link>
+        <ScrollReveal>
+          <div className="rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+              Stop paying Shopify every month.
+            </h2>
+            <p className="text-base md:text-lg opacity-70 max-w-xl mx-auto mb-9">
+              Get a store built specifically for your business — with WhatsApp confirmation and COD handling built in.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
+              >
+                Get Your Store Built
+              </a>
+              <Link
+                href="/demo"
+                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
+              >
+                See Live Demo
+              </Link>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Footer */}
