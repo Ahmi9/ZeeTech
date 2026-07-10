@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { Check, X } from 'lucide-react'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
 import VelocityMarquee from '@/components/showcase/VelocityMarquee'
 import CostCounter from '@/components/showcase/CostCounter'
+import ComparisonTable from '@/components/showcase/ComparisonTable'
 import FeaturesSection from '@/components/showcase/FeaturesSection'
 import SmoothScroll from '@/components/showcase/SmoothScroll'
 import WordReveal from '@/components/showcase/WordReveal'
@@ -127,43 +127,7 @@ export default function ShowcasePage() {
             Same result — your own store, taking orders — for a fraction of the yearly cost.
           </p>
         </ScrollReveal>
-        <ScrollReveal delay={0.1} className="scroll-x">
-          <table className="w-full border-collapse rounded-[var(--radius-xl)] overflow-hidden border border-[var(--sc-border)] bg-[var(--sc-surface)]">
-            <thead>
-              <tr className="border-b border-[var(--sc-border)]">
-                <th className="text-left px-6 py-4 text-sm font-medium text-[var(--sc-muted)]">&nbsp;</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-[var(--sc-ink)]">Shopify</th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-[var(--sc-accent-dark)]">Us</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {[
-                ['Monthly cost', 'Rs 7,000 – 8,000/month', 'Rs 0/month'],
-                ['Yearly cost', '~Rs 1,00,000/year', 'One-time build cost only'],
-                ['Order confirmation', 'Manual calling / extra app + fee', 'Built-in WhatsApp confirmation'],
-                ['COD + courier booking', 'Third-party app required', 'Built into your admin panel'],
-                ['Store ownership', 'Rented — pay forever to keep it live', 'Yours — built specifically for you'],
-                ['Customization', 'Limited by theme/app ecosystem', 'Built exactly around your business'],
-              ].map(([label, shopify, us], i) => (
-                <tr key={label} className={i % 2 === 0 ? '' : 'bg-[var(--sc-surface-subtle)]'}>
-                  <td className="px-6 py-4 font-medium text-[var(--sc-ink)]">{label}</td>
-                  <td className="px-6 py-4 text-[var(--sc-ink-soft)]">
-                    <span className="inline-flex items-center gap-2">
-                      <X size={15} className="text-[var(--sc-danger)] shrink-0" />
-                      {shopify}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-[var(--sc-ink)] font-medium">
-                    <span className="inline-flex items-center gap-2">
-                      <Check size={15} className="text-[var(--sc-accent)] shrink-0" />
-                      {us}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ScrollReveal>
+        <ComparisonTable />
       </section>
 
       {/* Features */}
