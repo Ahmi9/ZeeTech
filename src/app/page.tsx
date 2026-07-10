@@ -47,7 +47,13 @@ export default function ShowcasePage() {
       <ScrollProgressBar />
       {/* Header — floating glass pill */}
       <header className="sticky top-3 md:top-4 z-50 px-3 md:px-4">
-        <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)]/80 backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
+        {/* full-width fade so content scrolling past doesn't show through the gutters beside the pill */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -top-3 md:-top-4 h-[84px] -z-10"
+          style={{ background: 'linear-gradient(to bottom, var(--sc-bg) 45%, color-mix(in srgb, var(--sc-bg) 70%, transparent) 70%, transparent 100%)' }}
+        />
+        <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)]/90 backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
           <a href="#" className="flex items-center gap-2.5">
             <span
               className="flex h-9 w-9 items-center justify-center rounded-[12px] text-sm font-bold text-white"
