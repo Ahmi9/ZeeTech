@@ -12,7 +12,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import FeatureParallax from './FeatureParallax'
-import { showcaseImages } from '@/lib/showcase-images'
+import { showcaseImages, showcaseVideos } from '@/lib/showcase-images'
 
 const FEATURES: {
   icon: LucideIcon
@@ -21,6 +21,7 @@ const FEATURES: {
   points: string[]
   screenshot: string
   image?: string
+  video?: string
 }[] = [
   {
     icon: DollarSign,
@@ -46,6 +47,7 @@ const FEATURES: {
       'Semi-automatic — one tap from your admin panel to send it',
     ],
     screenshot: 'Semi-auto WhatsApp confirmation flow',
+    video: showcaseVideos.whatsappConfirmation,
   },
   {
     icon: Truck,
@@ -110,6 +112,7 @@ function FeatureBlock({
   points,
   screenshot,
   image,
+  video,
   reverse,
 }: (typeof FEATURES)[number] & { index: number; reverse: boolean }) {
   return (
@@ -182,7 +185,17 @@ function FeatureBlock({
               <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
               <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
             </div>
-            {image ? (
+            {video ? (
+              <video
+                src={video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto block"
+                aria-label={screenshot}
+              />
+            ) : image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={image} alt={screenshot} className="w-full h-auto block" />
             ) : (

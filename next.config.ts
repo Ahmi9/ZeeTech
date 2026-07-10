@@ -7,6 +7,7 @@ const csp = [
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}https://www.googletagmanager.com https://www.google-analytics.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://udipolufcorssishkpsa.supabase.co https://ekdfiscojnfovolceszg.supabase.co https://www.googletagmanager.com https://www.google-analytics.com",
+  "media-src 'self' https://udipolufcorssishkpsa.supabase.co https://ekdfiscojnfovolceszg.supabase.co",
   "font-src 'self' data:",
   "connect-src 'self' https://udipolufcorssishkpsa.supabase.co https://ekdfiscojnfovolceszg.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com",
   "frame-ancestors 'none'",

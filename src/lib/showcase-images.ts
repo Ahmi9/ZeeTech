@@ -4,3 +4,7 @@ export const showcaseImages = {
   hero: `${BASE}/hero.png`,
   zeroMonthlyFees: `${BASE}/first-feature.png`,
 } as const
+
+export const showcaseVideos = {
+  whatsappConfirmation: `${BASE}/second-feature.mp4`,
+} as const
