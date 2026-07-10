@@ -4,7 +4,7 @@ import ScrollReveal from './ScrollReveal'
 const ROWS: [string, string, string][] = [
   ['Monthly cost', 'Rs 7,000 – 8,000/month', 'Rs 0/month'],
   ['Yearly cost', '~Rs 1,00,000/year', 'One-time build cost only'],
-  ['Order confirmation', 'Manual calling / extra app + fee', 'Built-in WhatsApp confirmation'],
+  ['Order confirmation', 'Manual calling / extra app + fee', 'Semi-automatic WhatsApp confirmation'],
   ['COD + courier booking', 'Third-party app required', 'Built into your admin panel'],
   ['Store ownership', 'Rented — pay forever to keep it live', 'Yours — built specifically for you'],
   ['Customization', 'Limited by theme/app ecosystem', 'Built exactly around your business'],

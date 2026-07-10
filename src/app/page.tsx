@@ -16,7 +16,7 @@ import ShinyCta from '@/components/showcase/ShinyCta'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
-  description: 'A custom-built online store for your business — WhatsApp order confirmation, COD + courier booking, full admin panel. No monthly subscription.',
+  description: 'A custom-built online store for your business — semi-automatic WhatsApp confirmation, COD + courier booking, full admin panel. No monthly subscription.',
 }
 
 const WHATSAPP_LINK = 'https://wa.me/923000000000'
@@ -88,7 +88,7 @@ export default function ShowcasePage() {
               <WordReveal text="Without Shopify’s Monthly Bill." delay={0.4} />
             </h1>
             <p className="text-lg text-[var(--sc-ink-soft)] max-w-lg mx-auto md:mx-0 mb-10 leading-relaxed">
-              We build you a complete online store — with WhatsApp order confirmation, COD, and courier booking built in.
+              We build you a complete online store — with semi-automatic WhatsApp confirmation, COD, and courier booking built in.
               One-time build. No recurring platform fee, ever.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
@@ -150,7 +150,7 @@ export default function ShowcasePage() {
           {[
             ['1', 'Tell us about your business', 'Share your products, branding, and how you currently take orders.'],
             ['2', 'We build your store', 'A fully working storefront and admin panel, built around your business — not a generic template.'],
-            ['3', 'You start selling', 'No monthly fee. Take orders, manage stock, and confirm orders over WhatsApp — all from day one.'],
+            ['3', 'You start selling', 'No monthly fee. Take orders, manage stock, and confirm orders via semi-automatic WhatsApp messages — all from day one.'],
           ].map(([num, title, desc], i) => (
             <ScrollReveal key={num} delay={i * 0.12} className="h-full">
               <div className="h-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
@@ -176,7 +176,7 @@ export default function ShowcasePage() {
                 Stop paying Shopify every month.
               </h2>
               <p className="text-base md:text-lg opacity-70 max-w-xl mx-auto mb-9">
-                Get a store built specifically for your business — with WhatsApp confirmation and COD handling built in.
+                Get a store built specifically for your business — with semi-automatic WhatsApp confirmation and COD handling built in.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <ShinyCta

@@ -34,7 +34,7 @@ const FEATURES: {
   },
   {
     icon: MessageCircle,
-    title: 'WhatsApp Order Confirmation',
+    title: 'Semi-Automatic WhatsApp Confirmation',
     description:
       'The moment an order is placed, your customer gets a WhatsApp message to confirm or cancel it themselves — cutting down fake orders and returns.',
     points: [
@@ -42,7 +42,7 @@ const FEATURES: {
       'Reduces fake/COD-return orders',
       'Semi-automatic — one tap from your admin panel to send it',
     ],
-    screenshot: 'WhatsApp order confirmation flow',
+    screenshot: 'Semi-auto WhatsApp confirmation flow',
   },
   {
     icon: Truck,

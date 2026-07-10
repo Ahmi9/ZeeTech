@@ -13,7 +13,7 @@ import {
 
 const ITEMS = [
   'Zero Monthly Fees',
-  'WhatsApp Order Confirmation',
+  'Semi-Automatic WhatsApp Confirmation',
   'Cash on Delivery',
   'One-Click Courier Booking',
   'Full Admin Panel',
