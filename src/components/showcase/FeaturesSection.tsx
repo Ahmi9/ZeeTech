@@ -181,20 +181,51 @@ function FeatureBlock({
 
   const media = isPortrait ? (
     /* Phone-frame mockup for 9:16 portrait media */
-    <div className="mx-auto w-full max-w-[230px] sm:max-w-[260px]">
-      <div className="relative rounded-[36px] border-[6px] border-[var(--sc-ink)] bg-[var(--sc-ink)] shadow-xl overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 h-4 w-20 rounded-b-2xl bg-[var(--sc-ink)]" />
-        <div className="rounded-[30px] overflow-hidden">
-          {video ? (
-            <LazyVideo src={video} label={screenshot} />
-          ) : image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
-          ) : (
-            <div className="aspect-[9/16] flex items-center justify-center bg-[var(--sc-surface-subtle)]">
-              <Icon size={40} className="text-[var(--sc-accent)] opacity-40" />
+    <div className="mx-auto w-full max-w-[240px] sm:max-w-[270px]">
+      <div className="relative">
+        {/* side hardware buttons */}
+        <div className="absolute -left-[2px] top-[88px] h-8 w-[3px] rounded-l-md bg-[#3a3d36]" />
+        <div className="absolute -left-[2px] top-[128px] h-12 w-[3px] rounded-l-md bg-[#3a3d36]" />
+        <div className="absolute -right-[2px] top-[104px] h-16 w-[3px] rounded-r-md bg-[#3a3d36]" />
+
+        {/* metallic body */}
+        <div
+          className="relative rounded-[44px] p-[3px]"
+          style={{
+            background: 'linear-gradient(160deg, #6b6f66 0%, #23251f 30%, #4a4d44 50%, #1a1c17 75%, #565a51 100%)',
+            boxShadow:
+              '0 30px 60px -20px rgba(18,20,15,0.45), 0 12px 24px -12px rgba(18,20,15,0.35)',
+          }}
+        >
+          <div className="relative rounded-[41px] bg-[#0c0d0a] p-[7px]">
+            <div className="relative rounded-[34px] overflow-hidden bg-black">
+              {video ? (
+                <LazyVideo src={video} label={screenshot} />
+              ) : image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
+              ) : (
+                <div className="aspect-[9/16] flex items-center justify-center bg-[var(--sc-surface-subtle)]">
+                  <Icon size={40} className="text-[var(--sc-accent)] opacity-40" />
+                </div>
+              )}
+
+              {/* punch-hole camera */}
+              <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-3.5 w-3.5 rounded-full bg-black ring-1 ring-white/10">
+                <div className="absolute inset-[3.5px] rounded-full bg-[#1e2a3a]" />
+              </div>
+
+              {/* soft diagonal screen glare */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-10"
+                style={{
+                  background:
+                    'linear-gradient(115deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 22%, transparent 40%)',
+                }}
+              />
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
