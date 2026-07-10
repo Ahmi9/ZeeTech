@@ -14,6 +14,7 @@ import Testimonials from '@/components/showcase/Testimonials'
 import StepsConnector from '@/components/showcase/StepsConnector'
 import CtaGlow from '@/components/showcase/CtaGlow'
 import ShinyCta from '@/components/showcase/ShinyCta'
+import Preloader from '@/components/showcase/Preloader'
 import { showcaseImages } from '@/lib/showcase-images'
 
 export const metadata = {
@@ -43,6 +44,7 @@ export default function ShowcasePage() {
       className="min-h-screen overflow-x-clip bg-[var(--sc-bg)] text-[var(--sc-ink)]"
       style={THEME}
     >
+      <Preloader />
       <SmoothScroll />
       <ScrollProgressBar />
       {/* Header — floating glass pill */}
@@ -50,10 +52,10 @@ export default function ShowcasePage() {
         {/* full-width fade so content scrolling past doesn't show through the gutters beside the pill */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 -top-3 md:-top-4 h-[84px] -z-10"
-          style={{ background: 'linear-gradient(to bottom, var(--sc-bg) 45%, color-mix(in srgb, var(--sc-bg) 70%, transparent) 70%, transparent 100%)' }}
+          className="pointer-events-none absolute inset-x-0 -top-3 md:-top-4 h-[108px] -z-10"
+          style={{ background: 'linear-gradient(to bottom, var(--sc-bg) 66%, color-mix(in srgb, var(--sc-bg) 55%, transparent) 84%, transparent 100%)' }}
         />
-        <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)]/90 backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
+        <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)] md:bg-[var(--sc-bg)]/90 md:backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
           <a href="#" className="flex items-center gap-2.5">
             <span
               className="flex h-9 w-9 items-center justify-center rounded-[12px] text-sm font-bold text-white"
@@ -129,13 +131,13 @@ export default function ShowcasePage() {
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
               <ShinyCta
                 href={WHATSAPP_LINK}
-                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
+                className="inline-flex w-full sm:w-auto items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium bg-[var(--sc-accent)] text-white hover:bg-[var(--sc-accent-dark)] transition-colors"
               >
                 Get Your Store Built
               </ShinyCta>
               <Link
                 href="/demo"
-                className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
+                className="inline-flex w-full sm:w-auto items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
               >
                 See Live Demo
               </Link>
@@ -219,13 +221,13 @@ export default function ShowcasePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <ShinyCta
                   href={WHATSAPP_LINK}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
+                  className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-7 py-3 text-base rounded-[var(--radius-md)] bg-[var(--sc-accent)] text-white font-medium hover:bg-[var(--sc-accent-dark)] transition-colors"
                 >
                   Get Your Store Built
                 </ShinyCta>
                 <Link
                   href="/demo"
-                  className="inline-flex items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
+                  className="inline-flex w-full sm:w-auto items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-white/25 text-white hover:bg-white/5 transition-colors"
                 >
                   See Live Demo
                 </Link>

@@ -85,7 +85,7 @@ function TestimonialCard({ quote, name, business, tone, tilt }: Testimonial) {
   const dark = tone === 'dark'
   return (
     <figure
-      className={`w-[300px] md:w-[340px] shrink-0 rounded-[var(--radius-xl)] p-6 border shadow-sm ${
+      className={`w-[250px] p-5 md:w-[340px] md:p-6 shrink-0 rounded-[var(--radius-xl)] border shadow-sm ${
         dark
           ? 'bg-[var(--sc-ink)] border-transparent text-white'
           : 'bg-[var(--sc-surface)] border-[var(--sc-border)] text-[var(--sc-ink)]'
@@ -93,12 +93,12 @@ function TestimonialCard({ quote, name, business, tone, tilt }: Testimonial) {
       style={{ transform: `rotate(${tilt}deg)` }}
     >
       <Stars />
-      <blockquote className={`text-sm leading-relaxed mb-5 ${dark ? 'text-white/85' : 'text-[var(--sc-ink-soft)]'}`}>
+      <blockquote className={`text-[13px] md:text-sm leading-relaxed mb-4 md:mb-5 ${dark ? 'text-white/85' : 'text-[var(--sc-ink-soft)]'}`}>
         “{quote}”
       </blockquote>
       <figcaption className="flex items-center gap-3">
         <span
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+          className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
           style={{ background: 'linear-gradient(135deg, var(--sc-accent) 0%, var(--sc-accent-dark) 100%)' }}
         >
           {name[0]}

@@ -284,7 +284,7 @@ function FeatureBlock({
       {/* faint oversized index number in the panel corner */}
       <span
         aria-hidden
-        className={`absolute top-4 md:top-6 ${reverse ? 'left-5 md:left-8' : 'right-5 md:right-8'} text-[64px] md:text-[96px] font-bold leading-none select-none ${
+        className={`absolute top-4 right-5 md:top-6 ${reverse ? 'md:right-auto md:left-8' : 'md:right-8'} text-[64px] md:text-[96px] font-bold leading-none select-none ${
           dark ? 'text-white/[0.07]' : 'text-[var(--sc-ink)]/[0.05]'
         }`}
       >
