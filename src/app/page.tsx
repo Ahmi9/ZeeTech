@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Check, X, MessageCircle, Truck, LayoutDashboard, Smartphone, Megaphone, DollarSign } from 'lucide-react'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
+import ScrollSpine from '@/components/showcase/ScrollSpine'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -99,6 +100,7 @@ export default function ShowcasePage() {
       style={THEME}
     >
       <ScrollProgressBar />
+      <ScrollSpine />
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--sc-bg)]/90 backdrop-blur border-b border-[var(--sc-border)]">
         <div className="page-container flex items-center justify-between h-16">
