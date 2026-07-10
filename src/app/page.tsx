@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { Check, X, MessageCircle, Truck, LayoutDashboard, Smartphone, Megaphone, DollarSign } from 'lucide-react'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
+import VelocityMarquee from '@/components/showcase/VelocityMarquee'
+import CostCounter from '@/components/showcase/CostCounter'
+import FeatureParallax from '@/components/showcase/FeatureParallax'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -85,9 +88,11 @@ function Feature({
           ))}
         </ul>
       </ScrollReveal>
-      <ScrollReveal delay={0.12}>
-        <Placeholder label={screenshot} />
-      </ScrollReveal>
+      <FeatureParallax>
+        <ScrollReveal delay={0.12}>
+          <Placeholder label={screenshot} />
+        </ScrollReveal>
+      </FeatureParallax>
     </div>
   )
 }
@@ -158,8 +163,14 @@ export default function ShowcasePage() {
         </div>
       </section>
 
+      {/* Feature ticker — speed reacts to your scroll */}
+      <VelocityMarquee />
+
       {/* Shopify vs Us */}
       <section id="comparison" className="page-container py-16 md:py-24 section-padding">
+        <div className="mb-16 md:mb-24">
+          <CostCounter />
+        </div>
         <ScrollReveal className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Shopify vs Us</h2>
           <p className="text-[var(--sc-ink-soft)] max-w-lg mx-auto">
