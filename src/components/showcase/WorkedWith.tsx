@@ -10,7 +10,7 @@ const BRANDS: { name: string; tag: string; logo?: string }[] = [
 
 function BrandChip({ name, tag, logo }: (typeof BRANDS)[number]) {
   return (
-    <div className="flex shrink-0 items-center gap-3 rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-surface)] py-2.5 pl-3 pr-6 shadow-sm opacity-90 transition-all duration-300 hover:opacity-100 hover:shadow-md hover:-translate-y-0.5">
+    <div className="flex shrink-0 items-center gap-3 rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-surface)] py-2.5 pl-3 pr-6 shadow-sm">
       {logo ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={logo} alt={name} className="h-9 w-9 rounded-[var(--radius-md)] object-contain" />
@@ -78,7 +78,6 @@ export default function WorkedWith() {
       </div>
       <style>{`
         .ww-track { animation: ww-marquee 26s linear infinite; }
-        .ww-track:hover { animation-play-state: paused; }
         @keyframes ww-marquee {
           from { transform: translateX(0); }
           to { transform: translateX(-25%); }

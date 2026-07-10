@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { Check, X, MessageCircle, Truck, LayoutDashboard, Smartphone, Megaphone, DollarSign } from 'lucide-react'
+import { Check, X } from 'lucide-react'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
 import VelocityMarquee from '@/components/showcase/VelocityMarquee'
 import CostCounter from '@/components/showcase/CostCounter'
-import FeatureParallax from '@/components/showcase/FeatureParallax'
+import FeaturesSection from '@/components/showcase/FeaturesSection'
+import SmoothScroll from '@/components/showcase/SmoothScroll'
 import WordReveal from '@/components/showcase/WordReveal'
 import HeroShot from '@/components/showcase/HeroShot'
 import TrustBadges from '@/components/showcase/TrustBadges'
@@ -34,68 +35,13 @@ const THEME = {
   '--sc-danger': '#C0362A',
 } as React.CSSProperties
 
-function Placeholder({ label }: { label: string }) {
-  return (
-    <div className="w-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface-subtle)] overflow-hidden shadow-sm">
-      <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--sc-border)] bg-[var(--sc-surface)]">
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#ff5f57]" />
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
-        <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
-      </div>
-      <div className="aspect-[16/10] flex items-center justify-center px-6">
-        <p className="text-sm text-[var(--sc-muted)] text-center">Screenshot: {label}</p>
-      </div>
-    </div>
-  )
-}
-
-function Feature({
-  icon,
-  title,
-  description,
-  points,
-  screenshot,
-  reverse,
-}: {
-  icon: React.ReactNode
-  title: string
-  description: string
-  points: string[]
-  screenshot: string
-  reverse?: boolean
-}) {
-  return (
-    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
-      <ScrollReveal>
-        <div className="w-12 h-12 rounded-[var(--radius-xl)] bg-[var(--sc-accent-light)] flex items-center justify-center mb-5">
-          {icon}
-        </div>
-        <h3 className="text-2xl md:text-3xl font-semibold mb-3 text-[var(--sc-ink)]">{title}</h3>
-        <p className="text-[var(--sc-ink-soft)] text-base leading-relaxed mb-5">{description}</p>
-        <ul className="space-y-2.5">
-          {points.map((p) => (
-            <li key={p} className="flex items-start gap-2.5 text-sm text-[var(--sc-ink-soft)]">
-              <Check size={16} className="text-[var(--sc-accent)] mt-0.5 shrink-0" />
-              <span>{p}</span>
-            </li>
-          ))}
-        </ul>
-      </ScrollReveal>
-      <FeatureParallax>
-        <ScrollReveal delay={0.12}>
-          <Placeholder label={screenshot} />
-        </ScrollReveal>
-      </FeatureParallax>
-    </div>
-  )
-}
-
 export default function ShowcasePage() {
   return (
     <div
-      className="min-h-screen bg-[var(--sc-bg)] text-[var(--sc-ink)]"
+      className="min-h-screen overflow-x-clip bg-[var(--sc-bg)] text-[var(--sc-ink)]"
       style={THEME}
     >
+      <SmoothScroll />
       <ScrollProgressBar />
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--sc-bg)]/90 backdrop-blur border-b border-[var(--sc-border)]">
@@ -221,77 +167,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="page-container py-16 md:py-24 section-padding space-y-20 md:space-y-32">
-        <Feature
-          icon={<DollarSign size={22} className="text-[var(--sc-accent)]" />}
-          title="Zero Monthly Fees"
-          description="Shopify charges you every single month whether you sell anything or not. We build your store once — after that, it's yours."
-          points={[
-            'No monthly subscription',
-            'No per-transaction cut on top of your payment gateway',
-            'Built around your products, not a generic theme',
-          ]}
-          screenshot="Pricing comparison"
-        />
-        <Feature
-          icon={<MessageCircle size={22} className="text-[var(--sc-accent)]" />}
-          title="WhatsApp Order Confirmation"
-          description="The moment an order is placed, your customer gets a WhatsApp message to confirm or cancel it themselves — cutting down fake orders and returns."
-          points={[
-            'Customer confirms or cancels with one tap',
-            'Reduces fake/COD-return orders',
-            'Semi-automatic — one tap from your admin panel to send it',
-          ]}
-          screenshot="WhatsApp order confirmation flow"
-          reverse
-        />
-        <Feature
-          icon={<Truck size={22} className="text-[var(--sc-accent)]" />}
-          title="COD + Courier Booking, Built In"
-          description="No separate app or manual booking. Cash on delivery and courier (PostEx) booking are handled right from your own admin panel."
-          points={[
-            'One-click courier booking per order',
-            'Live order status tracking',
-            'No extra courier app subscription',
-          ]}
-          screenshot="Order detail with courier booking"
-        />
-        <Feature
-          icon={<LayoutDashboard size={22} className="text-[var(--sc-accent)]" />}
-          title="Full Admin Panel"
-          description="Manage products, variants, stock, coupons, categories and orders — all from a clean dashboard built for how you actually run your business."
-          points={[
-            'Products, variants & stock management',
-            'Coupons & discounts',
-            'Order tracking & status updates',
-          ]}
-          screenshot="Admin dashboard"
-          reverse
-        />
-        <Feature
-          icon={<Smartphone size={22} className="text-[var(--sc-accent)]" />}
-          title="Mobile-First Storefront"
-          description="Most of your customers will land on your store from a phone. Every page is built and tested mobile-first, not adapted as an afterthought."
-          points={[
-            'Fast-loading on mobile networks',
-            'Smooth checkout on any screen size',
-            'Optimized for ad traffic landing directly on product pages',
-          ]}
-          screenshot="Mobile storefront view"
-        />
-        <Feature
-          icon={<Megaphone size={22} className="text-[var(--sc-accent)]" />}
-          title="Marketing Tools Built In"
-          description="A rotating announcement bar, coupon codes, and out-of-stock badges — small details that help you run promotions without touching code."
-          points={[
-            'Rotating announcement bar, editable from admin',
-            'Coupon codes & discounts',
-            'Automatic out-of-stock badges',
-          ]}
-          screenshot="Announcement bar & coupons"
-          reverse
-        />
-      </section>
+      <FeaturesSection />
 
       {/* Worked with */}
       <WorkedWith />
@@ -306,14 +182,14 @@ export default function ShowcasePage() {
         </ScrollReveal>
         <div className="relative">
         <StepsConnector />
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="relative z-10 grid md:grid-cols-3 gap-8">
           {[
             ['1', 'Tell us about your business', 'Share your products, branding, and how you currently take orders.'],
             ['2', 'We build your store', 'A fully working storefront and admin panel, built around your business — not a generic template.'],
             ['3', 'You start selling', 'No monthly fee. Take orders, manage stock, and confirm orders over WhatsApp — all from day one.'],
           ].map(([num, title, desc], i) => (
-            <ScrollReveal key={num} delay={i * 0.12}>
-              <div className="rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
+            <ScrollReveal key={num} delay={i * 0.12} className="h-full">
+              <div className="h-full rounded-[var(--radius-xl)] border border-[var(--sc-border)] bg-[var(--sc-surface)] p-8">
                 <div className="w-10 h-10 rounded-[9999px] bg-[var(--sc-ink)] text-[var(--sc-bg)] flex items-center justify-center font-semibold mb-5">
                   {num}
                 </div>
