@@ -10,6 +10,7 @@ import WordReveal from '@/components/showcase/WordReveal'
 import HeroShot from '@/components/showcase/HeroShot'
 import TrustBadges from '@/components/showcase/TrustBadges'
 import WorkedWith from '@/components/showcase/WorkedWith'
+import Testimonials from '@/components/showcase/Testimonials'
 import StepsConnector from '@/components/showcase/StepsConnector'
 import CtaGlow from '@/components/showcase/CtaGlow'
 import ShinyCta from '@/components/showcase/ShinyCta'
@@ -136,6 +137,9 @@ export default function ShowcasePage() {
 
       {/* Worked with */}
       <WorkedWith />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* How it works */}
       <section id="how-it-works" className="page-container py-16 md:py-24 section-padding">

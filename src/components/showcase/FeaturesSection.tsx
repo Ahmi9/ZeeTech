@@ -210,11 +210,6 @@ function FeatureBlock({
                 </div>
               )}
 
-              {/* punch-hole camera */}
-              <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-3.5 w-3.5 rounded-full bg-black ring-1 ring-white/10">
-                <div className="absolute inset-[3.5px] rounded-full bg-[#1e2a3a]" />
-              </div>
-
               {/* soft diagonal screen glare */}
               <div
                 aria-hidden
