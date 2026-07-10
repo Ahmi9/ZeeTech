@@ -12,6 +12,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import FeatureParallax from './FeatureParallax'
+import LazyVideo from './LazyVideo'
 import { showcaseImages, showcaseVideos } from '@/lib/showcase-images'
 
 const FEATURES: {
@@ -186,15 +187,7 @@ function FeatureBlock({
               <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
             </div>
             {video ? (
-              <video
-                src={video}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto block"
-                aria-label={screenshot}
-              />
+              <LazyVideo src={video} label={screenshot} />
             ) : image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={image} alt={screenshot} className="w-full h-auto block" />
