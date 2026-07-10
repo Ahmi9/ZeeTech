@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { Check, X, MessageCircle, Truck, LayoutDashboard, Smartphone, Megaphone, DollarSign } from 'lucide-react'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
-import ScrollSpine from '@/components/showcase/ScrollSpine'
+import AmbientGlow from '@/components/showcase/AmbientGlow'
+import HeroParallax from '@/components/showcase/HeroParallax'
 
 export const metadata = {
   title: 'Your Own Online Store — Without the Shopify Bill',
@@ -100,7 +101,7 @@ export default function ShowcasePage() {
       style={THEME}
     >
       <ScrollProgressBar />
-      <ScrollSpine />
+      <AmbientGlow />
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--sc-bg)]/90 backdrop-blur border-b border-[var(--sc-border)]">
         <div className="page-container flex items-center justify-between h-16">
@@ -122,7 +123,7 @@ export default function ShowcasePage() {
       </header>
 
       {/* Hero */}
-      <section className="page-container pt-16 pb-16 md:pt-20 md:pb-24">
+      <section className="relative z-10 page-container pt-16 pb-16 md:pt-20 md:pb-24">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <ScrollReveal className="text-center md:text-left">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
@@ -154,14 +155,14 @@ export default function ShowcasePage() {
               </Link>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.15} y={40}>
+          <HeroParallax>
             <Screenshot src="/showcase/hero.png" alt="Demo Store storefront homepage" />
-          </ScrollReveal>
+          </HeroParallax>
         </div>
       </section>
 
       {/* Shopify vs Us */}
-      <section id="comparison" className="page-container py-16 md:py-24 section-padding">
+      <section id="comparison" className="relative z-10 page-container py-16 md:py-24 section-padding">
         <ScrollReveal className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Shopify vs Us</h2>
           <p className="text-[var(--sc-ink-soft)] max-w-lg mx-auto">
@@ -208,7 +209,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="page-container py-16 md:py-24 section-padding space-y-20 md:space-y-32">
+      <section id="features" className="relative z-10 page-container py-16 md:py-24 section-padding space-y-20 md:space-y-32">
         <Feature
           icon={<DollarSign size={22} className="text-[var(--sc-accent)]" />}
           title="Zero Monthly Fees"
@@ -281,7 +282,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="page-container py-16 md:py-24 section-padding">
+      <section id="how-it-works" className="relative z-10 page-container py-16 md:py-24 section-padding">
         <ScrollReveal className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">How It Works</h2>
           <p className="text-[var(--sc-ink-soft)] max-w-lg mx-auto">
@@ -308,7 +309,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="page-container pb-20 md:pb-28">
+      <section className="relative z-10 page-container pb-20 md:pb-28">
         <ScrollReveal>
           <div className="rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
@@ -338,7 +339,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--sc-border)] py-10">
+      <footer className="relative z-10 border-t border-[var(--sc-border)] py-10">
         <div className="page-container flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--sc-muted)]">
           <span>© {new Date().getFullYear()} [Your Brand]</span>
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
