@@ -74,6 +74,7 @@ const FEATURES: {
       'Order tracking & status updates',
     ],
     screenshot: 'Admin dashboard',
+    image: showcaseImages.adminPanel,
   },
   {
     icon: Smartphone,
