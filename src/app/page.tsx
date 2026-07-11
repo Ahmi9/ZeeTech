@@ -253,7 +253,7 @@ export default function ShowcasePage() {
           }}
         />
 
-        <div className="page-container relative pt-14 pb-8">
+        <div className="page-container relative !pt-14 !pb-8">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
             {/* brand */}
             <div>

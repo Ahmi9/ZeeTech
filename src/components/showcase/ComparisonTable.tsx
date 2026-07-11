@@ -15,7 +15,7 @@ const ROWS: [string, string, string][] = [
 const MOBILE_ROWS: [string, string, string][] = [
   ['Monthly cost', 'Rs 7–8,000 / month', 'Rs 0 / month'],
   ['Yearly cost', '~Rs 1,00,000', 'One-time only'],
-  ['Order confirmation', 'Manual calls', 'WhatsApp — automatic'],
+  ['Order confirmation', 'Manual calls', 'WhatsApp — semi auto'],
   ['COD + courier', 'Extra apps needed', 'Built-in'],
   ['Ownership', 'Rented forever', 'Yours forever'],
   ['Customization', 'Theme limits', 'Built for you'],
@@ -100,11 +100,11 @@ export default function ComparisonTable() {
                   <div key={label} className="px-4 py-3">
                     <p className="mb-1.5 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-white/35">{label}</p>
                     <div className="grid grid-cols-2 gap-3">
-                      <span className="flex items-start gap-1.5 text-[12.5px] leading-snug text-white/45">
+                      <span className="flex items-start justify-center gap-1.5 text-center text-[12.5px] leading-snug text-white/45">
                         <X size={13} className="mt-[3px] shrink-0 text-[#e0685c]" />
                         {shopify}
                       </span>
-                      <span className="flex items-start gap-1.5 text-[12.5px] font-medium leading-snug text-white">
+                      <span className="flex items-start justify-center gap-1.5 text-center text-[12.5px] font-medium leading-snug text-white">
                         <Check size={13} strokeWidth={3} className="mt-[3px] shrink-0 text-[#7ee2bd]" />
                         {us}
                       </span>
