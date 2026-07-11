@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAppData } from '@/components/providers/AppDataProvider'
@@ -11,8 +12,12 @@ export default function WhatsAppButton() {
   const isShowcase = pathname === '/'
   const { settings } = useAppData()
   const whatsapp = settings?.whatsapp_number
+  // Mount-gated for the same reason as NavbarWrapper: pathname-branched SSR
+  // output can hydration-mismatch when ISR regenerates under another path.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
-  if (isAdmin || isShowcase || !whatsapp) return null
+  if (!mounted || isAdmin || isShowcase || !whatsapp) return null
 
   return (
     <motion.a
