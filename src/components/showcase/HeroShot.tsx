@@ -1,7 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BadgeCheck, Banknote, Truck } from 'lucide-react'
+import type { ShowcaseImage } from '@/lib/showcase-images'
 
 function FloatingChip({
   children,
@@ -34,7 +36,7 @@ function FloatingChip({
   )
 }
 
-export default function HeroShot({ src }: { src: string }) {
+export default function HeroShot({ src }: { src: ShowcaseImage }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -48,14 +50,15 @@ export default function HeroShot({ src }: { src: string }) {
           <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#febc2e]" />
           <span className="w-2.5 h-2.5 rounded-[9999px] bg-[#28c840]" />
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
+        <Image
+          src={src.src}
+          width={src.width}
+          height={src.height}
           alt="Demo Store storefront homepage"
           className="w-full h-auto block"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
+          preload
+          sizes="(max-width: 1280px) 100vw, 1200px"
+          quality={65}
         />
       </div>
 

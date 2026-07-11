@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
-// Only starts loading/playing once the video scrolls near the viewport,
-// instead of every feature video competing for bandwidth on page load.
+// Starts downloading immediately on page load (preload="auto") so the video
+// is already buffered by the time the visitor scrolls to it. Playback is
+// still gated on visibility to save CPU/battery — the loop only runs while
+// the video is on screen.
 export default function LazyVideo({ src, label }: { src: string; label: string }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const [shouldLoad, setShouldLoad] = useState(false)
 
   useEffect(() => {
     const el = ref.current
@@ -14,11 +15,12 @@ export default function LazyVideo({ src, label }: { src: string; label: string }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setShouldLoad(true)
-          observer.disconnect()
+          el.play().catch(() => {})
+        } else {
+          el.pause()
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: '100px' }
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -27,12 +29,11 @@ export default function LazyVideo({ src, label }: { src: string; label: string }
   return (
     <video
       ref={ref}
-      src={shouldLoad ? src : undefined}
-      autoPlay={shouldLoad}
+      src={src}
       loop
       muted
       playsInline
-      preload="none"
+      preload="auto"
       className="w-full h-auto block bg-[var(--sc-surface-subtle)]"
       aria-label={label}
     />

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import {
   Check,
@@ -14,7 +15,7 @@ import {
 import FeatureParallax from './FeatureParallax'
 import LazyVideo from './LazyVideo'
 import ScrollReveal from './ScrollReveal'
-import { showcaseImages, showcaseVideos } from '@/lib/showcase-images'
+import { showcaseImages, showcaseVideos, type ShowcaseImage } from '@/lib/showcase-images'
 
 type Chip = { text: string; dot: string; position: string; drift?: number }
 
@@ -24,7 +25,7 @@ const FEATURES: {
   description: string
   points: string[]
   screenshot: string
-  image?: string
+  image?: ShowcaseImage
   video?: string
   orientation?: 'portrait'
   tone?: 'dark'
@@ -203,8 +204,16 @@ function FeatureBlock({
               {video ? (
                 <LazyVideo src={video} label={screenshot} />
               ) : image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
+                <Image
+                  src={image.src}
+                  width={image.width}
+                  height={image.height}
+                  alt={screenshot}
+                  className="w-full h-auto block"
+                  loading="eager"
+                  sizes="270px"
+                  quality={65}
+                />
               ) : (
                 <div className="aspect-[9/16] flex items-center justify-center bg-[var(--sc-surface-subtle)]">
                   <Icon size={40} className="text-[var(--sc-accent)] opacity-40" />
@@ -243,8 +252,16 @@ function FeatureBlock({
       {video ? (
         <LazyVideo src={video} label={screenshot} />
       ) : image ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={image} alt={screenshot} className="w-full h-auto block" loading="lazy" decoding="async" />
+        <Image
+          src={image.src}
+          width={image.width}
+          height={image.height}
+          alt={screenshot}
+          className="w-full h-auto block"
+          loading="eager"
+          sizes="(max-width: 768px) 100vw, 560px"
+          quality={65}
+        />
       ) : (
         <div
           className="relative aspect-[16/10] flex flex-col items-center justify-center gap-3 overflow-hidden"
