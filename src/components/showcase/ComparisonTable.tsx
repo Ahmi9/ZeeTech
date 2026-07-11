@@ -10,6 +10,17 @@ const ROWS: [string, string, string][] = [
   ['Customization', 'Limited by theme/app ecosystem', 'Built exactly around your business'],
 ]
 
+// Same story, compressed for narrow screens — short enough that both sides
+// sit side-by-side and the winner is obvious at a glance.
+const MOBILE_ROWS: [string, string, string][] = [
+  ['Monthly cost', 'Rs 7–8,000 / month', 'Rs 0 / month'],
+  ['Yearly cost', '~Rs 1,00,000', 'One-time only'],
+  ['Order confirmation', 'Manual calls', 'WhatsApp — automatic'],
+  ['COD + courier', 'Extra apps needed', 'Built-in'],
+  ['Ownership', 'Rented forever', 'Yours forever'],
+  ['Customization', 'Theme limits', 'Built for you'],
+]
+
 export default function ComparisonTable() {
   return (
     <>
@@ -45,57 +56,73 @@ export default function ComparisonTable() {
         </table>
       </ScrollReveal>
 
-      {/* Mobile: versus cards, no horizontal scroll */}
-      <div className="md:hidden space-y-4">
-        {ROWS.map(([label, shopify, us], i) => (
-          <ScrollReveal key={label} delay={i * 0.05}>
-            <div className="relative rounded-[var(--radius-lg)] border border-[var(--sc-border)] bg-[var(--sc-surface)] overflow-hidden shadow-sm">
-              {/* category label */}
-              <div className="flex items-center justify-center gap-2.5 px-4 pt-3.5 pb-2.5">
-                <span className="h-px flex-1 bg-[var(--sc-border)]" />
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--sc-muted)]">{label}</p>
-                <span className="h-px flex-1 bg-[var(--sc-border)]" />
-              </div>
+      {/* Mobile: one dark versus panel, same visual language as the hero/preloader */}
+      <div className="md:hidden">
+        <ScrollReveal delay={0.05}>
+          <div className="relative overflow-hidden rounded-[var(--radius-xl)] bg-[#12140F] text-white shadow-xl">
+            {/* faint dot texture, faded toward the bottom */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                backgroundImage: 'radial-gradient(rgba(255,255,255,0.13) 1px, transparent 1px)',
+                backgroundSize: '22px 22px',
+                maskImage: 'radial-gradient(ellipse 90% 65% at 50% 0%, black 15%, transparent 78%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 90% 65% at 50% 0%, black 15%, transparent 78%)',
+              }}
+            />
 
-              <div className="relative">
-                {/* Shopify half */}
-                <div className="flex items-center gap-3 px-4 pt-2.5 pb-5 bg-[color-mix(in_srgb,var(--sc-danger)_4%,var(--sc-surface))]">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--sc-danger)_12%,var(--sc-surface))]">
-                    <X size={13} className="text-[var(--sc-danger)]" />
-                  </span>
-                  <span className="flex-1 text-[13px] leading-snug text-[var(--sc-ink-soft)]">{shopify}</span>
-                  <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-[var(--sc-danger)] opacity-70">
+            <div className="relative p-5 pt-7">
+              {/* face-off header */}
+              <div className="mb-6 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                <div className="text-center">
+                  <p className="text-base font-semibold text-white/55 line-through decoration-[#e0685c]/80 decoration-2">
                     Shopify
-                  </span>
+                  </p>
+                  <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[#e0685c]/90">
+                    ~Rs 1 lakh / year
+                  </p>
                 </div>
-
-                {/* VS badge on the divider */}
-                <span className="absolute left-1/2 top-1/2 z-10 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--sc-ink)] text-[9px] font-bold text-white ring-4 ring-[var(--sc-surface)]">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold ring-1 ring-white/20">
                   VS
                 </span>
-
-                {/* Us half */}
-                <div className="flex items-center gap-3 px-4 pt-5 pb-3.5 bg-[var(--sc-accent-light)]/60 border-t border-[var(--sc-accent)]/20">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sc-accent)] shadow-[0_4px_10px_-3px_var(--sc-accent)]">
-                    <Check size={13} strokeWidth={3} className="text-white" />
-                  </span>
-                  <span className="flex-1 text-[13px] font-semibold leading-snug text-[var(--sc-ink)]">{us}</span>
-                  <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-[var(--sc-accent-dark)]">
-                    Us
-                  </span>
+                <div className="text-center">
+                  <p className="text-base font-semibold text-[#7ee2bd]">Ahmi Makes</p>
+                  <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/45">
+                    Rs 0 / month
+                  </p>
                 </div>
               </div>
-            </div>
-          </ScrollReveal>
-        ))}
 
-        {/* savings summary */}
-        <ScrollReveal delay={0.1}>
-          <div className="flex items-center justify-center gap-2 rounded-[9999px] border border-[var(--sc-accent)]/30 bg-[var(--sc-accent-light)] px-5 py-3">
-            <span className="h-2 w-2 rounded-full bg-[var(--sc-accent)]" />
-            <p className="text-[13px] font-semibold text-[var(--sc-accent-dark)]">
-              You keep ~Rs 1,00,000 every single year
-            </p>
+              {/* comparison rows */}
+              <div className="overflow-hidden rounded-[var(--radius-md)] border border-white/10 bg-white/[0.03] divide-y divide-white/10">
+                {MOBILE_ROWS.map(([label, shopify, us]) => (
+                  <div key={label} className="px-4 py-3">
+                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/35">{label}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <span className="flex items-start gap-1.5 text-[12.5px] leading-snug text-white/45">
+                        <X size={13} className="mt-[3px] shrink-0 text-[#e0685c]" />
+                        {shopify}
+                      </span>
+                      <span className="flex items-start gap-1.5 text-[12.5px] font-medium leading-snug text-white">
+                        <Check size={13} strokeWidth={3} className="mt-[3px] shrink-0 text-[#7ee2bd]" />
+                        {us}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* punchline */}
+              <div
+                className="mt-5 rounded-[var(--radius-md)] px-4 py-4 text-center"
+                style={{ background: 'linear-gradient(135deg, #1F7A5C 0%, #155C44 100%)' }}
+              >
+                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/70">You keep</p>
+                <p className="mt-0.5 text-2xl font-bold tracking-tight text-white">~Rs 1,00,000</p>
+                <p className="text-[12px] font-medium text-[#7ee2bd]">every single year</p>
+              </div>
+            </div>
           </div>
         </ScrollReveal>
       </div>

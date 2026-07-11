@@ -140,14 +140,6 @@ export default function ShowcasePage() {
               >
                 See Live Demo
               </Link>
-              <Link
-                href="/admin"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center px-7 py-3 text-base rounded-[var(--radius-md)] font-medium border border-[var(--sc-border)] text-[var(--sc-ink)] hover:bg-[var(--sc-surface-subtle)] transition-colors"
-              >
-                Admin Panel
-              </Link>
             </div>
           </ScrollReveal>
           <HeroShot src={showcaseImages.hero} />
@@ -247,16 +239,75 @@ export default function ShowcasePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--sc-border)] py-10">
-        <div className="page-container flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--sc-muted)]">
-          <span>© {new Date().getFullYear()} Ahmi Makes</span>
-          <div className="flex items-center gap-6">
-            <Link href="/admin" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
-              Admin Panel
-            </Link>
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
-              Contact on WhatsApp
-            </a>
+      <footer className="relative overflow-hidden bg-[#12140F] text-white">
+        {/* dot texture fading downward — same language as the hero and preloader */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+            maskImage: 'radial-gradient(ellipse 85% 70% at 50% 0%, black 12%, transparent 75%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 85% 70% at 50% 0%, black 12%, transparent 75%)',
+          }}
+        />
+
+        <div className="page-container relative pt-14 pb-8">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+            {/* brand */}
+            <div>
+              <div className="mb-3 flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-[12px] border border-white/15 bg-white/5">
+                  <Image src="/brand/ahmi-makes-mark-white.png" alt="" width={18} height={18} className="h-[18px] w-[18px]" />
+                </span>
+                <span className="text-lg font-semibold tracking-tight">Ahmi Makes</span>
+              </div>
+              <p className="max-w-[300px] text-sm leading-relaxed text-white/50">
+                Custom online stores for Pakistani sellers — one-time build, zero monthly fees, everything built in.
+              </p>
+            </div>
+
+            {/* link columns */}
+            <div className="flex gap-14 sm:gap-20">
+              <div>
+                <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40">Explore</p>
+                {[
+                  ['#features', 'Features'],
+                  ['#comparison', 'Shopify vs Us'],
+                  ['#testimonials', 'Testimonials'],
+                  ['#how-it-works', 'How It Works'],
+                ].map(([href, label]) => (
+                  <a key={href} href={href} className="mb-2 block text-sm text-white/65 transition-colors hover:text-white">
+                    {label}
+                  </a>
+                ))}
+              </div>
+              <div>
+                <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40">Get in touch</p>
+                <Link href="/demo" target="_blank" rel="noopener noreferrer" className="mb-2 block text-sm text-white/65 transition-colors hover:text-white">
+                  Live Demo Store
+                </Link>
+                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mb-2 block text-sm text-white/65 transition-colors hover:text-white">
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* oversized watermark wordmark */}
+          <div
+            aria-hidden
+            className="pointer-events-none select-none mt-10 -mb-4 whitespace-nowrap text-center text-[17vw] md:text-[9rem] font-bold leading-none tracking-tight text-white/[0.05]"
+          >
+            Ahmi Makes
+          </div>
+
+          <div className="relative mt-4 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row">
+            <span>© {new Date().getFullYear()} Ahmi Makes</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#7ee2bd]" />
+              Building stores that sell
+            </span>
           </div>
         </div>
       </footer>
