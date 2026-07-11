@@ -27,7 +27,7 @@ function DemoNoteText() {
       Some features are disabled on demo credentials —{' '}
       {wa ? (
         <a
-          href={`https://wa.me/${formatPhoneWhatsApp(wa)}`}
+          href={`https://wa.me/${formatPhoneWhatsApp(wa)}?text=${encodeURIComponent("Hi! I explored the demo admin panel and I'd like a full store like this for my business. Can you share the details?")}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: 500 }}

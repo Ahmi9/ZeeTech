@@ -23,7 +23,8 @@ export const metadata = {
   description: 'A custom-built online store for your business — semi-automatic WhatsApp confirmation, COD + courier booking, full admin panel. No monthly subscription.',
 }
 
-const WHATSAPP_LINK = 'https://wa.me/923446666133'
+const WHATSAPP_MESSAGE = "Hi! I'm interested in getting my own online store built. Can you share the details?"
+const WHATSAPP_LINK = `https://wa.me/923446666133?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
 const THEME = {
   '--sc-bg': '#FDFCF9',
