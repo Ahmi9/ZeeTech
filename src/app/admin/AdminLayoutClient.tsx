@@ -6,7 +6,9 @@ import Link from 'next/link'
 import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X, LogOut } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
-import { DemoModeProvider } from '@/lib/demo-mode'
+import { DemoModeProvider, useDemoMode } from '@/lib/demo-mode'
+import { useAppData } from '@/components/providers/AppDataProvider'
+import { formatPhoneWhatsApp } from '@/lib/phone'
 
 const navLinks = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -16,6 +18,44 @@ const navLinks = [
   { label: 'Coupons', href: '/admin/coupons', icon: Tag },
   { label: 'Settings', href: '/admin/settings', icon: Settings2 },
 ]
+
+function DemoHeaderNote() {
+  const { isDemo } = useDemoMode()
+  const { settings } = useAppData()
+  if (!isDemo) return null
+  const wa = settings?.whatsapp_number
+  return (
+    <span
+      className="demo-header-note"
+      style={{
+        flex: 1,
+        minWidth: 0,
+        marginLeft: '14px',
+        fontSize: '12px',
+        fontWeight: 400,
+        color: 'var(--text-muted)',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
+    >
+      Some features are disabled on demo credentials —{' '}
+      {wa ? (
+        <a
+          href={`https://wa.me/${formatPhoneWhatsApp(wa)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: 500 }}
+        >
+          contact us on WhatsApp
+        </a>
+      ) : (
+        'contact us on WhatsApp'
+      )}{' '}
+      for full access.
+    </span>
+  )
+}
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -89,6 +129,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
         }}>
           Demo Store Admin
         </span>
+        <DemoHeaderNote />
         <div style={{ width: '44px' }} className="admin-header-spacer" />
       </header>
 

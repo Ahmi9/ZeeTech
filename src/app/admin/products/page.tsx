@@ -165,6 +165,7 @@ export default function ProductsPage() {
                         </Link>
                         <button
                           onClick={() => {
+                            if (demoBlock()) return
                             setDeleteProductId(product.id)
                             setDeleteProductName(product.name)
                           }}

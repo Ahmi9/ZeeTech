@@ -84,8 +84,8 @@ export function DemoModeProvider({ children }: { children: React.ReactNode }) {
                 Demo account
               </h3>
               <p style={{ fontSize: '13.5px', lineHeight: 1.55, color: 'var(--text-muted, #666)', marginBottom: '20px' }}>
-                In credentials se ye action available nahi hai. Aap panel explore kar
-                sakte hain, lekin changes save nahi hongi.
+                This action is not available with demo credentials. Feel free to
+                explore the panel — changes just won't be saved.
               </p>
               <button
                 onClick={() => setPopupOpen(false)}
@@ -96,7 +96,7 @@ export function DemoModeProvider({ children }: { children: React.ReactNode }) {
                   fontSize: '14px', fontWeight: 500,
                 }}
               >
-                Theek hai
+                OK
               </button>
             </motion.div>
           </motion.div>

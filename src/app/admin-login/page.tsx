@@ -278,10 +278,10 @@ export default function AdminLoginPage() {
               textAlign: 'center',
             }}
           >
-            <p style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '6px' }}>
-              Demo login
+            <p style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '6px', textAlign: 'center' }}>
+              Demo credentials
             </p>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, textAlign: 'left' }}>
               Email: <strong style={{ color: 'var(--text-primary)' }}>demo@icloud.com</strong>
               <br />
               Password: <strong style={{ color: 'var(--text-primary)' }}>demo1234</strong>

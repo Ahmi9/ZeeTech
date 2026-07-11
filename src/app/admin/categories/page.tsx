@@ -763,6 +763,7 @@ export default function CategoriesPage() {
                       </button>
                       <button
                         onClick={() => {
+                          if (demoBlock()) return
                           setDeleteCategoryId(category.id)
                           setDeleteCategoryName(category.name)
                           setConfirmOpen(true)

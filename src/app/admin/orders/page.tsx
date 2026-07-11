@@ -440,6 +440,7 @@ export default function OrdersPage() {
                     </button>
                     <button
                       onClick={() => {
+                        if (demoBlock()) return
                         setDeleteOrderId(order.id)
                         setDeleteOrderNumber(order.order_number)
                       }}

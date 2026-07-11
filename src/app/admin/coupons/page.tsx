@@ -594,6 +594,7 @@ export default function CouponsPage() {
                     </button>
                     <button
                       onClick={() => {
+                        if (demoBlock()) return
                         setDeleteCouponId(coupon.id)
                         setDeleteCouponCode(coupon.code)
                         setConfirmOpen(true)
