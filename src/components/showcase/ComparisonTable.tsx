@@ -98,7 +98,7 @@ export default function ComparisonTable() {
               <div className="overflow-hidden rounded-[var(--radius-md)] border border-white/10 bg-white/[0.03] divide-y divide-white/10">
                 {MOBILE_ROWS.map(([label, shopify, us]) => (
                   <div key={label} className="px-4 py-3">
-                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/35">{label}</p>
+                    <p className="mb-1.5 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-white/35">{label}</p>
                     <div className="grid grid-cols-2 gap-3">
                       <span className="flex items-start gap-1.5 text-[12.5px] leading-snug text-white/45">
                         <X size={13} className="mt-[3px] shrink-0 text-[#e0685c]" />
