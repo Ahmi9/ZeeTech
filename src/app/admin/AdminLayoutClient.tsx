@@ -19,11 +19,33 @@ const navLinks = [
   { label: 'Settings', href: '/admin/settings', icon: Settings2 },
 ]
 
+function DemoNoteText() {
+  const { settings } = useAppData()
+  const wa = settings?.whatsapp_number
+  return (
+    <>
+      Some features are disabled on demo credentials —{' '}
+      {wa ? (
+        <a
+          href={`https://wa.me/${formatPhoneWhatsApp(wa)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: 500 }}
+        >
+          contact us on WhatsApp
+        </a>
+      ) : (
+        'contact us on WhatsApp'
+      )}{' '}
+      for full access.
+    </>
+  )
+}
+
+// Desktop: single ellipsized line in the header row.
 function DemoHeaderNote() {
   const { isDemo } = useDemoMode()
-  const { settings } = useAppData()
   if (!isDemo) return null
-  const wa = settings?.whatsapp_number
   return (
     <span
       className="demo-header-note"
@@ -39,21 +61,33 @@ function DemoHeaderNote() {
         textOverflow: 'ellipsis',
       }}
     >
-      Some features are disabled on demo credentials —{' '}
-      {wa ? (
-        <a
-          href={`https://wa.me/${formatPhoneWhatsApp(wa)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: 500 }}
-        >
-          contact us on WhatsApp
-        </a>
-      ) : (
-        'contact us on WhatsApp'
-      )}{' '}
-      for full access.
+      <DemoNoteText />
     </span>
+  )
+}
+
+// Mobile: full-width wrapping banner at the top of the page content, where
+// the header row is too narrow to fit the whole line.
+function DemoMobileNote() {
+  const { isDemo } = useDemoMode()
+  if (!isDemo) return null
+  return (
+    <div
+      className="demo-mobile-note"
+      style={{
+        display: 'none',
+        padding: '10px 14px',
+        marginBottom: '16px',
+        borderRadius: '10px',
+        border: '1px solid var(--border)',
+        background: 'var(--bg-subtle)',
+        fontSize: '12px',
+        lineHeight: 1.5,
+        color: 'var(--text-muted)',
+      }}
+    >
+      <DemoNoteText />
+    </div>
   )
 }
 
@@ -303,6 +337,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           padding: '32px',
           boxSizing: 'border-box',
         }}>
+          <DemoMobileNote />
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 16 }}
@@ -328,6 +363,10 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           padding-bottom: env(safe-area-inset-bottom);
         }
 
+        @media (max-width: 768px) {
+          .demo-header-note { display: none !important; }
+          .demo-mobile-note { display: block !important; }
+        }
         @media (max-width: 768px) {
           .admin-hamburger {
             display: flex !important;
