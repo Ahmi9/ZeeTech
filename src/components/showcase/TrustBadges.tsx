@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { ShieldCheck, Zap, MessageCircle, BadgeCheck } from 'lucide-react'
+import { ShieldCheck, Zap, Banknote, BadgeCheck } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 
 const BADGES = [
@@ -17,9 +17,9 @@ const BADGES = [
     sub: 'From first call to taking real orders',
   },
   {
-    icon: MessageCircle,
-    title: 'Direct Support',
-    sub: 'WhatsApp us any time — no ticket queues',
+    icon: Banknote,
+    title: 'No Advance Payment',
+    sub: 'Pay only when your store is ready to launch',
   },
   {
     icon: BadgeCheck,

@@ -113,7 +113,7 @@ export default function ShowcasePage() {
           }}
         />
         <div className="relative grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <ScrollReveal className="text-center md:text-left">
+          <ScrollReveal className="pt-8 md:pt-0 text-center md:text-left">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[9999px] text-xs font-medium bg-[var(--sc-accent-light)] text-[var(--sc-accent-dark)] mb-6">
               Built for Pakistani sellers
             </div>
@@ -207,7 +207,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="page-container pb-20 md:pb-28">
+      <section className="page-container !pb-20 md:!pb-28">
         <ScrollReveal>
           <div className="relative overflow-hidden rounded-[32px] bg-[var(--sc-ink)] text-white px-8 py-16 md:py-20 text-center">
             <CtaGlow />
@@ -298,7 +298,7 @@ export default function ShowcasePage() {
           {/* oversized watermark wordmark */}
           <div
             aria-hidden
-            className="pointer-events-none select-none mt-10 -mb-4 whitespace-nowrap text-center text-[17vw] md:text-[9rem] font-bold leading-none tracking-tight text-white/[0.05]"
+            className="pointer-events-none select-none mt-10 -mb-2 whitespace-nowrap text-center text-[12.5vw] md:text-[9rem] font-bold leading-none tracking-tight text-white/[0.05]"
           >
             Ahmi Makes
           </div>
