@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import ScrollReveal from '@/components/showcase/ScrollReveal'
 import ScrollProgressBar from '@/components/showcase/ScrollProgressBar'
@@ -58,13 +59,9 @@ export default function ShowcasePage() {
         <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between rounded-[9999px] border border-[var(--sc-border)] bg-[var(--sc-bg)] md:bg-[var(--sc-bg)]/90 md:backdrop-blur-xl pl-2.5 pr-2 shadow-[0_8px_30px_-12px_rgba(18,20,15,0.18)]">
           <a href="#" className="flex items-center gap-2.5">
             <span
-              className="flex h-9 w-9 items-center justify-center rounded-[12px] text-sm font-bold text-white"
-              style={{
-                background: 'linear-gradient(135deg, var(--sc-accent) 0%, var(--sc-accent-dark) 100%)',
-                boxShadow: '0 6px 16px -6px color-mix(in srgb, var(--sc-accent) 70%, transparent)',
-              }}
+              className="flex h-9 w-9 items-center justify-center rounded-[12px] border border-[var(--sc-border)] bg-[var(--sc-surface)]"
             >
-              A
+              <Image src="/brand/ahmi-makes-mark.png" alt="" width={20} height={20} className="h-5 w-5" />
             </span>
             <span className="text-[17px] font-semibold tracking-tight">Ahmi Makes</span>
           </a>

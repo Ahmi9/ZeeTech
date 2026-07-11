@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from 'framer-motion'
 
 const BRAND = 'Ahmi Makes'
@@ -93,13 +94,9 @@ export default function Preloader() {
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 200, damping: 16 }}
-              className="flex h-16 w-16 items-center justify-center rounded-[18px] text-2xl font-bold text-white"
-              style={{
-                background: 'linear-gradient(135deg, #1F7A5C 0%, #155C44 100%)',
-                boxShadow: '0 14px 40px -10px rgba(31,122,92,0.65)',
-              }}
+              className="flex h-16 w-16 items-center justify-center rounded-[18px] border border-white/15 bg-white/5"
             >
-              A
+              <Image src="/brand/ahmi-makes-mark-white.png" alt="" width={30} height={30} className="h-[30px] w-[30px]" />
             </motion.span>
           </div>
 
