@@ -1,3 +1,6 @@
+'use client'
+
+import { useRef, useState } from 'react'
 import { Check, X } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 
@@ -10,16 +13,87 @@ const ROWS: [string, string, string][] = [
   ['Customization', 'Limited by theme/app ecosystem', 'Built exactly around your business'],
 ]
 
-// Same story, compressed for narrow screens — short enough that both sides
-// sit side-by-side and the winner is obvious at a glance.
-const MOBILE_ROWS: [string, string, string][] = [
-  ['Monthly cost', 'Rs 7–8,000 / month', 'Rs 0 / month'],
-  ['Yearly cost', '~Rs 1,00,000', 'One-time only'],
-  ['Order confirmation', 'Manual calls', 'WhatsApp — semi auto'],
-  ['COD + courier', 'Extra apps needed', 'Built-in'],
-  ['Ownership', 'Rented forever', 'Yours forever'],
-  ['Customization', 'Theme limits', 'Built for you'],
-]
+// One feature per swipe: full-width scroll-snap slides with an active-dot
+// pager, so each comparison gets room for the detailed copy.
+function MobileVersusCarousel() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+
+  const onScroll = () => {
+    const el = trackRef.current
+    if (!el) return
+    const index = Math.round(el.scrollLeft / el.clientWidth)
+    if (index !== active) setActive(Math.max(0, Math.min(ROWS.length - 1, index)))
+  }
+
+  const goTo = (i: number) => {
+    const el = trackRef.current
+    el?.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+  }
+
+  return (
+    <>
+      {/* slides */}
+      <div
+        ref={trackRef}
+        onScroll={onScroll}
+        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {ROWS.map(([label, shopify, us], i) => (
+          <div key={label} className="w-full shrink-0 snap-center">
+            <div className="mx-0.5 flex h-full flex-col rounded-[var(--radius-md)] border border-white/10 bg-white/[0.03] p-5">
+              {/* feature chip */}
+              <div className="mb-5 flex justify-center">
+                <span className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/70">
+                  {i + 1} / {ROWS.length} · {label}
+                </span>
+              </div>
+
+              {/* Shopify side */}
+              <div className="flex flex-col items-center text-center">
+                <span className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#e0685c]/15 ring-1 ring-[#e0685c]/30">
+                  <X size={15} className="text-[#e0685c]" />
+                </span>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#e0685c]/90">Shopify</p>
+                <p className="mt-1 text-[13.5px] leading-relaxed text-white/50">{shopify}</p>
+              </div>
+
+              {/* divider with vs pip */}
+              <div className="my-4 flex items-center gap-3">
+                <span className="h-px flex-1 bg-white/10" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30">vs</span>
+                <span className="h-px flex-1 bg-white/10" />
+              </div>
+
+              {/* Us side */}
+              <div className="flex flex-col items-center text-center">
+                <span className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#1F7A5C] shadow-[0_6px_16px_-6px_#1F7A5C]">
+                  <Check size={15} strokeWidth={3} className="text-white" />
+                </span>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7ee2bd]">Ahmi Makes</p>
+                <p className="mt-1 text-[14px] font-medium leading-relaxed text-white">{us}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* pager dots — active dot stretches into a pill */}
+      <div className="mt-5 flex items-center justify-center gap-2">
+        {ROWS.map(([label], i) => (
+          <button
+            key={label}
+            aria-label={`Go to ${label}`}
+            onClick={() => goTo(i)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === active ? 'w-6 bg-[#7ee2bd]' : 'w-2 bg-white/25'
+            }`}
+          />
+        ))}
+      </div>
+    </>
+  )
+}
 
 export default function ComparisonTable() {
   return (
@@ -94,28 +168,11 @@ export default function ComparisonTable() {
                 </div>
               </div>
 
-              {/* comparison rows */}
-              <div className="overflow-hidden rounded-[var(--radius-md)] border border-white/10 bg-white/[0.03] divide-y divide-white/10">
-                {MOBILE_ROWS.map(([label, shopify, us]) => (
-                  <div key={label} className="px-4 py-3">
-                    <p className="mb-1.5 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-white/35">{label}</p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <span className="flex items-start justify-center gap-1.5 text-center text-[12.5px] leading-snug text-white/45">
-                        <X size={13} className="mt-[3px] shrink-0 text-[#e0685c]" />
-                        {shopify}
-                      </span>
-                      <span className="flex items-start justify-center gap-1.5 text-center text-[12.5px] font-medium leading-snug text-white">
-                        <Check size={13} strokeWidth={3} className="mt-[3px] shrink-0 text-[#7ee2bd]" />
-                        {us}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <MobileVersusCarousel />
 
               {/* punchline */}
               <div
-                className="mt-5 rounded-[var(--radius-md)] px-4 py-4 text-center"
+                className="mt-6 rounded-[var(--radius-md)] px-4 py-4 text-center"
                 style={{ background: 'linear-gradient(135deg, #1F7A5C 0%, #155C44 100%)' }}
               >
                 <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/70">You keep</p>
