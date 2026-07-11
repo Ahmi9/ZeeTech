@@ -124,18 +124,6 @@ export default function Navbar() {
             {logoContent}
           </Link>
 
-          {/* Admin panel */}
-          <Link href="/admin" aria-label="Admin panel" style={{
-            width: '44px', height: '44px', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', borderRadius: '12px', color: 'var(--text-primary)',
-            textDecoration: 'none', transition: 'background 0.15s ease', flexShrink: 0,
-          }}
-            onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <LayoutDashboard size={20} strokeWidth={1.75} />
-          </Link>
-
           {/* Cart */}
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <Link href="/cart" aria-label="Cart" className="mobile-cart-btn" style={{
@@ -266,7 +254,7 @@ export default function Navbar() {
           </nav>
 
           {/* Admin panel */}
-          <Link href="/admin" aria-label="Admin panel" style={{
+          <Link href="/admin" target="_blank" rel="noopener noreferrer" aria-label="Admin panel" style={{
             width: '40px', height: '40px', display: 'flex', alignItems: 'center',
             justifyContent: 'center', borderRadius: '10px', color: 'var(--text-primary)',
             textDecoration: 'none', transition: 'background 0.15s ease', flexShrink: 0, marginLeft: 'auto',
@@ -527,6 +515,22 @@ export default function Navbar() {
                 >
                   <MapPin size={18} strokeWidth={1.75} />
                   <span>Track Order</span>
+                </Link>
+
+                {/* Admin Panel */}
+                <Link href="/admin" target="_blank" rel="noopener noreferrer" onClick={() => setDrawerOpen(false)} className="drawer-quick-link" style={{
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  minHeight: '48px', padding: '12px 16px', borderRadius: '12px',
+                  color: 'var(--text-primary)', background: 'transparent',
+                  textDecoration: 'none', fontSize: '14px', fontWeight: 500,
+                  borderLeft: '3px solid transparent',
+                  transition: 'background 0.15s ease, color 0.15s ease',
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <LayoutDashboard size={18} strokeWidth={1.75} />
+                  <span>Admin Panel</span>
                 </Link>
               </nav>
 
