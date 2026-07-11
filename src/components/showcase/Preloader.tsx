@@ -130,8 +130,9 @@ export default function Preloader() {
             />
           </div>
 
-          {/* big percentage, editorial corner placement */}
-          <div className="pointer-events-none absolute bottom-8 right-7 md:bottom-10 md:right-12 flex items-end leading-none text-white/90">
+          {/* big percentage, editorial corner placement — sits above the tagline
+              row on small screens so the two never overlap */}
+          <div className="pointer-events-none absolute bottom-20 right-6 md:bottom-10 md:right-12 flex items-end leading-none text-white/90">
             <motion.span className="text-6xl md:text-8xl font-bold tabular-nums tracking-tight">{display}</motion.span>
             <span className="mb-1.5 ml-1 text-xl md:text-2xl font-semibold text-white/50">%</span>
           </div>
