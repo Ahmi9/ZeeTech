@@ -307,7 +307,10 @@ export default function ProductDetailPage() {
               )}
             </div>
             {product.images && product.images.length > 1 && (
-              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+              <div
+                className="thumbnail-row"
+                style={{ display: 'flex', gap: '8px', marginTop: '12px', overflowX: 'auto', maxWidth: '100%' }}
+              >
                 {product.images && product.images.map((img: string, index: number) => (
                   <Image
                     key={index}
@@ -319,9 +322,11 @@ export default function ProductDetailPage() {
                     style={{
                       width: '72px',
                       height: '72px',
+                      flexShrink: 0,
                       borderRadius: '8px',
                       objectFit: 'cover',
                       cursor: 'pointer',
+                      scrollSnapAlign: 'start',
                       border: `2px solid ${index === selectedImage ? 'var(--brand)' : 'transparent'}`,
                     }}
                   />
@@ -1149,6 +1154,15 @@ addItem({
             padding-left: 16px !important;
             padding-right: 16px !important;
           }
+        }
+
+        .thumbnail-row {
+          scroll-snap-type: x proximity;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .thumbnail-row::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </>
