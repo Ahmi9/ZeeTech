@@ -13,6 +13,6 @@ export type ShowcaseImage = (typeof showcaseImages)[keyof typeof showcaseImages]
 export const showcaseVideos = {
   whatsappConfirmation: `${BASE}/second-feature-v2.mp4`,
   codCourierBooking: `${BASE}/third-feature-v2.mp4`,
-  mobileStorefront: `${BASE}/fifth-feature-v2.mp4`,
+  mobileStorefront: `${BASE}/fifth-feature-v3.mp4`,
   marketingTools: `${BASE}/sixth-feature-v2.mp4`,
 } as const
