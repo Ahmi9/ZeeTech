@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingBag, Menu, X, ChevronDown, Home, MapPin, Package } from 'lucide-react'
+import { ShoppingBag, Menu, X, ChevronDown, Home, MapPin, Package, LayoutDashboard } from 'lucide-react'
 import { useTheme } from '@/components/providers/ThemeProvider'
 import { useAppData } from '@/components/providers/AppDataProvider'
 import { useCartStore } from '@/store/cartStore'
@@ -122,6 +122,18 @@ export default function Navbar() {
           {/* Logo - center */}
           <Link href="/demo" style={{ textDecoration: 'none', flexShrink: 0, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             {logoContent}
+          </Link>
+
+          {/* Admin panel */}
+          <Link href="/admin" aria-label="Admin panel" style={{
+            width: '44px', height: '44px', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', borderRadius: '12px', color: 'var(--text-primary)',
+            textDecoration: 'none', transition: 'background 0.15s ease', flexShrink: 0,
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <LayoutDashboard size={20} strokeWidth={1.75} />
           </Link>
 
           {/* Cart */}
@@ -253,8 +265,20 @@ export default function Navbar() {
             }}>Contact Us</Link>
           </nav>
 
+          {/* Admin panel */}
+          <Link href="/admin" aria-label="Admin panel" style={{
+            width: '40px', height: '40px', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', borderRadius: '10px', color: 'var(--text-primary)',
+            textDecoration: 'none', transition: 'background 0.15s ease', flexShrink: 0, marginLeft: 'auto',
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <LayoutDashboard size={19} strokeWidth={1.75} />
+          </Link>
+
           {/* Cart */}
-          <div style={{ position: 'relative', flexShrink: 0, marginLeft: 'auto' }}>
+          <div style={{ position: 'relative', flexShrink: 0 }}>
             <Link href="/cart" aria-label="Cart" style={{
               width: '40px', height: '40px', display: 'flex', alignItems: 'center',
               justifyContent: 'center', borderRadius: '10px', color: 'var(--text-primary)',

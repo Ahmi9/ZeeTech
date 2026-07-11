@@ -81,6 +81,13 @@ export default function ShowcasePage() {
                 <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[var(--sc-accent)] transition-transform duration-300 ease-out group-hover:scale-x-100" />
               </a>
             ))}
+            <Link
+              href="/admin"
+              className="group relative py-1 hover:text-[var(--sc-ink)] transition-colors"
+            >
+              Admin Panel
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[var(--sc-accent)] transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </Link>
           </nav>
           <a
             href={WHATSAPP_LINK}
@@ -238,9 +245,14 @@ export default function ShowcasePage() {
       <footer className="border-t border-[var(--sc-border)] py-10">
         <div className="page-container flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--sc-muted)]">
           <span>© {new Date().getFullYear()} Ahmi Makes</span>
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
-            Contact on WhatsApp
-          </a>
+          <div className="flex items-center gap-6">
+            <Link href="/admin" className="hover:text-[var(--sc-ink)] transition-colors">
+              Admin Panel
+            </Link>
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--sc-ink)] transition-colors">
+              Contact on WhatsApp
+            </a>
+          </div>
         </div>
       </footer>
     </div>
