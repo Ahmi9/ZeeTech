@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { useDemoMode } from '@/lib/demo-mode'
 
 interface CategoryWithCount {
   id: string
@@ -20,6 +21,7 @@ interface CategoryWithCount {
 }
 
 export default function CategoriesPage() {
+  const { demoBlock } = useDemoMode()
   const [categories, setCategories] = useState<CategoryWithCount[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -105,6 +107,7 @@ export default function CategoriesPage() {
   }
 
   const handleSave = async () => {
+    if (demoBlock()) return
     setFormError('')
 
     if (!name.trim()) {
@@ -175,6 +178,7 @@ export default function CategoriesPage() {
   }
 
   const handleDelete = async () => {
+    if (demoBlock()) return
     if (!deleteCategoryId) return
     setDeleting(true)
     const res = await fetch(`/api/admin/categories?id=${deleteCategoryId}`, { method: 'DELETE' })

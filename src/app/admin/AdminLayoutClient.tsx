@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu, X, LogOut } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
+import { DemoModeProvider } from '@/lib/demo-mode'
 
 const navLinks = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -48,6 +49,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   }, [mobileDrawerOpen])
 
   return (
+    <DemoModeProvider>
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <header className="admin-header" style={{
         position: 'fixed',
@@ -325,5 +327,6 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
         }
       `}</style>
     </div>
+    </DemoModeProvider>
   )
 }

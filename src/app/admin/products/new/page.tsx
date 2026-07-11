@@ -8,8 +8,10 @@ import { supabase } from '@/lib/supabase'
 import { Category } from '@/lib/types'
 import { motion } from 'framer-motion'
 import RichTextEditor from '@/components/ui/RichTextEditor'
+import { useDemoMode } from '@/lib/demo-mode'
 
 export default function NewProductPage() {
+  const { demoBlock } = useDemoMode()
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -138,6 +140,7 @@ export default function NewProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (demoBlock()) return
     setError('')
 
     if (!validate()) return

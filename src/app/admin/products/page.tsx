@@ -6,12 +6,14 @@ import { Plus } from 'lucide-react'
 import { Product } from '@/lib/types'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { useDemoMode } from '@/lib/demo-mode'
 
 interface ProductWithCategory extends Product {
   categories: { name: string } | null
 }
 
 export default function ProductsPage() {
+  const { demoBlock } = useDemoMode()
   const [products, setProducts] = useState<ProductWithCategory[]>([])
   const [loading, setLoading] = useState(true)
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null)
@@ -234,6 +236,10 @@ export default function ProductsPage() {
                 </button>
                 <button
                   onClick={async () => {
+                    if (demoBlock()) {
+                      setDeleteProductId(null)
+                      return
+                    }
                     setDeleting(true)
 
                     const res = await fetch(`/api/admin/products?id=${deleteProductId}`, { method: 'DELETE' })

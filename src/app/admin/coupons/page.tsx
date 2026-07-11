@@ -6,8 +6,10 @@ import { Coupon } from '@/lib/types'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { useDemoMode } from '@/lib/demo-mode'
 
 export default function CouponsPage() {
+  const { demoBlock } = useDemoMode()
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -73,6 +75,7 @@ export default function CouponsPage() {
   }
 
   async function handleSave() {
+    if (demoBlock()) return
     setFormError('')
 
     if (!code.trim()) {
@@ -124,6 +127,7 @@ export default function CouponsPage() {
   }
 
   async function handleDelete() {
+    if (demoBlock()) return
     if (!deleteCouponId) return
     setDeleting(true)
     const res = await fetch(`/api/admin/coupons?id=${deleteCouponId}`, { method: 'DELETE' })

@@ -262,6 +262,32 @@ export default function AdminLoginPage() {
         >
           {mode === 'signin' ? 'Forgot password?' : 'Back to sign in'}
         </motion.button>
+
+        {mode === 'signin' && (
+          <motion.div
+            custom={4}
+            variants={fieldVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              marginTop: '4px',
+              padding: '12px 14px',
+              borderRadius: '10px',
+              border: '1px dashed var(--border)',
+              background: 'var(--bg-muted, rgba(0,0,0,0.03))',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '6px' }}>
+              Demo login
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+              Email: <strong style={{ color: 'var(--text-primary)' }}>demo@icloud.com</strong>
+              <br />
+              Password: <strong style={{ color: 'var(--text-primary)' }}>demo1234</strong>
+            </p>
+          </motion.div>
+        )}
       </motion.form>
 
       <style>{`

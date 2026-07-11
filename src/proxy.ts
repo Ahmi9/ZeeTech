@@ -31,6 +31,38 @@ export async function proxy(request: NextRequest) {
     return response
   }
 
+  // Demo/client role: full read access to the admin panel, mutations blocked.
+  // The client-side popup is cosmetic — this is the actual enforcement.
+  if (user && user.app_metadata?.role === 'client') {
+    const path = request.nextUrl.pathname
+    const method = request.method
+
+    // Courier booking/cancellation triggers real (billable) PostEx actions.
+    if (path.startsWith('/api/postex/')) {
+      return NextResponse.json(
+        { error: 'Demo account — ye feature in credentials se available nahi hai.', demo: true },
+        { status: 403 }
+      )
+    }
+
+    if (path.startsWith('/api/admin/')) {
+      const allowed =
+        method === 'GET' ||
+        // Orders page stays functional for demo users: status updates and
+        // WhatsApp confirmations are allowed, deletion/PostEx are not.
+        (path === '/api/admin/orders' && method === 'PATCH') ||
+        path === '/api/admin/orders/send-confirmation'
+      if (!allowed) {
+        return NextResponse.json(
+          { error: 'Demo account — is se modifications allowed nahi hain.', demo: true },
+          { status: 403 }
+        )
+      }
+    }
+
+    return response
+  }
+
   if (request.nextUrl.pathname.startsWith('/api/')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

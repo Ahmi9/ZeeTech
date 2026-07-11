@@ -9,8 +9,10 @@ import { Category } from '@/lib/types'
 import { motion } from 'framer-motion'
 import RichTextEditor from '@/components/ui/RichTextEditor'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { useDemoMode } from '@/lib/demo-mode'
 
 export default function EditProductPage() {
+  const { demoBlock } = useDemoMode()
   const router = useRouter()
   const params = useParams()
   const { id } = params as { id: string }
@@ -189,6 +191,7 @@ export default function EditProductPage() {
   }
 
   const handleDelete = async () => {
+    if (demoBlock()) return
     if (!confirm('Are you sure you want to delete this product?')) return
 
     setLoading(true)
@@ -205,6 +208,7 @@ export default function EditProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (demoBlock()) return
     setError('')
 
     if (!validate()) return

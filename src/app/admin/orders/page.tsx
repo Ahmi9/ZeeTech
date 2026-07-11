@@ -6,6 +6,7 @@ import { Search, X, SlidersHorizontal } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
 import { normalizePhonePK, formatPhoneWhatsApp } from '@/lib/phone'
+import { useDemoMode } from '@/lib/demo-mode'
 
 type OrderStatus = 'all' | 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'cancelled' | 'returned'
 
@@ -64,6 +65,7 @@ function formatPrice(price: number): string {
 }
 
 export default function OrdersPage() {
+  const { isDemo, demoBlock } = useDemoMode()
   const [orders, setOrders] = useState<OrderWithItems[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<OrderStatus>('all')
@@ -140,6 +142,7 @@ export default function OrdersPage() {
   }
 
   async function bookWithPostex() {
+    if (demoBlock()) return
     if (!selectedOrder) return
     setBookingPostex(true)
     setPostexError('')
@@ -852,6 +855,11 @@ export default function OrdersPage() {
                   <p style={{ fontSize: '12px', color: 'var(--warning)' }}>
                     Verify payment first — mark it as Paid above before booking with PostEx.
                   </p>
+                ) : isDemo ? (
+                  <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                    In credentials se ye feature kaam nahi karega — courier booking demo
+                    account par available nahi hai.
+                  </p>
                 ) : (
                   <>
                     <button
@@ -935,6 +943,10 @@ export default function OrdersPage() {
                 </button>
                 <button
                   onClick={async () => {
+                    if (demoBlock()) {
+                      setDeleteOrderId(null)
+                      return
+                    }
                     setDeleting(true)
                     const res = await fetch(`/api/admin/orders?id=${deleteOrderId}`, { method: 'DELETE' })
                     if (res.ok) {

@@ -5,8 +5,10 @@ import { supabase } from '@/lib/supabase'
 import { SiteSettings } from '@/lib/types'
 import { motion, AnimatePresence } from 'framer-motion'
 import AdminLoader from '@/components/ui/AdminLoader'
+import { useDemoMode } from '@/lib/demo-mode'
 
 export default function SettingsPage() {
+  const { demoBlock } = useDemoMode()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
@@ -83,6 +85,7 @@ export default function SettingsPage() {
   }
 
   async function handleSave() {
+    if (demoBlock()) return
     setSuccessMessage('')
     setErrorMessage('')
     setSaving(true)
@@ -125,6 +128,7 @@ export default function SettingsPage() {
   }
 
   async function handleAddBank() {
+    if (demoBlock()) return
     const errs: Record<string, string> = {}
     if (!bankForm.method_name.trim()) errs.method_name = 'Bank name is required'
     if (!bankForm.account_title.trim()) errs.account_title = 'Account name is required'
@@ -152,6 +156,7 @@ export default function SettingsPage() {
   }
 
   async function handleDeleteBank(id: string) {
+    if (demoBlock()) return
     await fetch('/api/admin/bank-accounts', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
