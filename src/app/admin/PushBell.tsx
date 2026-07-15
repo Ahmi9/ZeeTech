@@ -15,7 +15,9 @@ function urlBase64ToUint8Array(base64String: string) {
 
 // Per-device toggle for new-order push notifications. Each browser/device has
 // its own subscription — enabling here only affects this device.
-export default function PushBell() {
+// variant 'icon': compact header button (desktop). variant 'nav': full-width
+// labelled row for the mobile sidebar drawer.
+export default function PushBell({ variant = 'icon' }: { variant?: 'icon' | 'nav' }) {
   const { isDemo } = useDemoMode()
   const [state, setState] = useState<PushState>('loading')
 
@@ -83,22 +85,81 @@ export default function PushBell() {
     }
   }
 
-  // Demo users can't save subscriptions (mutations are blocked), and
-  // unsupported browsers can't subscribe at all — hide the bell.
-  if (isDemo || state === 'unsupported' || state === 'loading') return null
+  // Demo users can't save subscriptions (mutations are blocked) — hide entirely.
+  if (isDemo || state === 'loading') return null
 
   const isOn = state === 'on'
+  const disabled = state === 'busy' || state === 'denied' || state === 'unsupported'
+
+  // iOS Safari only exposes PushManager once the site is installed via
+  // Add to Home Screen — surface that instead of silently hiding in the nav.
+  const isIOS = typeof navigator !== 'undefined' && /iPhone|iPad|iPod/.test(navigator.userAgent)
+
   const title =
-    state === 'denied'
-      ? 'Notifications blocked — allow them in browser settings'
-      : isOn
-        ? 'Order notifications on (this device) — click to turn off'
-        : 'Get notified on this device when a new order arrives'
+    state === 'unsupported'
+      ? isIOS
+        ? 'Add this site to your Home Screen to enable notifications'
+        : 'Notifications are not supported in this browser'
+      : state === 'denied'
+        ? 'Notifications blocked — allow them in browser settings'
+        : isOn
+          ? 'Order notifications on (this device) — click to turn off'
+          : 'Get notified on this device when a new order arrives'
+
+  const icon =
+    state === 'denied' || state === 'unsupported' ? (
+      <BellOff size={variant === 'nav' ? 16 : 17} strokeWidth={1.75} />
+    ) : isOn ? (
+      <BellRing size={variant === 'nav' ? 16 : 17} strokeWidth={1.75} />
+    ) : (
+      <Bell size={variant === 'nav' ? 16 : 17} strokeWidth={1.75} />
+    )
+
+  if (variant === 'nav') {
+    const label =
+      state === 'unsupported'
+        ? isIOS
+          ? 'Notifications — add to Home Screen first'
+          : 'Notifications not supported'
+        : state === 'denied'
+          ? 'Notifications blocked in browser'
+          : isOn
+            ? 'Order notifications: On'
+            : 'Enable order notifications'
+    return (
+      <button
+        onClick={isOn ? disable : enable}
+        disabled={disabled}
+        title={title}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '14px 16px',
+          border: 'none',
+          background: 'transparent',
+          cursor: disabled ? 'default' : 'pointer',
+          color: disabled ? 'var(--text-muted)' : isOn ? 'var(--brand)' : 'var(--text-secondary)',
+          fontSize: '13px',
+          textAlign: 'left',
+          opacity: state === 'busy' ? 0.6 : 1,
+        }}
+      >
+        {icon}
+        <span style={{ flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {label}
+        </span>
+      </button>
+    )
+  }
+
+  if (state === 'unsupported') return null
 
   return (
     <button
       onClick={isOn ? disable : enable}
-      disabled={state === 'busy' || state === 'denied'}
+      disabled={disabled}
       aria-label={title}
       title={title}
       style={{
@@ -110,20 +171,14 @@ export default function PushBell() {
         border: '1px solid var(--border)',
         borderRadius: '8px',
         background: isOn ? 'var(--brand-light)' : 'transparent',
-        cursor: state === 'busy' || state === 'denied' ? 'default' : 'pointer',
+        cursor: disabled ? 'default' : 'pointer',
         color: state === 'denied' ? 'var(--text-muted)' : isOn ? 'var(--brand)' : 'var(--text-secondary)',
         flexShrink: 0,
         transition: 'background 0.15s ease, color 0.15s ease',
         opacity: state === 'busy' ? 0.6 : 1,
       }}
     >
-      {state === 'denied' ? (
-        <BellOff size={17} strokeWidth={1.75} />
-      ) : isOn ? (
-        <BellRing size={17} strokeWidth={1.75} />
-      ) : (
-        <Bell size={17} strokeWidth={1.75} />
-      )}
+      {icon}
     </button>
   )
 }

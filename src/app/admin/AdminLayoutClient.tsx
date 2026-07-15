@@ -165,7 +165,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           Demo Store Admin
         </span>
         <DemoHeaderNote />
-        <div style={{ marginLeft: 'auto', paddingRight: '16px', display: 'flex', alignItems: 'center' }}>
+        <div className="admin-header-bell" style={{ marginLeft: 'auto', paddingRight: '16px', display: 'flex', alignItems: 'center' }}>
           <PushBell />
         </div>
         <div style={{ width: '44px' }} className="admin-header-spacer" />
@@ -290,6 +290,9 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               )
             })}
           </nav>
+          <div className="admin-nav-push" style={{ display: 'none', flexShrink: 0, borderTop: '1px solid var(--border)' }}>
+            <PushBell variant="nav" />
+          </div>
           <div className="admin-sidebar-logout" style={{ flexShrink: 0, borderTop: '1px solid var(--border)' }}>
             <button
               onClick={handleLogout}
@@ -370,6 +373,8 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
         @media (max-width: 768px) {
           .demo-header-note { display: none !important; }
           .demo-mobile-note { display: block !important; }
+          .admin-header-bell { display: none !important; }
+          .admin-nav-push { display: block !important; }
         }
         @media (max-width: 768px) {
           .admin-hamburger {
