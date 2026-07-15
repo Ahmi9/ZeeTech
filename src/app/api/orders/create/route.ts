@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { after } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
 import { normalizePhonePK } from '@/lib/phone'
+import { formatPrice } from '@/lib/format'
+import { sendPushToAdmins } from '@/lib/push'
 
 function getBaseProductId(itemId: string) {
   return String(itemId).split('-').slice(0, 5).join('-')
@@ -189,6 +192,16 @@ export async function POST(request: NextRequest) {
     if (appliedCouponCode) {
       await supabaseAdmin.rpc('increment_coupon_usage', { coupon_code: appliedCouponCode })
     }
+
+    const itemCount = resolvedItems.reduce((sum, i) => sum + i.quantity, 0)
+    after(() =>
+      sendPushToAdmins({
+        title: `🛒 New Order ${orderData.order_number}`,
+        body: `${customer_name} — ${formatPrice(total)} (${itemCount} ${itemCount === 1 ? 'item' : 'items'}) · ${customer_city}`,
+        url: '/admin/orders',
+        tag: `order-${orderData.id}`,
+      }).catch((err) => console.error('order push failed', err))
+    )
 
     return NextResponse.json({ id: orderData.id, order_number: orderData.order_number })
   } catch (err: any) {

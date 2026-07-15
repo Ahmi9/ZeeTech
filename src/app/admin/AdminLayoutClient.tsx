@@ -7,6 +7,7 @@ import { LayoutDashboard, Package, FolderOpen, ShoppingBag, Tag, Settings2, Menu
 import { motion, AnimatePresence } from 'framer-motion'
 import { createBrowserSupabaseClient } from '@/lib/supabase-clients/browser'
 import { DemoModeProvider, useDemoMode } from '@/lib/demo-mode'
+import PushBell from './PushBell'
 import { useAppData } from '@/components/providers/AppDataProvider'
 import { formatPhoneWhatsApp } from '@/lib/phone'
 
@@ -164,6 +165,9 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           Demo Store Admin
         </span>
         <DemoHeaderNote />
+        <div style={{ marginLeft: 'auto', paddingRight: '16px', display: 'flex', alignItems: 'center' }}>
+          <PushBell />
+        </div>
         <div style={{ width: '44px' }} className="admin-header-spacer" />
       </header>
 
